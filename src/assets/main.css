@@ -1,0 +1,9 @@
+@import './base.css';
+@import 'tailwindcss';
+@import 'tailwindcss';
+@plugin "daisyui";
+
+html,
+body,
+#app {
+}

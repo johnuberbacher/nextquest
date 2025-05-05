@@ -1,0 +1,52 @@
+<script setup lang="ts">
+import { ref, watch, defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  categories: {
+    type: Array,
+    required: true,
+  },
+  modelValue: {
+    type: Number,
+    default: 0,
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const selectedId = ref(props.modelValue)
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    selectedId.value = newVal
+  },
+)
+
+const selectItem = (id: number) => {
+  selectedId.value = id
+  emit('update:modelValue', id)
+}
+</script>
+<template>
+  <div
+    v-for="(category, index) in categories"
+    :key="category.id"
+    :class="[
+      'select-none cursor-pointer w-50% rounded-xl p-4 relative text-center flex flex-col gap-3 items-center justify-center',
+      selectedId === category.id
+        ? 'bg-orange-50 dark:bg-gray-800 border border-orange-700 shadow-sm'
+        : ' bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
+    ]"
+    @click="selectItem(category.id)"
+  >
+    <div class="text-4xl text-black">{{ category.icon }}</div>
+    <div class="text-md font-semibold text-black dark:text-white">
+      {{ category.name }}
+    </div>
+  </div>
+</template>
