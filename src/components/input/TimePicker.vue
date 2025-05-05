@@ -23,7 +23,7 @@ defineEmits(['update:modelValue'])
     >
       <input
         type="time"
-        class="input w-full border border-gray-300 dark:border-gray-700 rounded px-2 py-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+        class="input w-full border border-neutral-300 dark:border-neutral-700 rounded px-2 py-1 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
       />

@@ -14,7 +14,7 @@ const { selectedCategoryId, categories } = categoryStore
 
 const selectedCategory = ref(null)
 
-const visibleCount = ref(8)
+const visibleCount = ref(12)
 const incrementAmount = 8
 
 const visibleCategories = computed(() => {
@@ -34,27 +34,35 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="flex w-full flex-grow flex-col items-start justify-start gap-6 p-6">
-    <div class="flex w-full flex-col items-start justify-start gap-2">
-      <div class="text-2xl font-bold text-gray-900 dark:text-white">Choose habit</div>
-      <div class="text-sm text-gray-500 dark:text-gray-500">
+  <div
+    class="flex h-full w-full flex-grow flex-col items-start justify-between gap-6 overflow-hidden p-6"
+  >
+    <div class="flex h-auto w-full flex-col items-start justify-start gap-2">
+      <div class="text-2xl font-bold text-neutral-900 dark:text-white">Choose habit</div>
+      <div class="text-sm text-neutral-500 dark:text-neutral-500">
         Select any pre-created habbits from the list below, you can choose more than one. Don't
         worry, you'll be able to make custom habits later.
       </div>
     </div>
-    <div class="grid w-full grid-cols-2 flex-wrap gap-6 md:grid-cols-4">
-      <CategorySelectChips :categories="visibleCategories" v-model="selectedCategory" />
-      <button
-        :disabled="visibleCategories.length === categories.length"
-        @click="showMore"
-        class="btn btn-outline col-span-2 w-full rounded-full md:col-span-4"
-      >
-        Show more
-      </button>
+    <div
+      class="flex w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700"
+    >
+      <div class="grid w-full grid-cols-2 flex-wrap gap-6 overflow-y-auto p-6 md:grid-cols-4">
+        <CategorySelectChips :categories="visibleCategories" v-model="selectedCategory" />
+        <button
+          :disabled="visibleCategories.length === categories.length"
+          @click="showMore"
+          class="btn btn-outline col-span-2 mx-auto w-full rounded-full md:col-start-2"
+        >
+          Show more
+        </button>
+      </div>
+    </div>
+    <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
       <button
         @click="submit"
         :disabled="!selectedCategory"
-        class="btn btn-neutral col-span-2 w-full md:col-span-4"
+        class="btn btn-primary w-full flex-grow rounded-full"
       >
         Continue
       </button>

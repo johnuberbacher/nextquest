@@ -41,12 +41,12 @@ const selectItem = (index) => {
       :class="[
         'select-none cursor-pointer rounded-lg px-6 py-3 text-center flex flex-col items-center justify-center',
         selectedIndex === index
-          ? 'bg-orange-50 dark:bg-gray-800 border border-orange-700 shadow-sm'
-          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
+          ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
+          : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
       ]"
       @click="selectItem(index)"
     >
-      <div class="font-semibold text-xs text-gray-800 dark:text-white whitespace-nowrap">
+      <div class="font-semibold text-xs text-neutral-800 dark:text-white whitespace-nowrap">
         {{ item }}
       </div>
     </div>

@@ -6,10 +6,14 @@ import AppBar from './components/ui/AppBar.vue'
 
 <template>
   <div
-    class="relative m-auto flex h-full w-full flex-col overflow-hidden md:max-h-[1000px] md:max-w-3xl md:rounded-3xl md:border md:border-gray-200 md:dark:border-gray-700"
+    class="flex h-full w-full flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-900"
   >
-    <Header />
-    <RouterView />
-    <AppBar />
+    <div
+      class="relative m-auto flex h-full w-full flex-col justify-between bg-white shadow-sm dark:bg-neutral-800 md:max-h-[960px] md:max-w-2xl md:overflow-hidden md:rounded-3xl md:border md:border-neutral-200 md:dark:border-neutral-700"
+    >
+      <Header />
+      <RouterView />
+      <AppBar />
+    </div>
   </div>
 </template>

@@ -26,7 +26,7 @@ export const useTaskStore = defineStore('task', () => {
 
   const tasks = ref<Task[]>([
     {
-      id: nanoid(),
+      id: '1',
       name: 'Task 1',
       description: 'This is a sample task description',
       categoryId: 0,
@@ -36,39 +36,39 @@ export const useTaskStore = defineStore('task', () => {
       durationMinutes: 30,
       daysOfWeek: ['Mon', 'Wed', 'Fri'],
       timeOfDay: '09:00',
-      color: 'bg-blue-200',
+      color: 'bg-red-50 dark:bg-red-200',
       createdAt: new Date(),
       startDate: null,
       endDate: null,
     },
     {
-      id: nanoid(),
+      id: '2',
       name: 'Do some coding',
       description: 'This is a sample task description',
-      categoryId: 1,
+      categoryId: 2,
       icon: '🐸',
       progress: 50,
       state: 'in_progress',
       durationMinutes: 45,
       daysOfWeek: ['Tue', 'Thu'],
       timeOfDay: '14:00',
-      color: 'bg-green-200',
+      color: 'bg-green-50 dark:bg-green-200',
       createdAt: new Date(),
       startDate: null,
       endDate: null,
     },
     {
-      id: nanoid(),
+      id: '3',
       name: 'Task 3',
       description: 'This is a sample task description',
-      categoryId: 2,
+      categoryId: 4,
       icon: '😀',
       progress: 100,
       state: 'complete',
       durationMinutes: 60,
       daysOfWeek: ['Mon', 'Wed'],
       timeOfDay: '18:00',
-      color: 'bg-red-200',
+      color: 'bg-blue-50 dark:bg-blue-200',
       createdAt: new Date(),
       startDate: null,
       endDate: null,
@@ -98,18 +98,18 @@ export const useTaskStore = defineStore('task', () => {
     return newTask
   }
 
-  const updateTask = (id: string, updates: Partial<Task>) => {
+  const updateTask = (id: number, updates: Partial<Task>) => {
     const index = tasks.value.findIndex((t) => t.id === id)
     if (index !== -1) {
       tasks.value[index] = { ...tasks.value[index], ...updates }
     }
   }
 
-  const deleteTask = (id: string) => {
+  const deleteTask = (id: number) => {
     tasks.value = tasks.value.filter((t) => t.id !== id)
   }
 
-  const getTaskById = (id: string): Task | undefined => tasks.value.find((t) => t.id === id)
+  const getTaskById = (id: number): Task | undefined => tasks.value.find((t) => t.id === id)
 
   return {
     tasks,

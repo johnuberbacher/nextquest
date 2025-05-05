@@ -39,13 +39,13 @@ const selectItem = (id: number) => {
     :class="[
       'select-none cursor-pointer w-50% rounded-xl p-4 relative text-center flex flex-col gap-3 items-center justify-center',
       selectedId === category.id
-        ? 'bg-orange-50 dark:bg-gray-800 border border-orange-700 shadow-sm'
-        : ' bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
+        ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
+        : ' bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
     ]"
     @click="selectItem(category.id)"
   >
     <div class="text-4xl text-black">{{ category.icon }}</div>
-    <div class="text-md font-semibold text-black dark:text-white">
+    <div class="whitespace-nowrap text-sm font-semibold text-black dark:text-white">
       {{ category.name }}
     </div>
   </div>
