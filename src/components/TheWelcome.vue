@@ -17,22 +17,37 @@ const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 
 <template>
   <div class="flex w-full flex-col items-start justify-start gap-8 px-6 pb-6 pt-8">
-    <div class="flex w-full flex-row gap-4">
+    <div class="flex w-full flex-row items-center justify-start gap-3">
       <div
-        class="flex aspect-square h-20 items-center justify-center rounded-full bg-gray-200 text-center text-white dark:bg-gray-600"
+        class="h-21 flex aspect-square items-center justify-center rounded-full bg-gray-200 text-center text-white dark:bg-gray-600"
       >
-        <div class="flex aspect-square items-center justify-center text-6xl">🧑🏻</div>
+        <div class="flex items-center justify-center text-6xl">🦊</div>
       </div>
       <div class="flex w-full flex-col items-start justify-start gap-1">
-        <div class="font-bold dark:text-white">John Uberbacher</div>
-        <div class="flex w-auto rounded-lg bg-green-600 px-2 py-1 text-xs font-bold text-white">
-          Achiever
+        <div class="flex w-full flex-row items-center justify-between gap-2">
+          <div class="font-bold dark:text-white">John Uberbacher</div>
+          <div
+            class="flex w-auto rounded-sm bg-green-600 px-1.5 py-0.5 text-[10px] font-bold text-white"
+          >
+            Achiever
+          </div>
         </div>
         <div class="flex w-full flex-col items-start justify-start gap-1">
-          <div class="text-sm text-gray-500 dark:text-gray-500">Level 1</div>
-          <div class="text-sm text-gray-500 dark:text-gray-500">XP: 100/100</div>
-          <div class="text-xs font-bold dark:text-gray-300">Level 1</div>
+          <div class="flex w-full flex-row items-center justify-between gap-2">
+            <div class="text-xs font-bold text-gray-600 dark:text-gray-300">Level 1</div>
+            <div class="text-xs font-bold text-gray-500 dark:text-gray-500">XP: 60/100</div>
+          </div>
           <progress className="progress progress-info w-full" value="70" max="100"></progress>
+          <div class="items flex w-full flex-row flex-wrap justify-end gap-1 text-end">
+            <div
+              v-for="(item, index) in 8"
+              :key="index"
+              :class="[
+                'aspect-square h-4 rounded-full border border-dashed',
+                ' border-gray-300 dark:border-gray-600',
+              ]"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
