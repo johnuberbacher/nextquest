@@ -32,26 +32,35 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div
-    ref="scrollContainer"
-    class="min-h-20 no-scrollbar flex h-full w-full overflow-x-auto overflow-y-visible"
-  >
-    <div class="flex w-max snap-x snap-mandatory flex-row gap-3">
-      <div
-        v-for="(date, index) in dateRange"
-        :key="index"
-        class="flex h-20 w-16 shrink-0 select-none snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
-        :class="
-          isToday(date)
-            ? 'bg-orange-700 border border-orange-700 shadow-sm'
-            : 'bg-white border border-neutral-200'
-        "
-      >
-        <div :class="['text-xs font-semibold', isToday(date) ? 'text-white' : 'text-neutral-500']">
-          {{ date.toLocaleDateString('en-US', { weekday: 'short' }) }}
-        </div>
-        <div :class="['font-semibold text-xl', isToday(date) ? 'text-white' : 'text-neutral-500']">
-          {{ String(date.getDate()).padStart(2, '0') }}
+  <div class="relative w-full">
+    <div
+      class="pointer-events-none absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-r from-white via-transparent to-white dark:from-neutral-800 dark:via-transparent dark:to-neutral-800"
+    ></div>
+    <div
+      ref="scrollContainer"
+      class="min-h-20 no-scrollbar flex h-full w-full overflow-x-auto overflow-y-visible"
+    >
+      <div class="flex w-max snap-x snap-mandatory flex-row gap-3">
+        <div
+          v-for="(date, index) in dateRange"
+          :key="index"
+          class="flex h-20 w-16 shrink-0 select-none snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
+          :class="
+            isToday(date)
+              ? 'bg-orange-700 border border-orange-700 shadow-sm'
+              : 'bg-white border border-neutral-200'
+          "
+        >
+          <div
+            :class="['text-xs font-semibold', isToday(date) ? 'text-white' : 'text-neutral-500']"
+          >
+            {{ date.toLocaleDateString('en-US', { weekday: 'short' }) }}
+          </div>
+          <div
+            :class="['font-semibold text-xl', isToday(date) ? 'text-white' : 'text-neutral-500']"
+          >
+            {{ String(date.getDate()).padStart(2, '0') }}
+          </div>
         </div>
       </div>
     </div>

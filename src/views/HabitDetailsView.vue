@@ -106,7 +106,7 @@ watchEffect(() => {
     <button
       @click="handleSubmit"
       :disabled="fieldValidation"
-      class="btn btn-error w-full rounded-full"
+      class="btn btn-outline btn-error btn-sm ml-auto mr-0 rounded-full"
     >
       Delete this habit
     </button>

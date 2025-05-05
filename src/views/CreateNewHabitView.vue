@@ -128,7 +128,7 @@ watchEffect(() => {
     </div>
 
     <form
-      class="flex w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 p-6 dark:border-neutral-700"
+      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-900 p-6 dark:border-neutral-700"
     >
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>

@@ -66,17 +66,17 @@ watchEffect(() => {
         <div class="-mt-1 ml-0.5 flex items-center justify-center text-4xl">{{ task.icon }}</div>
       </div>
       <div class="flex w-full flex-col items-start justify-start gap-2">
-        <div class="text-2xl font-bold text-neutral-900 dark:text-white">
+        <div class="text-2xl font-bold text-gray-900 dark:text-white">
           {{ task.categoryId + ' habit' }}
         </div>
-        <div class="text-sm text-neutral-500 dark:text-neutral-500">
+        <div class="text-sm text-gray-500 dark:text-gray-500">
           {{ task.description || 'error!' }}
         </div>
       </div>
     </div>
 
     <div
-      class="flex w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-800"
+      class="flex w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800"
     >
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>
