@@ -34,7 +34,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="flex w-full flex-col items-start justify-start gap-6 p-6">
+  <div class="flex w-full flex-grow flex-col items-start justify-start gap-6 p-6">
     <div class="flex w-full flex-col items-start justify-start gap-2">
       <div class="text-2xl font-bold text-gray-900 dark:text-white">Choose habit</div>
       <div class="text-sm text-gray-500 dark:text-gray-500">

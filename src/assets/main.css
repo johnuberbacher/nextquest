@@ -6,4 +6,16 @@
 html,
 body,
 #app {
+  @media (min-width: 768px) {
+    min-height: 100%;
+    height: 100%;
+  }
+}
+
+#app {
+  @media (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
