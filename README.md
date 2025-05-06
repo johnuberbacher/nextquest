@@ -1,39 +1,53 @@
-# next-quest
+# NextQuest
 
-This template should help get you started developing with Vue 3 in Vite.
+**NextQuest** is a fun and gamified habit tracking web app designed to keep you motivated. Whether you're tracking daily chores, weekly goals, or long-term routines, NextQuest helps you stay consistent — and rewards you for it!
 
-## Recommended IDE Setup
+## 🌟 Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- 📋 **Track Habits**  
+  Create and manage habits you want to develop. Log them daily or weekly based on your preference.
 
-## Type Support for `.vue` Imports in TS
+- 📆 **Flexible Logging**  
+  Choose between daily or weekly logging formats for maximum control over your schedule.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- 🧙 **Gamification**  
+  Earn experience points (XP) each time you complete a habit. Level up over time as you stay consistent.
 
-## Customize configuration
+- 🎯 **Bonus XP**  
+  Get rewarded with bonus XP when you complete all your daily or weekly tasks.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- 🎨 **Clean UI with TailwindCSS**  
+  Built with TailwindCSS and DaisyUI for a beautiful, modern interface.
 
-## Project Setup
+- 🌈 **Emoji Support**  
+  Spice up your habit names or rewards with emoji, thanks to `vue3-emoji-picker`.
 
-```sh
+## 🚀 Tech Stack
+
+- **Vue 3** with `<script setup>` Composition API
+- **Pinia** for state management
+- **Vue Router** for navigation
+- **TailwindCSS** + **DaisyUI** for styling
+- **Vite** for blazing-fast development
+- **TypeScript** for type safety
+- **Prettier** and **ESLint** for formatting and linting
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/nextquest.git
+cd nextquest
+
+# Install dependencies
 npm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
+# Run the development server
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## 📦 Coming Soon
+- Leaderboards  
+- Habit streaks  
+- Achievements  
+- Custom avatars and themes  
