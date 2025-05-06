@@ -61,7 +61,11 @@ const submit = () => {
       </div>
     </div>
     <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
-      <button @click="submit" :disabled="!selectedCategory" class="btn btn-primary rounded-full">
+      <button
+        @click="submit"
+        :disabled="!selectedCategory"
+        class="btn btn-primary btn-lg rounded-full px-10 text-sm"
+      >
         Continue
       </button>
     </div>

@@ -44,7 +44,7 @@ onMounted(async () => {
         <div
           v-for="(date, index) in dateRange"
           :key="index"
-          class="flex h-20 w-16 shrink-0 select-none snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
+          class="flex h-20 w-16 shrink-0 snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
           :class="
             isToday(date)
               ? 'bg-orange-700 border border-orange-700 shadow-sm'

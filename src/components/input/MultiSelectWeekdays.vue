@@ -59,7 +59,7 @@ const labelText = computed(() => {
         v-for="(day, index) in weekdays"
         :key="index"
         :class="[
-          'select-none cursor-pointer rounded-full aspect-square h-10 w-10 text-center flex flex-col items-center justify-center',
+          'cursor-pointer rounded-full aspect-square h-10 w-10 text-center flex flex-col items-center justify-center',
           selectedDays.includes(index)
             ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
             : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',

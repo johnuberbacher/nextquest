@@ -15,68 +15,74 @@ export interface User {
   exp: number
   level: number
   avatar: string
-  completedHabits?: HabitEntry[]
+  completedHabits: HabitEntry[]
 }
 
 export const useUserStore = defineStore('User', () => {
-  const Users = ref<User[]>([])
+  const user = ref<User>({
+    userId: '',
+    name: '',
+    dateCreated: new Date(),
+    exp: 0,
+    level: 1,
+    avatar: '🧍',
+    completedHabits: [],
+  })
 
-  const createUser = (
-    UserInput: Partial<Omit<User, 'userId' | 'dateCreated'>> & { name?: string },
-  ): User => {
-    const newUser: User = {
-      userId: nanoid(),
-      name: UserInput.name || '',
-      dateCreated: new Date(),
-      exp: UserInput.exp ?? 0,
-      level: UserInput.level ?? 1,
-      avatar: UserInput.avatar ?? '🧍',
-    }
-
-    Users.value.push(newUser)
-    return newUser
+  const hasLoggedToday = (habitId: string): boolean => {
+    const today = new Date().toDateString()
+    return user.value.completedHabits.some(
+      (e) => e.habitId === habitId && new Date(e.date).toDateString() === today,
+    )
   }
 
-  const updateUser = (userId: string, updates: Partial<User>) => {
-    const index = Users.value.findIndex((t) => t.userId === userId)
-    if (index !== -1) {
-      Users.value[index] = { ...Users.value[index], ...updates }
-    }
-  }
+  const logHabitEntry = (habitId: string, state: boolean) => {
+    if (user.value) {
+      const entry: HabitEntry = {
+        habitId,
+        date: new Date(),
+        state,
+      }
 
-  const resetUser = (userId: string) => {
-    const user = Users.value.find((u) => u.userId === userId)
-    if (user) {
-      user.exp = 0
-      user.level = 1
-      user.avatar = '🧍'
-      user.dateCreated = new Date()
+      if (!user.value.completedHabits) {
+        user.value.completedHabits = []
+      }
+
+      // Check if the entry already exists for the same date
+      const existingEntryIndex = user.value.completedHabits.findIndex(
+        (e) => e.habitId === habitId && e.date.toDateString() === entry.date.toDateString(),
+      )
+
+      if (existingEntryIndex !== -1) {
+        // Update existing entry
+        user.value.completedHabits[existingEntryIndex].state = state
+      } else {
+        // Add new entry
+        user.value.completedHabits.push(entry)
+      }
+
+      console.log('All Done')
+      console.log(user.value)
     }
   }
 
   const incrementExp = (userId: string, amount: number) => {
-    const user = Users.value.find((u) => u.userId === userId)
-    if (user) {
-      user.exp += amount
+    if (user.value) {
+      user.value.exp += amount
 
       // Optional: Auto level-up every 100 EXP
       const levelThreshold = 100
-      while (user.exp >= levelThreshold) {
-        user.level++
-        user.exp -= levelThreshold
+      while (user.value.exp >= levelThreshold) {
+        user.value.level++
+        user.value.exp -= levelThreshold
       }
     }
   }
 
-  const getUserById = (userId: string): User | undefined =>
-    Users.value.find((t) => t.userId === userId)
-
   return {
-    Users,
-    createUser,
-    updateUser,
-    resetUser,
+    user,
+    hasLoggedToday,
+    logHabitEntry,
     incrementExp,
-    getUserById,
   }
 })

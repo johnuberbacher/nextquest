@@ -53,6 +53,7 @@ const handleSubmit = async () => {
       daysOfWeek: selectedDays.value,
       timeOfDay: selectedTimeOfDay.value,
       color: selectedColor.value,
+      categoryId: selectedCategoryId,
       startDate: null,
       endDate: null,
     })
@@ -186,13 +187,21 @@ watchEffect(() => {
         <div v-for="(e, i) in errors" :key="i">• {{ e }}</div>
       </div>
     </form>
-
-    <button
-      @click="handleSubmit"
-      :disabled="fieldValidation"
-      class="btn btn-primary w-full rounded-full"
-    >
-      Create new habit
-    </button>
+    <div class="flex h-auto w-full flex-row items-end justify-between gap-6">
+      <button
+        :disabled="submitting"
+        @click="router.push('/add-new-habit')"
+        class="btn btn-default btn-lg rounded-full px-10 text-sm"
+      >
+        Go back
+      </button>
+      <button
+        @click="handleSubmit"
+        :disabled="fieldValidation"
+        class="btn btn-primary btn-lg rounded-full px-10 text-sm"
+      >
+        {{ submitting ? 'Saving...' : 'Create habit' }}
+      </button>
+    </div>
   </div>
 </template>

@@ -34,7 +34,7 @@ const { title, description, icon } = props
       <div
         class="flex aspect-square h-16 items-center justify-center rounded-full border border-neutral-700 bg-neutral-800 text-center text-white shadow-sm"
       >
-        <div class="flex aspect-square select-none items-center justify-center text-3xl">
+        <div class="flex aspect-square items-center justify-center text-3xl">
           {{ icon }}
         </div>
       </div>

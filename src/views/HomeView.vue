@@ -36,7 +36,7 @@ const { tasks, createTask } = store
             <div class="flex w-full flex-row items-center justify-between gap-2">
               <div class="font-bold dark:text-white">John Uberbacher</div>
               <div
-                class="flex w-auto select-none rounded-sm bg-green-600 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                class="flex w-auto rounded-sm bg-green-600 px-1.5 py-0.5 text-[10px] font-bold text-white"
               >
                 Achiever
               </div>

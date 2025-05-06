@@ -52,7 +52,7 @@ const selectColor = (index) => {
         v-for="(color, index) in colorClasses"
         :key="index"
         :class="[
-          'select-none cursor-pointer rounded-full border border-neutral-200 dark:border-neutral-700 aspect-square h-8 w-8 text-center flex items-center justify-center',
+          'cursor-pointer rounded-full border border-neutral-200 dark:border-neutral-700 aspect-square h-8 w-8 text-center flex items-center justify-center',
           color,
           selectedIndex === index ? 'outline outline-offset-3 outline-orange-700 shadow-sm' : '',
         ]"

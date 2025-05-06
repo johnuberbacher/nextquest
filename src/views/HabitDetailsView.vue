@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
+import { useUserStore } from '@/stores/useUserStore'
 import { useCategoryStore } from '@/stores/useCategoryStore'
 import SingleSelectChips from '@/components/input/SingleSelectChips.vue'
 import MultiSelectWeekdays from '@/components/input/MultiSelectWeekdays.vue'
@@ -12,18 +13,23 @@ import FullScreenLoading from '@/components/ui/FullScreenLoading.vue'
 import Notification from '@/components/ui/Notification.vue'
 import { useRoute } from 'vue-router'
 import { RiCheckFill } from '@remixicon/vue'
+import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
-const task = computed(() => taskStore.getTaskById(id.value))
+const userStore = useUserStore()
+const categoryStore = useCategoryStore()
+const taskStore = useTaskStore()
+const { user, logHabitEntry, hasLoggedToday } = userStore
+const { selectedCategoryId, categories, getCategoryById } = categoryStore
+const { getTaskById } = taskStore
 
+const task = computed(() => getTaskById(id.value))
+const category = computed(() => getCategoryById(task.value.categoryId))
 const taskColor = computed(() => task.value?.color || 'bg-red-200')
 
 const router = useRouter()
-
-const taskStore = useTaskStore()
-const { getTaskById } = taskStore
 
 // Form fields
 const selectedDuration = ref(3) // in minutes
@@ -31,11 +37,10 @@ const selectedDays = ref([1]) // at least one day
 const selectedTimeOfDay = ref('05:00') // time in HH:mm
 const selectedColor = ref('bg-red-50')
 const selectedEmoji = ref('😀')
-const taskName = ref('') // Optional: can be static or editable later
-const taskDescription = ref('') // Optional: can be static or editable later
+const taskName = ref('')
+const taskDescription = ref('')
 
 onMounted(() => {
-  console.log('Mounted with ID:', id.value)
   if (!route.params.id || route.params.id === '') {
     router.push('/')
   }
@@ -44,12 +49,6 @@ onMounted(() => {
 watchEffect(() => {
   if (!route.params.id || route.params.id === '') {
     router.push('/')
-  }
-})
-
-watchEffect(() => {
-  if (task.value) {
-    console.log('Task loaded:', task.value)
   }
 })
 </script>
@@ -71,7 +70,7 @@ watchEffect(() => {
       </div>
       <div class="flex w-full flex-col items-start justify-start gap-2">
         <div class="text-2xl font-bold text-neutral-900 dark:text-white">
-          {{ task.categoryId + ' habit' }}
+          {{ category.name + ' habit' }}
         </div>
         <div class="text-sm text-neutral-500 dark:text-neutral-500">
           {{ task.description || 'error!' }}
@@ -124,7 +123,7 @@ watchEffect(() => {
           <li data-content="S" class="step"></li>
         </ul>
       </div>
-      <div role="alert" class="alert alert-info w-full shadow-lg">
+      <!--<div role="alert" class="alert alert-info w-full shadow-lg">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -141,7 +140,7 @@ watchEffect(() => {
         <span class="font-semibold"
           >You're on a 2 day streak! <br />Make sure you keep up the momentum.</span
         >
-      </div>
+      </div>-->
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>
         <div class="">{{ taskDescription || 'error!' }}</div>
@@ -167,15 +166,13 @@ watchEffect(() => {
         <div class="">{{ taskDuration || 'error!' }}</div>
       </fieldset>
     </div>
-    <button @click="handleLogHabit" class="btn btn-primary btn-lg w-full rounded-full text-sm">
-      Log habit for today
-    </button>
-    <button
+    <ConfirmModal :taskId="task.id" />
+    <!--<button
       @click="handleSubmit"
       :disabled="fieldValidation"
       class="btn btn-outline btn-error btn-sm ml-auto mr-0 rounded-full"
     >
       Delete this habit
-    </button>
+    </button>-->
   </div>
 </template>

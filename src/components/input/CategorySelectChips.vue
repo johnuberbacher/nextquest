@@ -37,7 +37,7 @@ const selectItem = (id: number) => {
     v-for="(category, index) in categories"
     :key="category.id"
     :class="[
-      'select-none cursor-pointer w-50% rounded-xl p-4 relative text-center flex flex-col gap-3 items-center justify-center',
+      'cursor-pointer w-50% rounded-xl p-4 relative text-center flex flex-col gap-3 items-center justify-center',
       selectedId === category.id
         ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
         : ' bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',

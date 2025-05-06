@@ -8,7 +8,7 @@ export interface Task {
   id: string
   name: string
   description?: string
-  categoryId?: number
+  categoryId: number | string
   icon: string
   progress: number
   state: TaskState
@@ -88,6 +88,7 @@ export const useTaskStore = defineStore('task', () => {
       durationMinutes: taskInput.durationMinutes ?? 3,
       daysOfWeek: taskInput.daysOfWeek ?? ['Mon'],
       timeOfDay: taskInput.timeOfDay ?? '05:00',
+      categoryId: taskInput.categoryId ?? 'NULL',
       color: taskInput.color ?? 'bg-red-200',
       createdAt: new Date(),
       startDate: taskInput.startDate ?? null,
