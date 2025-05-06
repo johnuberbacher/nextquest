@@ -7,14 +7,18 @@ import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
 import { RiCheckFill } from '@remixicon/vue'
 import { useTaskStore } from '@/stores/useTaskStore'
+import { useUserStore } from '@/stores/useUserStore'
 import Notification from '../components/ui/Notification.vue'
 import CalendarWidget from '../components/ui/CalendarWidget.vue'
 import DailiesWidget from '../components/ui/DailiesWidget.vue'
 import WeekliesWidget from '../components/ui/WeekliesWidget.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 
-const store = useTaskStore()
-const { tasks, createTask } = store
+const taskStore = useTaskStore()
+const userStore = useUserStore()
+
+const { tasks, createTask } = taskStore
+const { user } = userStore
 </script>
 
 <template>
@@ -30,11 +34,13 @@ const { tasks, createTask } = store
           <div
             class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
           >
-            <div class="-mt-1.5 ml-0.5 flex items-center justify-center text-5xl">🦊</div>
+            <div class="-mt-1.5 ml-0.5 flex items-center justify-center text-5xl">
+              {{ user.avatar }}
+            </div>
           </div>
           <div class="flex w-full flex-col items-start justify-start gap-1">
             <div class="flex w-full flex-row items-center justify-between gap-2">
-              <div class="font-bold dark:text-white">John Uberbacher</div>
+              <div class="font-bold dark:text-white">{{ user.name }}</div>
               <div
                 class="flex w-auto rounded-sm bg-green-600 px-1.5 py-0.5 text-[10px] font-bold text-white"
               >
@@ -43,12 +49,18 @@ const { tasks, createTask } = store
             </div>
             <div class="flex w-full flex-col items-start justify-start gap-1">
               <div class="flex w-full flex-row items-center justify-between gap-2">
-                <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">Level 1</div>
+                <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
+                  Level {{ user.level }}
+                </div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
-                  XP: 60/100
+                  {{ user.exp }}/100
                 </div>
               </div>
-              <progress className="progress progress-info w-full" value="70" max="100"></progress>
+              <progress
+                className="progress progress-info w-full"
+                :value="user.exp"
+                max="100"
+              ></progress>
               <div class="items flex w-full flex-row flex-wrap justify-end gap-1 text-end">
                 <div
                   v-for="(item, index) in 8"

@@ -58,9 +58,9 @@ const alreadyLoggedToday = computed(() => {
       {{ alreadyLoggedToday ? 'Completed!' : 'Log Habit' }}
     </button>
   </div>
-  <dialog id="my_modal_1" class="modal !dark:bg-[oklch(0%_0_0/_0.9)] !bg-[oklch(100%_0_0/_0.9)]">
+  <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
     <div class="modal-box border border-neutral-300 p-10 text-center dark:border-neutral-700">
-      <h3 class="text-xl font-bold">{{ modalPhrase }}</h3>
+      <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
       <p class="py-4 text-sm">
         This app works on the honor system. There’s no leaderboard, no competition — just you
         building the life you want, one small action at a time. Mark habits as complete only if you
