@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { nanoid } from 'nanoid'
 
+export interface HabitEntry {
+  habitId: string
+  date: Date
+  state: boolean
+}
+
 export interface User {
   userId: string
   name: string
@@ -9,6 +15,7 @@ export interface User {
   exp: number
   level: number
   avatar: string
+  completedHabits?: HabitEntry[]
 }
 
 export const useUserStore = defineStore('User', () => {

@@ -49,21 +49,19 @@ const submit = () => {
     >
       <div class="grid w-full grid-cols-2 flex-wrap gap-6 overflow-y-auto p-6 md:grid-cols-4">
         <CategorySelectChips :categories="visibleCategories" v-model="selectedCategory" />
-        <button
-          :disabled="visibleCategories.length === categories.length"
-          @click="showMore"
-          class="btn btn-outline col-span-2 mx-auto w-full rounded-full md:col-start-2"
-        >
-          Show more
-        </button>
+        <div class="col-span-2 flex w-full items-center justify-center md:col-span-4">
+          <button
+            :disabled="visibleCategories.length === categories.length"
+            @click="showMore"
+            class="btn btn-outline mx-auto rounded-full"
+          >
+            Show more
+          </button>
+        </div>
       </div>
     </div>
     <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
-      <button
-        @click="submit"
-        :disabled="!selectedCategory"
-        class="btn btn-primary w-full flex-grow rounded-full"
-      >
+      <button @click="submit" :disabled="!selectedCategory" class="btn btn-primary rounded-full">
         Continue
       </button>
     </div>

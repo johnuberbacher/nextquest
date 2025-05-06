@@ -22,7 +22,7 @@ const selectedDuration = ref(3) // in minutes
 const selectedDays = ref([1]) // at least one day
 const selectedTimeOfDay = ref('05:00') // time in HH:mm
 const selectedColor = ref('bg-red-200')
-const selectedEmoji = ref('😀')
+const selectedEmoji = ref('')
 const taskName = ref('') // Optional: can be static or editable later
 const taskDescription = ref('') // Optional: can be static or editable later
 
@@ -117,7 +117,25 @@ watchEffect(() => {
     class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
   >
     <!-- Form -->
-    <div class="flex w-full flex-col items-start justify-start gap-2">
+    <div class="flex w-full flex-row items-center justify-start gap-3">
+      <div
+        class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
+      >
+        <div class="-mt-1 ml-0.5 flex items-center justify-center text-4xl">
+          {{ selectedCategory.icon }}
+        </div>
+      </div>
+      <div class="flex w-full flex-col items-start justify-start gap-2">
+        <div class="text-2xl font-bold text-neutral-900 dark:text-white">
+          {{ 'New ' + selectedCategory.name + ' habit' }}
+        </div>
+        <div class="text-sm text-neutral-500 dark:text-neutral-500">
+          Enter the details of your new habit below. You can choose the time, frequency, and other
+          options to customize your habit.
+        </div>
+      </div>
+    </div>
+    <!--<div class="flex w-full flex-col items-start justify-start gap-2">
       <div class="text-2xl font-bold text-neutral-900 dark:text-white">
         {{ 'New ' + selectedCategory.name + ' habit' }}
       </div>
@@ -125,10 +143,10 @@ watchEffect(() => {
         Enter the details of your new habit below. You can choose the time, frequency, and other
         options to customize your habit.
       </div>
-    </div>
+    </div>-->
 
     <form
-      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-900 p-6 dark:border-neutral-700"
+      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-900"
     >
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>

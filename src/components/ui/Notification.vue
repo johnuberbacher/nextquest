@@ -20,7 +20,7 @@ const { title, description, icon } = props
 </script>
 
 <template>
-  <div class="relative w-full rounded-xl bg-neutral-900 p-4 shadow-lg">
+  <div class="relative w-full rounded-2xl bg-neutral-900 p-4 shadow-lg dark:bg-neutral-700">
     <div class="absolute right-0 top-0 p-2">
       <button class="btn btn-sm btn-circle btn-ghost">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="h-6 w-6">

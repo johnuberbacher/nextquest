@@ -98,3 +98,7 @@ body,
     justify-content: center;
   }
 }
+.steps,
+.step {
+  min-width: 32px;
+}
