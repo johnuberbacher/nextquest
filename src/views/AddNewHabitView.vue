@@ -62,7 +62,7 @@ const submit = () => {
       <button
         @click="submit"
         :disabled="!selectedCategory"
-        class="btn btn-primary btn-lg rounded-full px-10 text-sm"
+        class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Continue
       </button>

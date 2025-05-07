@@ -20,7 +20,7 @@ const { selectedCategoryId, categories, getCategoryById } = categoryStore
 
 // Form fields
 const selectedDuration = ref(3) // in minutes
-const selectedDays = ref([1]) // at least one day
+const selectedDays = ref(['Mon']) // at least one day
 const selectedTimeOfDay = ref('05:00') // time in HH:mm
 const selectedColor = ref('bg-red-200')
 const selectedEmoji = ref('')
@@ -59,9 +59,10 @@ const handleSubmit = async () => {
       endDate: null,
     })
 
-    await new Promise((r) => setTimeout(r, 1000)) // Simulate a delay for the loading state
+    await new Promise((r) => setTimeout(r, 1000))
     if (newTask) {
       submitting.value = false
+      console.log('newTask')
       console.log(newTask)
       router.push('/habit/' + newTask.id)
     } else {
@@ -120,7 +121,7 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden px-4 py-6 md:px-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
   >
     <!-- Form -->
     <div class="flex w-full flex-row items-center justify-start gap-3">
@@ -180,9 +181,9 @@ watchEffect(() => {
         <MultiSelectWeekdays v-model="selectedDays" label="Select days of the week" />
       </fieldset>
 
-      <fieldset class="flex w-full flex-col gap-1">
+      <!--<fieldset class="flex w-full flex-col gap-1">
         <TimePicker v-model="selectedTimeOfDay" label="Select time of the day" />
-      </fieldset>
+      </fieldset>-->
 
       <fieldset class="flex w-full flex-col gap-1">
         <ColorPicker v-model="selectedColor" label="Select label color" />
@@ -196,18 +197,18 @@ watchEffect(() => {
         <div v-for="(e, i) in errors" :key="i">• {{ e }}</div>
       </div>
     </form>
-    <div class="flex h-auto w-full flex-row items-end justify-between gap-6">
+    <div class="flex h-auto w-full flex-col items-end justify-between gap-6 md:flex-row">
       <button
         :disabled="submitting"
         @click="router.push('/add-new-habit')"
-        class="btn btn-default btn-lg rounded-full px-10 text-sm"
+        class="btn btn-default btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Go back
       </button>
       <button
         @click="handleSubmit"
         :disabled="fieldValidation"
-        class="btn btn-primary btn-lg rounded-full px-10 text-sm"
+        class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         {{ submitting ? 'Saving...' : 'Create habit' }}
       </button>

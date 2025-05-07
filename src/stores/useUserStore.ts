@@ -7,6 +7,11 @@ export interface HabitEntry {
   state: boolean
 }
 
+export interface Achievement {
+  level: number
+  title: string
+}
+
 export interface User {
   userId: string
   name: string
@@ -18,14 +23,44 @@ export interface User {
 }
 
 export const useUserStore = defineStore('User', () => {
+  const levelUpNotification = ref(false)
+
+  const achievements = ref<Achievement[]>([
+    { level: 1, title: 'Newbie' },
+    { level: 2, title: 'Just Showed Up' },
+    { level: 3, title: 'Pressed the Button' },
+    { level: 5, title: '5-Day Wonder' },
+    { level: 10, title: 'Actually Still Here' },
+    { level: 20, title: 'Mildly Impressive' },
+    { level: 30, title: 'Getting the Hang of It' },
+    { level: 40, title: 'Streak Machine' },
+    { level: 50, title: 'Halfway to Legend' },
+    { level: 60, title: 'Probably Has a Spreadsheet' },
+    { level: 70, title: 'Can’t Stop, Won’t Stop' },
+    { level: 80, title: 'Powered by Coffee and Systems' },
+    { level: 90, title: 'Basically a Self-Help Book' },
+    { level: 100, title: 'Transcended the To-Do List' },
+  ])
+
   const user = ref<User>({
     userId: '123456',
     name: 'John Uber',
     dateCreated: new Date(),
-    exp: 33,
-    level: 99,
+    exp: 0,
+    level: 1,
     avatar: '🦊',
     completedHabits: [
+      {
+        habitId: '4',
+        date: new Date('2025-05-05T05:24:09.444Z'),
+        state: true,
+      },
+      {
+        habitId: '4',
+        date: new Date('2025-05-06T05:24:09.444Z'),
+        state: true,
+      },
+
       {
         habitId: '2',
         date: new Date('2025-05-05T05:24:29.444Z'),
@@ -181,29 +216,81 @@ export const useUserStore = defineStore('User', () => {
     return max >= 3 ? max : 0
   }
 
-  const incrementExp = async (amount: number) => {
-    if (user.value) {
-      user.value.exp += amount
+  const getAchievementTitle = () => {
+    const reversed = [...achievements.value].sort((a, b) => b.level - a.level)
+    const achievement = reversed.find((a) => user.value.level >= a.level)
+    return achievement?.title ?? 'error'
+  }
 
-      // Optional: Auto level-up every 100 EXP
-      const levelThreshold = 100
-      while (user.value.exp >= levelThreshold) {
-        await new Promise((r) => setTimeout(r, 2000))
-        user.value.level++
-        user.value.exp -= levelThreshold
+  const getExpForNextLevel = (level: number): number => {
+    if (level === 1) return 1 // Immediate level-up from level 1
+
+    // Custom EXP requirements for levels 2-5
+    if (level === 2) return 2 // Level 2 requires 2 EXP gains
+    if (level === 3) return 3 // Level 3 requires 3 EXP gains
+    if (level === 4) return 4 // Level 4 requires 4 EXP gains
+    if (level === 5) return 5 // Level 5 requires 5 EXP gains
+
+    // After level 5, use cubic growth formula
+    const progress = (level - 1) / 98 // Normalize to 0..1 range
+    const scale = 5000 // Adjust scale so that level 99->100 ~= 200 calls at 10% gain
+    return Math.floor(10 + Math.pow(progress, 3) * scale)
+  }
+
+  const incrementUserExp = async () => {
+    if (!user.value) {
+      console.log('No user found, returning...')
+      return
+    }
+
+    const level = user.value.level
+    const requiredExp = getExpForNextLevel(level)
+
+    // Log base EXP gain for debugging
+    const baseGain = Math.max(1, Math.floor(requiredExp * 0.1))
+    user.value.exp += baseGain
+    console.log(`User gained ${baseGain} EXP, total EXP: ${user.value.exp}`)
+
+    // Level up logic
+    while (user.value.level < 100 && user.value.exp >= getExpForNextLevel(user.value.level)) {
+      const required = getExpForNextLevel(user.value.level)
+
+      // Wait before applying level-up
+      // await new Promise((r) => setTimeout(r, 2000))
+
+      // Level up the user
+      user.value.level++
+      user.value.exp = 0 // Reset EXP after level-up
+      console.log(`Level up! New level: ${user.value.level}, EXP reset to 0`)
+
+      levelUpNotification.value = true
+      console.log('Level-up notification triggered')
+
+      if (user.value.exp < getExpForNextLevel(user.value.level)) {
+        console.log('Not enough EXP to level up further.')
+        break
       }
+    }
+
+    if (user.value.level >= 100) {
+      user.value.exp = 0
+      console.log('Max level reached. EXP reset to 0.')
     }
   }
 
   return {
     user,
+    achievements,
+    getAchievementTitle,
     getStreak,
     hasLoggedToday,
     logHabitEntry,
-    incrementExp,
+    incrementUserExp,
+    getExpForNextLevel,
     getThisWeekCompletion,
     getHabitEntriesPastYear,
     getHabitEntriesThisWeek,
     getTwoMonthsCompletion,
+    levelUpNotification,
   }
 })

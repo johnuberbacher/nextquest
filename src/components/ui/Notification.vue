@@ -38,7 +38,7 @@ const { title, description, icon } = props
           {{ icon }}
         </div>
       </div>
-      <div class="flex w-full flex-col gap-1">
+      <div class="flex w-full flex-col gap-1 text-start">
         <div class="font-bold text-white">{{ title }}</div>
         <div class="text-sm text-neutral-300">
           {{ description }}

@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { ref, defineProps, computed } from 'vue'
+import { ref, defineProps, computed, watch } from 'vue'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
 const { getTaskById, incrementTaskExp } = taskStore
-const { logHabitEntry, hasLoggedToday, incrementExp } = userStore
+const { logHabitEntry, hasLoggedToday, incrementUserExp } = userStore
 
 const props = defineProps({
   taskId: {
     type: String,
+    required: true,
+  },
+  activeDays: {
+    type: Array<string>,
     required: true,
   },
 })
@@ -27,6 +31,16 @@ const phrases = [
   'Small Wins Add Up',
 ]
 
+const weekDays = [
+  { label: 'S', index: 0 },
+  { label: 'M', index: 1 },
+  { label: 'T', index: 2 },
+  { label: 'W', index: 3 },
+  { label: 'T', index: 4 },
+  { label: 'F', index: 5 },
+  { label: 'S', index: 6 },
+]
+
 function openModal() {
   modalPhrase.value = phrases[Math.floor(Math.random() * phrases.length)]
   document.getElementById('my_modal_1')?.showModal()
@@ -37,6 +51,7 @@ const handleLogClick = () => {
 
   logHabitEntry(task.value.id, true)
   incrementTaskExp(task.value.id, 30)
+  incrementUserExp()
   document.getElementById('my_modal_1')?.close()
 }
 
@@ -45,23 +60,40 @@ const handleDismiss = () => {
 }
 
 const alreadyLoggedToday = computed(() => {
-  return task.value ? hasLoggedToday(task.value.id) : false
+  if (!task.value) return false
+  return !isActiveToday.value || hasLoggedToday(task.value.id)
+})
+
+// Mapping the numeric day to a string representation (Sun, Mon, Tue, etc.)
+const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+const isActiveToday = computed(() => {
+  const today = new Date().getUTCDay() // ✅ Correct (returns a number 0-6)
+  const todayName = dayNames[today] // Convert to the string value (e.g., 'Mon')
+  return props.activeDays.includes(todayName) // Compare with active days array
+})
+
+const logButtonLabel = computed(() => {
+  if (!isActiveToday.value) return 'Not Active Today'
+  if (task.value && hasLoggedToday(task.value.id)) return 'Completed!'
+  return 'Log Habit'
 })
 </script>
+
 <template>
   <!-- Open the modal using ID.showModal() method -->
   <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
     <button
       :disabled="alreadyLoggedToday"
       @click="openModal"
-      class="btn btn-primary btn-lg rounded-full px-10 text-sm"
+      class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
     >
-      {{ alreadyLoggedToday ? 'Completed!' : 'Log Habit' }}
+      {{ logButtonLabel }}
     </button>
   </div>
   <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
     <div
-      class="modal-box border border-neutral-300 px-6 py-10 text-center dark:border-neutral-700 md:px-10"
+      class="modal-box select-none border border-neutral-300 px-6 py-10 text-center dark:border-neutral-700 md:px-10"
     >
       <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
       <p class="py-4 text-sm">

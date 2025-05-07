@@ -38,7 +38,7 @@ export const useTaskStore = defineStore('task', () => {
       progress: 0,
       state: 'pending',
       durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Wed', 'Fri'],
+      daysOfWeek: ['Mon', 'Wed', 'Thu', 'Fri'],
       timeOfDay: '07:00',
       color: 'bg-yellow-50 dark:bg-yellow-200',
       createdAt: new Date(),
@@ -56,7 +56,7 @@ export const useTaskStore = defineStore('task', () => {
       progress: 40,
       state: 'in_progress',
       durationMinutes: 45,
-      daysOfWeek: ['Tue', 'Thu'],
+      daysOfWeek: ['Tue', 'Wed', 'Thu'],
       timeOfDay: '10:00',
       color: 'bg-purple-50 dark:bg-purple-200',
       createdAt: new Date(),
@@ -92,7 +92,7 @@ export const useTaskStore = defineStore('task', () => {
       progress: 50,
       state: 'in_progress',
       durationMinutes: 60,
-      daysOfWeek: ['Mon', 'Thu'],
+      daysOfWeek: ['Mon', 'Tue', 'Wed'],
       timeOfDay: '16:00',
       color: 'bg-orange-50 dark:bg-orange-200',
       createdAt: new Date(),
@@ -110,7 +110,7 @@ export const useTaskStore = defineStore('task', () => {
       progress: 20,
       state: 'pending',
       durationMinutes: 40,
-      daysOfWeek: ['Tue', 'Fri'],
+      daysOfWeek: ['Tue', 'Wed', 'Fri'],
       timeOfDay: '20:00',
       color: 'bg-pink-50 dark:bg-pink-200',
       createdAt: new Date(),
@@ -128,7 +128,7 @@ export const useTaskStore = defineStore('task', () => {
       progress: 0,
       state: 'pending',
       durationMinutes: 90,
-      daysOfWeek: ['Sat'],
+      daysOfWeek: ['Wed', 'Sat'],
       timeOfDay: '11:00',
       color: 'bg-teal-50 dark:bg-teal-200',
       createdAt: new Date(),
@@ -182,7 +182,7 @@ export const useTaskStore = defineStore('task', () => {
       // Optional: Auto level-up every 100 EXP
       const levelThreshold = 100
       while (task.exp >= levelThreshold) {
-        await new Promise((r) => setTimeout(r, 2000))
+        // await new Promise((r) => setTimeout(r, 2000))
         task.level++
         task.exp -= levelThreshold
       }

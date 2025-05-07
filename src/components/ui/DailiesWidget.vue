@@ -12,16 +12,19 @@ const props = defineProps<{
     color: string
     categoryId: string
   }>
+  gridCols?: number
 }>()
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 const { hasLoggedToday } = userStore
 const { getCategoryById } = categoryStore
+
+const gridClass = computed(() => `md:grid-cols-${props.gridCols || 4}`)
 </script>
 
 <template>
-  <div class="grid w-full grid-cols-2 flex-wrap gap-6 md:grid-cols-4">
+  <div class="grid w-full grid-cols-2 flex-wrap gap-6" :class="gridClass">
     <RouterLink
       :to="'/habit/' + task.id"
       v-for="task in tasks"

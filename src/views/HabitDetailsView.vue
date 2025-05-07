@@ -15,6 +15,8 @@ import { useRoute } from 'vue-router'
 import { RiCheckFill } from '@remixicon/vue'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 import StreakNotification from '@/components/ui/StreakNotification.vue'
+import LevelUpNotification from '@/components/ui/LevelUpNotification.vue'
+import LevelProgressBar from '@/components/ui/user/LevelProgressBar.vue'
 
 const route = useRoute()
 const id = computed(() => route.params.id as string)
@@ -40,9 +42,45 @@ const category = computed(() => getCategoryById(task.value.categoryId))
 const router = useRouter()
 
 const weekEntries = computed(() => userStore.getHabitEntriesThisWeek(task.value?.id))
-const streak = computed(() => userStore.getStreak(weekEntries.value))
+const streak = computed(() => {
+  // Ensure we're only looking at logged days in the current week
+  const loggedDays = weekEntries.value.map((entry) => {
+    const date = new Date(entry.date)
+    return date.getUTCDate() // Get day of the month
+  })
+
+  if (loggedDays.length === 0) return 0
+
+  // Sort the logged days in descending order (most recent first)
+  loggedDays.sort((a, b) => b - a)
+
+  let currentStreak = 1
+  let maxStreak = 1
+
+  // Iterate through the logged days and calculate the streak
+  for (let i = 0; i < loggedDays.length - 1; i++) {
+    const dayDifference = loggedDays[i] - loggedDays[i + 1]
+
+    // Check if consecutive days (difference of 1 day)
+    if (dayDifference === 1) {
+      currentStreak++
+      maxStreak = Math.max(maxStreak, currentStreak)
+    } else {
+      // Break in the streak
+      currentStreak = 1
+    }
+  }
+
+  return maxStreak
+})
+
 const loggedDays = computed(() => {
-  return new Set(weekEntries.value.map((entry) => new Date(entry.date).getDay()))
+  return new Set(
+    weekEntries.value.map((entry) => {
+      const date = new Date(entry.date)
+      return date.getUTCDay()
+    }),
+  )
 })
 
 const yearEntries = computed(() => userStore.getHabitEntriesPastYear(task.value?.id))
@@ -87,10 +125,11 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden px-4 py-6 md:px-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
   >
-    <div class="relative flex w-full flex-row items-start justify-start gap-3 md:items-center">
-      <div
+    <div class="flex w-full flex-col items-start justify-start gap-5">
+      <div class="relative flex w-full flex-row items-start justify-start gap-4 md:items-center">
+        <!--<div
         class="absolute right-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-white"
         :class="[hasLoggedToday(task.id) ? 'opacity-50' : 'shadow-lg ']"
       >
@@ -98,45 +137,50 @@ watchEffect(() => {
           size="20px"
           :class="[hasLoggedToday(task.id) ? 'text-neutral-400 ' : 'text-orange-700']"
         />
+      </div>-->
+        <div class="flex w-full flex-col items-start justify-start gap-1">
+          <div class="flex w-full flex-col items-start justify-start gap-1">
+            <div class="text-xl font-semibold text-neutral-900 dark:text-white">
+              {{ task.description || 'error!' }}
+            </div>
+            <div class="text-xs font-bold text-neutral-600 dark:text-neutral-500">
+              Repeats
+              <span v-for="(day, index) in task.daysOfWeek" :key="index">
+                {{ day }}<span v-if="index < task.daysOfWeek.length - 1">, </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full text-center text-white md:mt-0"
+          :class="[task.color]"
+        >
+          <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
+            {{ task.icon }}
+          </div>
+        </div>
       </div>
       <div
-        class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full text-center text-white md:mt-0"
-        :class="[task.color]"
+        class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
       >
-        <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
-          {{ task.icon }}
-        </div>
+        {{ category.name + ' habit' }}
       </div>
       <div class="flex w-full flex-col items-start justify-start gap-1">
-        <div class="flex w-full flex-col items-start justify-start gap-0">
-          <div class="text-xl font-bold text-neutral-900 dark:text-white">
-            {{ category.name + ' habit' }}
+        <div class="flex w-full flex-row items-center justify-between gap-2">
+          <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
+            Level: {{ task.level }}
           </div>
-          <div class="text-sm text-neutral-500 dark:text-neutral-500">
-            {{ task.description || 'error!' }}
+          <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
+            {{ task.exp }}/100
           </div>
         </div>
-        <div class="flex w-full flex-col items-start justify-start gap-1">
-          <div class="flex w-full flex-row items-center justify-between gap-2">
-            <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
-              Level: {{ task.level }}
-            </div>
-            <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
-              {{ task.exp }}/100
-            </div>
-          </div>
-          <progress class="progress progress-success w-full" max="100" :value="task.exp"></progress>
-        </div>
+        <progress class="progress progress-success w-full" max="100" :value="task.exp"></progress>
       </div>
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto rounded-xl border border-neutral-200 bg-white px-6 pb-6 pt-10 dark:border-neutral-700 dark:bg-neutral-900"
+      class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white px-4 py-8 dark:border-neutral-700 dark:bg-neutral-900 md:px-6 md:pb-6 md:pt-10"
     >
-      <div class="w-full text-center text-lg font-semibold text-neutral-500 dark:text-white">
-        {{ task.description || 'error!' }}
-      </div>
-      <div class="divider my-0"></div>
       <div class="w-full">
         <ul class="steps w-full justify-between text-sm font-semibold">
           <li
@@ -145,7 +189,7 @@ watchEffect(() => {
             class="step"
             :class="[
               loggedDays.has(day.index) ? 'step-primary' : '',
-              !activeLabels(task).includes(weekdays[day.index]) ? '' : '',
+              !activeLabels(task).includes(weekdays[day.index]) ? 'inactive' : '',
             ]"
             :data-content="loggedDays.has(day.index) ? '✓' : day.label"
           ></li>
@@ -166,11 +210,11 @@ watchEffect(() => {
           <div class="text-xs font-semibold text-neutral-400">
             {{ weekEntries.length }}/{{ task.daysOfWeek.length }}
           </div>
-          <progress
-            class="progress progress-info w-full"
+          <LevelProgressBar
             :value="weekEntries.length"
             :max="task.daysOfWeek.length"
-          ></progress>
+            :animate="true"
+          />
         </div>
       </div>
       <div class="flex w-full flex-row items-end justify-start gap-6">
@@ -183,27 +227,85 @@ watchEffect(() => {
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
           <div class="text-xs font-semibold text-neutral-400">{{ '100' }}/{{ '100' }}</div>
-          <progress class="progress progress-info w-full" :value="'100'" max="100"></progress>
+          <LevelProgressBar
+            :value="weekEntries.length"
+            :max="task.daysOfWeek.length"
+            :animate="true"
+          />
         </div>
       </div>
-
-      <!--<div class="flex flex-row items-center justify-start gap-2">
-        <i class="ri-speed-up-fill text-4xl"></i>
-        <div class="flex flex-col">
-          <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-            Completion rate
-          </div>
-          <div class="text-xl font-semibold">{{ `95%` }}</div>
-        </div>
+      <!--<div class="divider -mx-6 my-0 h-0.5"></div>
+      <div class="w-full text-center text-lg font-semibold text-neutral-500 dark:text-white">
+        {{ task.description || 'error!' }}
       </div>-->
+      <div class="divider -mx-6 my-0 h-0.5"></div>
+      <div class="flex flex-col gap-3">
+        <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
+          Related habits
+        </div>
+        <div class="flex flex-row flex-wrap gap-x-1 gap-y-1">
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+        </div>
+      </div>
+      <div class="divider -mx-6 my-0 h-0.5"></div>
+      <div class="flex flex-col gap-3">
+        <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
+          Related categories
+        </div>
+        <div class="flex flex-row flex-wrap gap-x-1 gap-y-1">
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+          <div
+            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+          >
+            {{ category.name + ' habit' }}
+          </div>
+        </div>
+      </div>
     </div>
-    <ConfirmModal :taskId="task.id" />
-    <!--<button
-      @click="handleSubmit"
-      :disabled="fieldValidation"
-      class="btn btn-outline btn-error btn-sm ml-auto mr-0 rounded-full"
-    >
-      Delete this habit
-    </button>-->
+    <ConfirmModal :taskId="task.id" :active-days="activeLabels(task)" />
+    <LevelUpNotification />
   </div>
 </template>

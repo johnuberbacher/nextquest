@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import WelcomeItem from './WelcomeItem.vue'
-import DocumentationIcon from './icons/IconDocumentation.vue'
-import ToolingIcon from './icons/IconTooling.vue'
-import EcosystemIcon from './icons/IconEcosystem.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
-import SupportIcon from './icons/IconSupport.vue'
 import { RiCheckFill } from '@remixicon/vue'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import Notification from '../components/ui/Notification.vue'
-import CalendarWidget from '../components/ui/CalendarWidget.vue'
 import DailiesWidget from '../components/ui/DailiesWidget.vue'
 import WeekliesWidget from '../components/ui/WeekliesWidget.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
+import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
 const { tasks, createTask, getTasksForToday } = taskStore
-const { user } = userStore
+const { user, getAchievementTitle, getExpForNextLevel } = userStore
 
 const dailies = computed(() => {
   return getTasksForToday()
+})
+
+const getAchievements = computed(() => {
+  return getAchievementTitle()
 })
 </script>
 
@@ -46,9 +44,9 @@ const dailies = computed(() => {
             <div class="flex w-full flex-row items-center justify-between gap-2">
               <div class="font-bold dark:text-white">{{ user.name }}</div>
               <div
-                class="flex w-auto rounded-sm bg-green-600 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                class="flex w-auto rounded-sm bg-green-600 px-2 py-1 text-[10px] font-bold uppercase text-white"
               >
-                Achiever
+                {{ getAchievements }}
               </div>
             </div>
             <div class="flex w-full flex-col items-start justify-start gap-1">
@@ -57,14 +55,14 @@ const dailies = computed(() => {
                   Level {{ user.level }}
                 </div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
-                  {{ user.exp }}/100
+                  {{ user.exp }}/{{ getExpForNextLevel(user.level) }}
                 </div>
               </div>
-              <progress
-                className="progress progress-info w-full"
+              <LevelProgressBar
                 :value="user.exp"
-                max="100"
-              ></progress>
+                :max="getExpForNextLevel(user.level)"
+                :animate="true"
+              />
               <div class="items flex w-full flex-row flex-wrap justify-end gap-1 text-end">
                 <div
                   v-for="(item, index) in 8"

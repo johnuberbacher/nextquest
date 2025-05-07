@@ -4,46 +4,42 @@ import { ref, computed, defineProps, defineEmits, watch } from 'vue'
 const props = defineProps({
   modelValue: {
     type: Array,
-    default: () => [0],
+    default: () => ['Sun'],
   },
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const selectedDays = ref([...props.modelValue])
 
 watch(
   () => props.modelValue,
   (val) => {
-    selectedDays.value = val.length > 0 ? [...val] : [0]
+    selectedDays.value = val.length > 0 ? [...val] : ['Sun']
   },
 )
 
-const toggleDay = (index: number) => {
-  if (selectedDays.value.includes(index)) {
+const toggleDay = (day: string) => {
+  if (selectedDays.value.includes(day)) {
     if (selectedDays.value.length > 1) {
-      selectedDays.value = selectedDays.value.filter((i) => i !== index)
+      selectedDays.value = selectedDays.value.filter((i) => i !== day)
     }
   } else {
-    selectedDays.value.push(index)
+    selectedDays.value.push(day)
   }
 
-  // Update the parent model
+  // Ensure that the value is always an array of weekday names
   emit('update:modelValue', [...selectedDays.value])
 }
 
-// Compute label text based on selected days
 const labelText = computed(() => {
   if (selectedDays.value.length === 7) return 'Repeats Everyday'
-  if (selectedDays.value.length === 1) return 'Repeats on ' + weekdays[selectedDays.value[0]] ?? ''
+  if (selectedDays.value.length === 1) return 'Repeats on ' + selectedDays.value[0]
   return (
     'Repeats on ' +
-    selectedDays.value
-      .sort((a, b) => a - b)
-      .map((i) => weekdays[i].slice(0, 3))
-      .join(', ')
+    selectedDays.value.sort((a, b) => weekdays.indexOf(a) - weekdays.indexOf(b)).join(', ')
   )
 })
 </script>
@@ -60,14 +56,14 @@ const labelText = computed(() => {
         :key="index"
         :class="[
           'cursor-pointer rounded-full aspect-square h-10 w-10 text-center flex flex-col items-center justify-center',
-          selectedDays.includes(index)
+          selectedDays.includes(day)
             ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
             : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
         ]"
-        @click="toggleDay(index)"
+        @click="toggleDay(day)"
       >
         <div class="whitespace-nowrap text-xs font-semibold text-neutral-800 dark:text-white">
-          {{ day.charAt(0) }}
+          {{ day }}
         </div>
       </div>
     </div>
