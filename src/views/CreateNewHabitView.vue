@@ -9,6 +9,7 @@ import TimePicker from '@/components/input/TimePicker.vue'
 import ColorPicker from '@/components/input/ColorPicker.vue'
 import EmojiPicker from '@/components/input/EmojiPicker.vue'
 import FullScreenLoading from '@/components/ui/FullScreenLoading.vue'
+import Suggestion from '@/components/input/Suggestion.vue'
 
 const router = useRouter()
 
@@ -92,6 +93,10 @@ const selectedCategory = computed(() => {
   return getCategoryById(selectedCategoryId)
 })
 
+function handleSelectDescriptionSuggestion(value: string) {
+  taskDescription.value = value
+}
+
 onMounted(() => {
   if (!selectedCategory.value?.name) {
     router.push('/')
@@ -115,7 +120,7 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden px-4 py-6 md:px-6"
   >
     <!-- Form -->
     <div class="flex w-full flex-row items-center justify-start gap-3">
@@ -147,7 +152,7 @@ watchEffect(() => {
     </div>-->
 
     <form
-      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-900"
+      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-900"
     >
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>
@@ -156,6 +161,10 @@ watchEffect(() => {
           placeholder="Read a book for 10 minutes every day"
           class="input w-full"
           v-model="taskDescription"
+        />
+        <Suggestion
+          :suggestions="selectedCategory.suggestions"
+          @select="handleSelectDescriptionSuggestion"
         />
       </fieldset>
 

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { nanoid } from 'nanoid'
 
 export type TaskState = 'pending' | 'in_progress' | 'complete'
@@ -24,8 +24,8 @@ export interface Task {
 }
 
 export const useTaskStore = defineStore('task', () => {
+  const dayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   // const tasks = ref<Task[]>([])
-
   const tasks = ref<Task[]>([
     {
       id: '1',
@@ -33,8 +33,8 @@ export const useTaskStore = defineStore('task', () => {
       description: 'Start your day with a refreshing yoga session.',
       categoryId: 1,
       icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
+      exp: 10,
+      level: 28,
       progress: 0,
       state: 'pending',
       durationMinutes: 30,
@@ -51,8 +51,8 @@ export const useTaskStore = defineStore('task', () => {
       description: 'Unleash your imagination with daily writing exercises.',
       categoryId: 2,
       icon: '✍️',
-      exp: 0,
-      level: 1,
+      exp: 78,
+      level: 4,
       progress: 40,
       state: 'in_progress',
       durationMinutes: 45,
@@ -69,8 +69,8 @@ export const useTaskStore = defineStore('task', () => {
       description: 'Build the next great game with some coding and debugging.',
       categoryId: 3,
       icon: '🎮',
-      exp: 0,
-      level: 1,
+      exp: 92,
+      level: 16,
       progress: 80,
       state: 'in_progress',
       durationMinutes: 90,
@@ -174,6 +174,43 @@ export const useTaskStore = defineStore('task', () => {
     tasks.value = tasks.value.filter((t) => t.id !== id)
   }
 
+  const incrementTaskExp = async (id: number, amount: number) => {
+    const task = tasks.value.find((t) => t.id === id)
+    if (task) {
+      task.exp += amount
+
+      // Optional: Auto level-up every 100 EXP
+      const levelThreshold = 100
+      while (task.exp >= levelThreshold) {
+        await new Promise((r) => setTimeout(r, 2000))
+        task.level++
+        task.exp -= levelThreshold
+      }
+    }
+  }
+
+  const getTasksForToday = () => {
+    const today = new Date()
+    const todayStr = dayMap[today.getDay()]
+    console.log(todayStr)
+    return tasks.value.filter((task) => task.daysOfWeek.includes(todayStr))
+  }
+
+  const getTasksForWeek = () => {
+    const today = new Date()
+    const dayIndex = today.getDay() // 0 (Sun) to 6 (Sat)
+    const weekDays: string[] = []
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(today)
+      date.setDate(today.getDate() - dayIndex + i)
+      const weekdayStr = dayMap[date.getDay()]
+      if (!weekDays.includes(weekdayStr)) weekDays.push(weekdayStr)
+    }
+
+    return tasks.value.filter((task) => task.daysOfWeek.some((day) => weekDays.includes(day)))
+  }
+
   const getTaskById = (id: number): Task | undefined => tasks.value.find((t) => t.id === id)
 
   return {
@@ -182,5 +219,8 @@ export const useTaskStore = defineStore('task', () => {
     updateTask,
     deleteTask,
     getTaskById,
+    getTasksForToday,
+    getTasksForWeek,
+    incrementTaskExp,
   }
 })

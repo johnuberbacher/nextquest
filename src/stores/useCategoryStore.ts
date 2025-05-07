@@ -9,6 +9,7 @@ export interface Category {
   createdAt: Date
   startDate: Date | null
   endDate: Date | null
+  suggestions: Array<string>
 }
 
 export const useCategoryStore = defineStore('category', () => {
@@ -23,6 +24,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Check and respond to important emails',
+        'Plan tomorrow’s work tasks today',
+        'Spend 30 minutes on a priority project',
+        'Review weekly goals on Friday',
+        'Block time for deep work sessions',
+      ],
     },
     {
       id: 1,
@@ -32,6 +40,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Call a friend or family member',
+        'Declutter one small space',
+        'Take 10 minutes for self-reflection',
+        'Do something that makes you smile',
+        'Practice a hobby you enjoy',
+      ],
     },
     {
       id: 2,
@@ -41,6 +56,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Do a 20-minute workout',
+        'Go for a jog or walk',
+        'Try a new exercise routine',
+        'Stretch for 5 minutes before bed',
+        'Complete a full-body strength session',
+      ],
     },
     {
       id: 3,
@@ -50,6 +72,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Schedule health checkups',
+        'Take daily vitamins',
+        'Track your mood and energy',
+        'Take breaks during long tasks',
+        'Practice good posture',
+      ],
     },
     {
       id: 4,
@@ -59,6 +88,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Go to bed at the same time',
+        'Avoid screens before bed',
+        'Establish a nighttime routine',
+        'Keep a sleep journal',
+        'Wake up at a consistent hour',
+      ],
     },
     {
       id: 5,
@@ -68,6 +104,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Eat 5 servings of vegetables',
+        'Plan meals ahead',
+        'Avoid sugary snacks',
+        'Drink a smoothie',
+        'Track food intake daily',
+      ],
     },
     {
       id: 6,
@@ -77,6 +120,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Drink 8 glasses of water',
+        'Start the day with a glass',
+        'Keep a refillable bottle nearby',
+        'Set hourly hydration reminders',
+        'Track water intake',
+      ],
     },
     {
       id: 7,
@@ -86,6 +136,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Take an online course',
+        'Watch a documentary',
+        'Practice a new skill',
+        'Review notes from a past lesson',
+        'Read an educational article',
+      ],
     },
     {
       id: 8,
@@ -95,6 +152,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Read a book for 10 minutes',
+        'Finish one chapter',
+        'Explore a new genre',
+        'Read before bed',
+        'Join a reading challenge',
+      ],
     },
     {
       id: 9,
@@ -104,6 +168,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Meditate for 5 minutes',
+        'Focus on deep breathing',
+        'Do a body scan meditation',
+        'Practice gratitude',
+        'Be present during routine tasks',
+      ],
     },
     {
       id: 10,
@@ -113,6 +184,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Write morning thoughts',
+        'Reflect on your day',
+        'Note 3 things you learned',
+        'List goals for tomorrow',
+        'Explore your emotions',
+      ],
     },
     {
       id: 11,
@@ -122,6 +200,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        "List 3 things you're grateful for",
+        'Thank someone sincerely',
+        'Reflect on a recent joy',
+        'Write a gratitude letter',
+        'Notice small daily blessings',
+      ],
     },
     {
       id: 12,
@@ -131,6 +216,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Use a task list',
+        'Follow the Pomodoro technique',
+        'Prioritize top 3 tasks',
+        'Batch similar tasks',
+        'Declutter workspace',
+      ],
     },
     {
       id: 13,
@@ -140,6 +232,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Turn off notifications',
+        'Work in a quiet space',
+        'Set a focus timer',
+        'Take regular breaks',
+        'Track distractions',
+      ],
     },
     {
       id: 14,
@@ -149,6 +248,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Review weekly spending',
+        'Set a daily budget',
+        'Track all expenses',
+        'Check bank balances',
+        'Use a budgeting app',
+      ],
     },
     {
       id: 15,
@@ -158,6 +264,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Transfer to savings',
+        'Skip one non-essential purchase',
+        'Review subscriptions',
+        'Meal prep instead of eating out',
+        'Set a savings goal',
+      ],
     },
     {
       id: 16,
@@ -167,6 +280,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Pause before a purchase',
+        'Track impulse buys',
+        'Stick to a shopping list',
+        'Use cash over card',
+        'Limit online shopping',
+      ],
     },
     {
       id: 17,
@@ -176,6 +296,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Clean one room',
+        'Wipe surfaces',
+        'Organize a drawer',
+        'Do a quick 10-minute tidy',
+        'Wash dishes immediately',
+      ],
     },
     {
       id: 18,
@@ -185,6 +312,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Cook one homemade meal',
+        'Try a new recipe',
+        'Prep lunch in advance',
+        'Use leftovers creatively',
+        'Clean as you cook',
+      ],
     },
     {
       id: 19,
@@ -194,6 +328,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'No phone for 1 hour',
+        'Log out of social media',
+        'Delete one app',
+        'Spend a day offline',
+        'Do a screen-free activity',
+      ],
     },
     {
       id: 20,
@@ -203,6 +344,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Morning stretch routine',
+        'Stretch after workouts',
+        'Try yoga poses',
+        'Loosen tight muscles',
+        'Stretch during work breaks',
+      ],
     },
     {
       id: 21,
@@ -212,6 +360,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Take a 10-minute walk',
+        'Park farther away',
+        'Walk after meals',
+        'Use stairs over elevator',
+        'Track daily steps',
+      ],
     },
     {
       id: 22,
@@ -221,6 +376,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Brush teeth twice daily',
+        'Shower regularly',
+        'Trim nails',
+        'Clean personal items',
+        'Change towels often',
+      ],
     },
     {
       id: 23,
@@ -230,6 +392,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Wash face morning and night',
+        'Apply moisturizer',
+        'Use sunscreen',
+        'Remove makeup',
+        'Try a face mask weekly',
+      ],
     },
     {
       id: 24,
@@ -239,6 +408,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Talk to a friend',
+        'Practice mindfulness',
+        'Seek professional help',
+        'Take mental health days',
+        'Limit negative self-talk',
+      ],
     },
     {
       id: 25,
@@ -248,6 +424,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Call someone',
+        'Send a kind message',
+        'Make future plans',
+        'Have a meaningful conversation',
+        'Attend a social event',
+      ],
     },
     {
       id: 26,
@@ -257,6 +440,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Spend 30 mins on a hobby',
+        'Learn a new craft',
+        'Work on a long-term project',
+        'Join a hobby group',
+        'Organize hobby supplies',
+      ],
     },
     {
       id: 27,
@@ -266,6 +456,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Draw something simple',
+        'Write a short story',
+        'Brainstorm ideas',
+        'Create without judging',
+        'Start a new creative challenge',
+      ],
     },
     {
       id: 28,
@@ -275,6 +472,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Donate unused items',
+        'Help a neighbor',
+        'Join a volunteer group',
+        'Support a local cause',
+        'Offer skills for free',
+      ],
     },
     {
       id: 29,
@@ -284,6 +488,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Spend time in prayer',
+        'Read spiritual texts',
+        'Attend a service',
+        'Reflect on purpose',
+        'Practice compassion',
+      ],
     },
     {
       id: 30,
@@ -293,6 +504,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Walk your pet',
+        'Play for 10 minutes',
+        'Groom your pet',
+        'Clean their space',
+        'Give a treat',
+      ],
     },
     {
       id: 31,
@@ -302,6 +520,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Take a walk outside',
+        'Sit in the sun',
+        'Visit a park',
+        'Observe wildlife',
+        'Do outdoor meditation',
+      ],
     },
     {
       id: 32,
@@ -311,6 +536,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Buy groceries',
+        'Pick up supplies',
+        'Visit the post office',
+        'Refill prescriptions',
+        'Schedule appointments',
+      ],
     },
     {
       id: 33,
@@ -320,6 +552,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Fix one thing',
+        'Paint or touch up',
+        'Organize a room',
+        'Install something new',
+        'Declutter storage',
+      ],
     },
     {
       id: 34,
@@ -329,6 +568,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Express appreciation',
+        'Spend quality time',
+        'Listen actively',
+        'Resolve a conflict',
+        'Support a loved one',
+      ],
     },
     {
       id: 35,
@@ -338,6 +584,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Learn 5 new words',
+        'Use a language app',
+        'Watch in the target language',
+        'Practice speaking aloud',
+        'Label items around you',
+      ],
     },
     {
       id: 36,
@@ -347,6 +600,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Listen to a new genre',
+        'Play an instrument',
+        'Create a playlist',
+        'Analyze lyrics',
+        'Practice a song',
+      ],
     },
     {
       id: 37,
@@ -356,6 +616,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Plan tomorrow',
+        'Set weekly goals',
+        'Review calendar',
+        'Organize to-dos',
+        'Reflect on priorities',
+      ],
     },
     {
       id: 38,
@@ -365,6 +632,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Set a new goal',
+        'Review progress',
+        'Break goals into tasks',
+        'Visualize success',
+        'Celebrate milestones',
+      ],
     },
     {
       id: 39,
@@ -374,6 +648,13 @@ export const useCategoryStore = defineStore('category', () => {
       createdAt: new Date(),
       startDate: null,
       endDate: null,
+      suggestions: [
+        'Review what went well',
+        'Note lessons learned',
+        'Acknowledge feelings',
+        'Reflect on choices',
+        'Plan for tomorrow',
+      ],
     },
   ])
 

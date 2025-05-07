@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import WelcomeItem from './WelcomeItem.vue'
 import DocumentationIcon from './icons/IconDocumentation.vue'
 import ToolingIcon from './icons/IconTooling.vue'
@@ -16,9 +17,12 @@ import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-
-const { tasks, createTask } = taskStore
+const { tasks, createTask, getTasksForToday } = taskStore
 const { user } = userStore
+
+const dailies = computed(() => {
+  return getTasksForToday()
+})
 </script>
 
 <template>
@@ -29,7 +33,7 @@ const { user } = userStore
     class="flex h-full w-full flex-grow flex-col items-start justify-between gap-6 overflow-hidden"
   >
     <div class="flex h-full w-full flex-col items-start justify-start gap-6">
-      <div class="flex w-full flex-col items-start justify-start gap-6 px-6 pt-6">
+      <div class="flex w-full flex-col items-start justify-start gap-6 px-4 pt-6 md:px-6">
         <div class="flex w-full flex-row items-center justify-start gap-3">
           <div
             class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
@@ -81,11 +85,21 @@ const { user } = userStore
         />
       </div>
 
-      <div
-        class="px flex h-full w-full flex-col items-start justify-start gap-8 md:overflow-y-auto"
-      >
+      <div class="px flex h-full w-full flex-col items-start justify-start gap-8 overflow-y-auto">
         <CalendarWidget />
-        <DailiesWidget />
+
+        <div class="flex w-full flex-col items-start justify-start gap-4 px-6">
+          <div class="flex w-full flex-row items-center justify-between">
+            <label class="text-lg font-bold dark:text-white">Dailies</label>
+            <RouterLink
+              :to="'/habits'"
+              class="py-1 text-xs font-semibold text-neutral-500 hover:text-neutral-400"
+            >
+              View All</RouterLink
+            >
+          </div>
+          <DailiesWidget :tasks="dailies" />
+        </div>
         <WeekliesWidget />
       </div>
     </div>

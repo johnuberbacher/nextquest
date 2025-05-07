@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { nanoid } from 'nanoid'
 
 export interface HabitEntry {
   habitId: string
@@ -27,6 +26,16 @@ export const useUserStore = defineStore('User', () => {
     level: 99,
     avatar: '🦊',
     completedHabits: [
+      {
+        habitId: '2',
+        date: new Date('2025-05-05T05:24:29.444Z'),
+        state: true,
+      },
+      {
+        habitId: '2',
+        date: new Date('2025-05-06T05:24:09.444Z'),
+        state: true,
+      },
       {
         habitId: '3',
         date: new Date('2025-05-05T05:24:09.444Z'),
@@ -172,13 +181,14 @@ export const useUserStore = defineStore('User', () => {
     return max >= 3 ? max : 0
   }
 
-  const incrementExp = (userId: string, amount: number) => {
+  const incrementExp = async (amount: number) => {
     if (user.value) {
       user.value.exp += amount
 
       // Optional: Auto level-up every 100 EXP
       const levelThreshold = 100
       while (user.value.exp >= levelThreshold) {
+        await new Promise((r) => setTimeout(r, 2000))
         user.value.level++
         user.value.exp -= levelThreshold
       }

@@ -5,8 +5,8 @@ import { useUserStore } from '@/stores/useUserStore'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-const { getTaskById } = taskStore
-const { logHabitEntry, hasLoggedToday } = userStore
+const { getTaskById, incrementTaskExp } = taskStore
+const { logHabitEntry, hasLoggedToday, incrementExp } = userStore
 
 const props = defineProps({
   taskId: {
@@ -36,6 +36,7 @@ const handleLogClick = () => {
   if (!task.value || alreadyLoggedToday.value) return
 
   logHabitEntry(task.value.id, true)
+  incrementTaskExp(task.value.id, 30)
   document.getElementById('my_modal_1')?.close()
 }
 
@@ -59,7 +60,9 @@ const alreadyLoggedToday = computed(() => {
     </button>
   </div>
   <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
-    <div class="modal-box border border-neutral-300 p-10 text-center dark:border-neutral-700">
+    <div
+      class="modal-box border border-neutral-300 px-6 py-10 text-center dark:border-neutral-700 md:px-10"
+    >
       <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
       <p class="py-4 text-sm">
         This app works on the honor system. There’s no leaderboard, no competition — just you
@@ -76,7 +79,7 @@ const alreadyLoggedToday = computed(() => {
         <button
           @click="handleLogClick"
           :disabled="alreadyLoggedToday"
-          class="btn btn-primary btn-lg w-full flex-grow rounded-full px-10 text-sm md:w-auto"
+          class="btn btn-primary btn-lg w-full flex-grow rounded-full px-6 text-sm md:w-auto"
         >
           Got it &mdash; Mark as done!
         </button>

@@ -9,8 +9,11 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="flex flex-row items-center justify-between">
       <RouterLink to="/" class="font-bold">NextQuest</RouterLink>
       <nav class="flex flex-row items-center justify-between gap-4">
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/add-new-habit">add</RouterLink>
+        <RouterLink
+          to="/add-new-habit"
+          class="flex aspect-square h-8 w-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 hover:bg-neutral-100 hover:text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+          ><i class="ri-add-fill"></i
+        ></RouterLink>
       </nav>
     </div>
   </header>

@@ -14,6 +14,7 @@ import Notification from '@/components/ui/Notification.vue'
 import { useRoute } from 'vue-router'
 import { RiCheckFill } from '@remixicon/vue'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
+import StreakNotification from '@/components/ui/StreakNotification.vue'
 
 const route = useRoute()
 const id = computed(() => route.params.id as string)
@@ -46,7 +47,19 @@ const loggedDays = computed(() => {
 
 const yearEntries = computed(() => userStore.getHabitEntriesPastYear(task.value?.id))
 
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+const labelMap = weekdays.map((day) => {
+  return { label: day[0], index: weekdays.indexOf(day) }
+})
+
+const activeLabels = (taskData: object) => {
+  return taskData.daysOfWeek.map((day) => {
+    const index = weekdays.indexOf(day)
+    return index !== -1 ? weekdays[index] : day
+  })
+}
+
 const weekDays = [
   { label: 'S', index: 0 },
   { label: 'M', index: 1 },
@@ -74,9 +87,9 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden px-4 py-6 md:px-6"
   >
-    <div class="relative flex w-full flex-row items-center justify-start gap-3">
+    <div class="relative flex w-full flex-row items-start justify-start gap-3 md:items-center">
       <div
         class="absolute right-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-white"
         :class="[hasLoggedToday(task.id) ? 'opacity-50' : 'shadow-lg ']"
@@ -87,10 +100,10 @@ watchEffect(() => {
         />
       </div>
       <div
-        class="h-21 flex aspect-square items-center justify-center rounded-full text-center text-white"
+        class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full text-center text-white md:mt-0"
         :class="[task.color]"
       >
-        <div class="-mt-1 ml-0.5 flex items-center justify-center text-4xl">
+        <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
           {{ task.icon }}
         </div>
       </div>
@@ -118,10 +131,29 @@ watchEffect(() => {
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
+      class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto rounded-xl border border-neutral-200 bg-white px-6 pb-6 pt-10 dark:border-neutral-700 dark:bg-neutral-900"
     >
+      <div class="w-full text-center text-lg font-semibold text-neutral-500 dark:text-white">
+        {{ task.description || 'error!' }}
+      </div>
+      <div class="divider my-0"></div>
+      <div class="w-full">
+        <ul class="steps w-full justify-between text-sm font-semibold">
+          <li
+            v-for="day in labelMap"
+            :key="day.index"
+            class="step"
+            :class="[
+              loggedDays.has(day.index) ? 'step-primary' : '',
+              !activeLabels(task).includes(weekdays[day.index]) ? '' : '',
+            ]"
+            :data-content="loggedDays.has(day.index) ? '✓' : day.label"
+          ></li>
+        </ul>
+      </div>
+      <StreakNotification :streak="streak" />
       <div class="flex w-full flex-row items-end justify-start gap-6">
-        <div class="flex flex-col">
+        <div class="flex flex-col items-start justify-start">
           <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
             This week
           </div>
@@ -154,37 +186,8 @@ watchEffect(() => {
           <progress class="progress progress-info w-full" :value="'100'" max="100"></progress>
         </div>
       </div>
-      <div class="w-full">
-        <ul class="steps w-full justify-between text-sm font-semibold">
-          <li
-            v-for="day in weekDays"
-            :key="day.index"
-            class="step"
-            :class="{ 'step-primary': loggedDays.has(day.index) }"
-            :data-content="loggedDays.has(day.index) ? '✓' : day.label"
-          ></li>
-        </ul>
-      </div>
-      <div v-if="streak >= 2" role="alert" class="alert alert-info w-full shadow-lg">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="h-6 w-6 shrink-0 stroke-current"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
-        </svg>
-        <span class="font-semibold"
-          >You're on a {{ streak }} day streak! <br />Make sure you keep up the momentum.</span
-        >
-      </div>
 
-      <div class="flex flex-row items-center justify-start gap-2">
+      <!--<div class="flex flex-row items-center justify-start gap-2">
         <i class="ri-speed-up-fill text-4xl"></i>
         <div class="flex flex-col">
           <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
@@ -192,7 +195,7 @@ watchEffect(() => {
           </div>
           <div class="text-xl font-semibold">{{ `95%` }}</div>
         </div>
-      </div>
+      </div>-->
     </div>
     <ConfirmModal :taskId="task.id" />
     <!--<button
