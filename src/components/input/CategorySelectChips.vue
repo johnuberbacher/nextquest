@@ -3,7 +3,7 @@ import { ref, watch, defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   categories: {
-    type: Array,
+    type: Array as () => { id: number; icon: string; name: string }[],
     required: true,
   },
   modelValue: {

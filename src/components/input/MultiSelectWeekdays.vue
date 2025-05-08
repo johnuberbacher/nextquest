@@ -3,7 +3,7 @@ import { ref, computed, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
-    type: Array,
+    type: Array as () => string[],
     default: () => ['Sun'],
   },
 })
@@ -12,7 +12,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-const selectedDays = ref([...props.modelValue])
+const selectedDays = ref<string[]>([...props.modelValue])
 
 watch(
   () => props.modelValue,

@@ -5,7 +5,7 @@ import { ref } from 'vue'
 export interface Category {
   id: number
   name: string
-  description?: string
+  description: string
   icon: string
   createdAt: Date
   startDate: Date | null

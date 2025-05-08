@@ -10,7 +10,7 @@ const { logHabitEntry, hasLoggedToday, incrementUserExp } = userStore
 
 const props = defineProps({
   taskId: {
-    type: String,
+    type: String || Number,
     required: true,
   },
   activeDays: {
@@ -43,20 +43,20 @@ const weekDays = [
 
 function openModal() {
   modalPhrase.value = phrases[Math.floor(Math.random() * phrases.length)]
-  document.getElementById('my_modal_1')?.showModal()
+  ;(document.getElementById('my_modal_1') as HTMLDialogElement)?.showModal()
 }
 
-const handleLogClick = () => {
+const handleLogClick = async () => {
   if (!task.value || alreadyLoggedToday.value) return
 
   logHabitEntry(task.value.id, true)
-  incrementTaskExp(task.value.id, 30)
-  incrementUserExp()
-  document.getElementById('my_modal_1')?.close()
+  incrementTaskExp(Number(task.value.id), 30)
+  incrementUserExp
+  handleDismiss
 }
 
 const handleDismiss = () => {
-  document.getElementById('my_modal_1')?.close()
+  ;(document.getElementById('my_modal_1') as HTMLDialogElement)?.close()
 }
 
 const alreadyLoggedToday = computed(() => {
@@ -66,11 +66,13 @@ const alreadyLoggedToday = computed(() => {
 
 // Mapping the numeric day to a string representation (Sun, Mon, Tue, etc.)
 const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const normalizeDay = (day: string) => day.charAt(0).toUpperCase() + day.slice(1, 3).toLowerCase()
 
 const isActiveToday = computed(() => {
-  const today = new Date().getUTCDay() // ✅ Correct (returns a number 0-6)
-  const todayName = dayNames[today] // Convert to the string value (e.g., 'Mon')
-  return props.activeDays.includes(todayName) // Compare with active days array
+  const todayName = normalizeDay(dayNames[new Date().getDay()])
+  console.log(normalizeDay(dayNames[new Date().getDay()]))
+  console.log(props.activeDays)
+  return props.activeDays.map(normalizeDay).includes(todayName)
 })
 
 const logButtonLabel = computed(() => {

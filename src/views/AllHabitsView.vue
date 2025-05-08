@@ -8,7 +8,14 @@ import DailiesWidget from '../components/ui/DailiesWidget.vue'
 const store = useTaskStore()
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
-const { tasks, createTask, getTasksForToday } = store
+const { tasks: rawTasks, createTask, getTasksForToday } = store
+
+const tasks = computed(() =>
+  rawTasks.map((task) => ({
+    ...task,
+    categoryId: String(task.categoryId),
+  })),
+)
 const { logHabitEntry, hasLoggedToday } = userStore
 const { selectedCategoryId, categories, getCategoryById } = categoryStore
 
@@ -22,7 +29,7 @@ const dailies = computed(() => {
       <label class="text-2xl font-bold text-neutral-900 dark:text-white">All Habits</label>
       <div class="text-sm text-neutral-500 dark:text-neutral-500">
         Select any pre-created habbits from the list below, you can choose more than one. Don't
-        worry, you'll be able to make custom habits later.
+        <DailiesWidget :tasks="tasks" class="overflow-y-auto p-6" :gridCols="3" />
       </div>
     </div>
 

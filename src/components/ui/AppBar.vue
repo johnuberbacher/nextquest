@@ -45,7 +45,7 @@ const route = useRoute()
       <span class="dock-label">Home</span>
     </RouterLink>
 
-    <RouterLink
+    <!--<RouterLink
       to="/stats"
       :class="{
         'dock-active': route.path === '/stats',
@@ -58,7 +58,7 @@ const route = useRoute()
         ></path>
       </svg>
       <span class="dock-label">Stats</span>
-    </RouterLink>
+    </RouterLink>-->
 
     <RouterLink
       to="/habits"
@@ -70,27 +70,15 @@ const route = useRoute()
           route.name === 'habit-details',
       }"
     >
-      <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt">
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="square"
-            stroke-miterlimit="10"
-            stroke-width="2"
-          ></circle>
-          <path
-            d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="square"
-            stroke-miterlimit="10"
-            stroke-width="2"
-          ></path>
-        </g>
+      <svg
+        class="size-[1.2em]"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M8.00008 6V9H5.00008V6H8.00008ZM3.00008 4V11H10.0001V4H3.00008ZM13.0001 4H21.0001V6H13.0001V4ZM13.0001 11H21.0001V13H13.0001V11ZM13.0001 18H21.0001V20H13.0001V18ZM10.7072 16.2071L9.29297 14.7929L6.00008 18.0858L4.20718 16.2929L2.79297 17.7071L6.00008 20.9142L10.7072 16.2071Z"
+        ></path>
       </svg>
       <span class="dock-label">Habits</span>
     </RouterLink>

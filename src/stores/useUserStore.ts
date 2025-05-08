@@ -1,3 +1,4 @@
+// useUserStore.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -10,6 +11,7 @@ export interface HabitEntry {
 export interface Achievement {
   level: number
   title: string
+  color: string
 }
 
 export interface User {
@@ -26,20 +28,20 @@ export const useUserStore = defineStore('User', () => {
   const levelUpNotification = ref(false)
 
   const achievements = ref<Achievement[]>([
-    { level: 1, title: 'Newbie' },
-    { level: 2, title: 'Just Showed Up' },
-    { level: 3, title: 'Pressed the Button' },
-    { level: 5, title: '5-Day Wonder' },
-    { level: 10, title: 'Actually Still Here' },
-    { level: 20, title: 'Mildly Impressive' },
-    { level: 30, title: 'Getting the Hang of It' },
-    { level: 40, title: 'Streak Machine' },
-    { level: 50, title: 'Halfway to Legend' },
-    { level: 60, title: 'Probably Has a Spreadsheet' },
-    { level: 70, title: 'Can’t Stop, Won’t Stop' },
-    { level: 80, title: 'Powered by Coffee and Systems' },
-    { level: 90, title: 'Basically a Self-Help Book' },
-    { level: 100, title: 'Transcended the To-Do List' },
+    { level: 1, title: 'Newbie', color: 'bg-gray-200 text-gray-800' },
+    { level: 2, title: 'Clicked Once', color: 'bg-green-200 text-green-800' },
+    { level: 3, title: 'Got Up', color: 'bg-blue-200 text-blue-800' },
+    { level: 5, title: 'Small Steps', color: 'bg-yellow-200 text-yellow-800' },
+    { level: 10, title: 'Still Here', color: 'bg-teal-200 text-teal-800' },
+    { level: 20, title: 'Made a List', color: 'bg-indigo-200 text-indigo-800' },
+    { level: 30, title: 'Did a Thing', color: 'bg-purple-200 text-purple-800' },
+    { level: 40, title: 'On a Roll', color: 'bg-red-200 text-red-800' },
+    { level: 50, title: 'Halfway Hero', color: 'bg-orange-200 text-orange-800' },
+    { level: 60, title: 'Task Machine', color: 'bg-pink-200 text-pink-800' },
+    { level: 70, title: 'No Chill', color: 'bg-indigo-300 text-indigo-900' },
+    { level: 80, title: 'System Fan', color: 'bg-lime-300 text-lime-900' },
+    { level: 90, title: 'Auto Mode', color: 'bg-blue-300 text-blue-900' },
+    { level: 100, title: 'Fully Synced', color: 'bg-teal-400 text-teal-900' },
   ])
 
   const user = ref<User>({
@@ -206,10 +208,10 @@ export const useUserStore = defineStore('User', () => {
     return max >= 3 ? max : 0
   }
 
-  const getAchievementTitle = () => {
+  const getUserTitle = () => {
     const reversed = [...achievements.value].sort((a, b) => b.level - a.level)
     const achievement = reversed.find((a) => user.value.level >= a.level)
-    return achievement?.title ?? 'error'
+    return achievement
   }
 
   const getExpForNextLevel = (level: number): number => {
@@ -271,7 +273,7 @@ export const useUserStore = defineStore('User', () => {
   return {
     user,
     achievements,
-    getAchievementTitle,
+    getUserTitle,
     getStreak,
     hasLoggedToday,
     logHabitEntry,

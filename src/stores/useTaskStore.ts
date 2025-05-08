@@ -7,7 +7,7 @@ export type TaskState = 'pending' | 'in_progress' | 'complete'
 export interface Task {
   id: string
   name: string
-  description?: string
+  description: string
   categoryId: number | string
   icon: string
   exp: number
@@ -28,17 +28,107 @@ export const useTaskStore = defineStore('task', () => {
   // const tasks = ref<Task[]>([])
   const tasks = ref<Task[]>([
     {
-      id: '1',
-      name: 'Morning Yoga',
-      description: 'Start your day with a refreshing yoga session.',
+      id: '15',
+      name: '',
+      description: 'Something on Weekdays',
       categoryId: 1,
       icon: '🧘‍♀️',
-      exp: 10,
-      level: 28,
+      exp: 0,
+      level: 1,
       progress: 0,
       state: 'pending',
       durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Wed', 'Thu', 'Fri'],
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      timeOfDay: '07:00',
+      color: 'bg-yellow-50 dark:bg-yellow-200',
+      createdAt: new Date(),
+      startDate: null,
+      endDate: null,
+    },
+    {
+      id: '14',
+      name: '',
+      description: 'Something on Weekdays',
+      categoryId: 1,
+      icon: '🧘‍♀️',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
+      durationMinutes: 30,
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      timeOfDay: '07:00',
+      color: 'bg-yellow-50 dark:bg-yellow-200',
+      createdAt: new Date(),
+      startDate: null,
+      endDate: null,
+    },
+    {
+      id: '13',
+      name: '',
+      description: 'Something on Weekdays',
+      categoryId: 1,
+      icon: '🧘‍♀️',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
+      durationMinutes: 30,
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      timeOfDay: '07:00',
+      color: 'bg-yellow-50 dark:bg-yellow-200',
+      createdAt: new Date(),
+      startDate: null,
+      endDate: null,
+    },
+    {
+      id: '12',
+      name: '',
+      description: 'Something on Weekdays',
+      categoryId: 1,
+      icon: '🧘‍♀️',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
+      durationMinutes: 30,
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      timeOfDay: '07:00',
+      color: 'bg-yellow-50 dark:bg-yellow-200',
+      createdAt: new Date(),
+      startDate: null,
+      endDate: null,
+    },
+    {
+      id: '11',
+      name: '',
+      description: 'Something on Weekdays',
+      categoryId: 1,
+      icon: '🧘‍♀️',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
+      durationMinutes: 30,
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      timeOfDay: '07:00',
+      color: 'bg-yellow-50 dark:bg-yellow-200',
+      createdAt: new Date(),
+      startDate: null,
+      endDate: null,
+    },
+    {
+      id: '1',
+      name: '',
+      description: 'Something on Weekdays',
+      categoryId: 1,
+      icon: '🧘‍♀️',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
+      durationMinutes: 30,
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
       timeOfDay: '07:00',
       color: 'bg-yellow-50 dark:bg-yellow-200',
       createdAt: new Date(),
@@ -170,7 +260,7 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  const deleteTask = (id: number) => {
+  const deleteTask = (id: string) => {
     tasks.value = tasks.value.filter((t) => t.id !== id)
   }
 
@@ -211,7 +301,8 @@ export const useTaskStore = defineStore('task', () => {
     return tasks.value.filter((task) => task.daysOfWeek.some((day) => weekDays.includes(day)))
   }
 
-  const getTaskById = (id: number): Task | undefined => tasks.value.find((t) => t.id === id)
+  const getTaskById = (id: string | number): Task | undefined =>
+    tasks.value.find((t) => t.id === id)
 
   return {
     tasks,

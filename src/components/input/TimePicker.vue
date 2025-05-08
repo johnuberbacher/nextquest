@@ -14,18 +14,18 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <fieldset class="w-full gap-1 flex flex-col">
-    <label v-if="label" class="text-sm dark:text-white font-semibold">
+  <fieldset class="flex w-full flex-col gap-1">
+    <label v-if="label" class="text-sm font-semibold dark:text-white">
       {{ label }}
     </label>
     <div
-      class="w-full flex flex-row gap-1 items-center justify-between overflow-x-auto scroll-smooth"
+      class="flex w-full flex-row items-center justify-between gap-1 overflow-x-auto scroll-smooth"
     >
       <input
         type="time"
-        class="input w-full border border-neutral-300 dark:border-neutral-700 rounded px-2 py-1 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white"
+        class="input w-full rounded border border-neutral-300 bg-white px-2 py-1 text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value)"
       />
     </div>
   </fieldset>

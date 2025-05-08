@@ -12,7 +12,7 @@ const categoryStore = useCategoryStore()
 const { tasks } = taskStore
 const { selectedCategoryId, categories } = categoryStore
 
-const selectedCategory = ref(null)
+const selectedCategory = ref<number | undefined>(undefined)
 
 const visibleCount = ref(12)
 const incrementAmount = 8
@@ -27,7 +27,7 @@ const showMore = () => {
 
 const submit = () => {
   if (selectedCategory.value !== null) {
-    categoryStore.selectedCategoryId = selectedCategory.value
+    categoryStore.selectedCategoryId = selectedCategory.value ?? null
     router.push({ name: 'create-new-habit' })
   }
 }

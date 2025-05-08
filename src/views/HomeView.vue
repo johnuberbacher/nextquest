@@ -8,18 +8,19 @@ import DailiesWidget from '../components/ui/DailiesWidget.vue'
 import WeekliesWidget from '../components/ui/WeekliesWidget.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
+import CalendarWidget from '../components/ui/CalendarWidget.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
 const { tasks, createTask, getTasksForToday } = taskStore
-const { user, getAchievementTitle, getExpForNextLevel } = userStore
+const { user, getUserTitle, getExpForNextLevel } = userStore
 
 const dailies = computed(() => {
   return getTasksForToday()
 })
 
-const getAchievements = computed(() => {
-  return getAchievementTitle()
+const userTitle = computed(() => {
+  return getUserTitle()
 })
 </script>
 
@@ -44,9 +45,10 @@ const getAchievements = computed(() => {
             <div class="flex w-full flex-row items-center justify-between gap-2">
               <div class="font-bold dark:text-white">{{ user.name }}</div>
               <div
-                class="flex w-auto rounded-sm bg-green-600 px-2 py-1 text-[10px] font-bold uppercase text-white"
+                :class="userTitle?.color"
+                class="flex w-auto rounded-sm px-2 py-1 text-[10px] font-bold uppercase"
               >
-                {{ getAchievements }}
+                {{ userTitle?.title }}
               </div>
             </div>
 
@@ -103,9 +105,13 @@ const getAchievements = computed(() => {
         />
       </div>
 
-      <div class="px flex h-full w-full flex-col items-start justify-start gap-8 overflow-y-auto">
+      <div
+        class="flex min-h-[80px] w-full flex-col items-start justify-start gap-6 overflow-x-auto overflow-y-hidden"
+      >
         <CalendarWidget />
+      </div>
 
+      <div class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto">
         <div class="flex w-full flex-col items-start justify-start gap-4 px-6">
           <div class="flex w-full flex-row items-center justify-between">
             <label class="text-lg font-bold dark:text-white">Dailies</label>
@@ -118,7 +124,7 @@ const getAchievements = computed(() => {
           </div>
           <DailiesWidget :tasks="dailies" />
         </div>
-        <WeekliesWidget />
+        <!--<WeekliesWidget />-->
       </div>
     </div>
   </main>

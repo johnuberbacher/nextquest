@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watchEffect } from 'vue'
+import { computed, onMounted, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import { useCategoryStore } from '@/stores/useCategoryStore'
-import SingleSelectChips from '@/components/input/SingleSelectChips.vue'
-import MultiSelectWeekdays from '@/components/input/MultiSelectWeekdays.vue'
-import TimePicker from '@/components/input/TimePicker.vue'
-import ColorPicker from '@/components/input/ColorPicker.vue'
-import EmojiPicker from '@/components/input/EmojiPicker.vue'
 import FullScreenLoading from '@/components/ui/FullScreenLoading.vue'
 import Notification from '@/components/ui/Notification.vue'
 import { useRoute } from 'vue-router'
-import { RiCheckFill } from '@remixicon/vue'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 import StreakNotification from '@/components/ui/StreakNotification.vue'
 import LevelUpNotification from '@/components/ui/LevelUpNotification.vue'
@@ -25,16 +19,7 @@ const id = computed(() => route.params.id as string)
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 const taskStore = useTaskStore()
-const {
-  user,
-  logHabitEntry,
-  hasLoggedToday,
-  getHabitEntriesThisWeek,
-  getHabitEntriesPastYear,
-  getStreak,
-  getThisWeekCompletion,
-  getTwoMonthsCompletion,
-} = userStore
+const { user, getThisWeekCompletion, getTwoMonthsCompletion } = userStore
 const { selectedCategoryId, categories, getCategoryById } = categoryStore
 const { getTaskById } = taskStore
 
@@ -42,9 +27,15 @@ const task = computed(() => getTaskById(id.value))
 const category = computed(() => getCategoryById(task.value.categoryId))
 
 const yearEntries = computed(() => userStore.getHabitEntriesPastYear(task.value?.id))
+const yearLoggedDays = computed(() => {
+  return new Set(
+    yearEntries.value.map((entry) => {
+      return new Date(entry.date).toDateString() // Ensure it's in string format
+    }),
+  )
+})
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()
 
 const weekEntries = computed(() => userStore.getHabitEntriesThisWeek(task.value?.id))
 const streak = computed(() => {
@@ -99,16 +90,6 @@ const activeLabels = (taskData: object) => {
   })
 }
 
-const weekDays = [
-  { label: 'S', index: 0 },
-  { label: 'M', index: 1 },
-  { label: 'T', index: 2 },
-  { label: 'W', index: 3 },
-  { label: 'T', index: 4 },
-  { label: 'F', index: 5 },
-  { label: 'S', index: 6 },
-]
-
 onMounted(() => {
   if (!route.params.id || route.params.id === '') {
     router.push('/')
@@ -130,15 +111,6 @@ watchEffect(() => {
   >
     <div class="flex w-full flex-col items-start justify-start gap-5">
       <div class="relative flex w-full flex-row items-start justify-start gap-4 md:items-center">
-        <!--<div
-        class="absolute right-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-white"
-        :class="[hasLoggedToday(task.id) ? 'opacity-50' : 'shadow-lg ']"
-      >
-        <RiCheckFill
-          size="20px"
-          :class="[hasLoggedToday(task.id) ? 'text-neutral-400 ' : 'text-orange-700']"
-        />
-      </div>-->
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-1">
             <div class="text-xl font-semibold text-neutral-900 dark:text-white">
@@ -149,6 +121,11 @@ watchEffect(() => {
               <span v-for="(day, index) in task.daysOfWeek" :key="index">
                 {{ day }}<span v-if="index < task.daysOfWeek.length - 1">, </span>
               </span>
+            </div>
+            <div
+              class="mt-1.5 inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+            >
+              {{ category.name + ' habit' }}
             </div>
           </div>
         </div>
@@ -161,12 +138,7 @@ watchEffect(() => {
           </div>
         </div>
       </div>
-      <div
-        class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-      >
-        {{ category.name + ' habit' }}
-      </div>
-      <div class="flex w-full flex-col items-start justify-start gap-1">
+      <!--<div class="flex w-full flex-col items-start justify-start gap-1">
         <div class="flex w-full flex-row items-center justify-between gap-2">
           <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
             Level: {{ task.level }}
@@ -176,7 +148,7 @@ watchEffect(() => {
           </div>
         </div>
         <progress class="progress progress-success w-full" max="100" :value="task.exp"></progress>
-      </div>
+      </div>-->
     </div>
 
     <div
@@ -254,21 +226,31 @@ watchEffect(() => {
           />
         </div>
       </div>
-      <!--<div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="w-full text-center text-lg font-semibold text-neutral-500 dark:text-white">
-        {{ task.description || 'error!' }}
-      </div>-->
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-        Past year
+      <div class="flex flex-col gap-2">
+        <div class="mb-0.5 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
+          Past year
+        </div>
+        <div class="md:gap-0.75 flex flex-row flex-wrap gap-0.5">
+          <div
+            v-for="n in 365"
+            :key="n"
+            class="rounded-xs aspect-square h-auto w-3 border sm:w-3"
+            :data-tip="
+              new Date(Date.now() - (364 - n) * 86400000).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+            "
+            :class="[
+              yearLoggedDays.has(new Date(Date.now() - (364 - n) * 86400000).toDateString())
+                ? 'cursor-pointer tooltip bg-orange-800 border-orange-600'
+                : ' bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-700',
+            ]"
+          ></div>
+        </div>
       </div>
-      <div class="max-w-3/3 flex w-full flex-row flex-wrap gap-0.5">
-        <div
-          v-for="day in 365"
-          class="aspect-square h-auto w-4 rounded-sm border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
-        ></div>
-      </div>
-
       <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex flex-col gap-3">
         <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
@@ -276,14 +258,15 @@ watchEffect(() => {
         </div>
         <div class="flex flex-row flex-wrap gap-x-2 gap-y-1">
           <div
-            v-for="category in category.relatedCategories"
+            v-for="category in category?.relatedCategories"
             class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
           >
-            {{ getCategoryById(category).name }}
+            {{ category ? getCategoryById(category).name : '' }}
           </div>
         </div>
       </div>
     </div>
+    ``
     <ConfirmModal :taskId="task.id" :active-days="activeLabels(task)" />
     <LevelUpNotification />
   </div>

@@ -49,7 +49,7 @@ const gridClass = computed(() => `md:grid-cols-${props.gridCols || 4}`)
       <div
         class="mb-2 inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black"
       >
-        {{ getCategoryById(task.categoryId).name }}
+        {{ getCategoryById(Number(task.categoryId))?.name || 'Unknown Category' }}
       </div>
       <div class="text-xs font-semibold text-black">
         {{ task.description }}

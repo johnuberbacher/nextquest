@@ -3,7 +3,7 @@ const props = defineProps<{
   streak: number
 }>()
 
-const streakMessages = {
+const streakMessages: Record<number, string[]> = {
   2: [
     "You're on a 2-day streak! Keep it up!",
     "You're on a 2-day streak! Nice job, don't stop!",

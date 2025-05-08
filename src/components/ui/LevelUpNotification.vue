@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import LevelProgressBar from './user/LevelProgressBar.vue'
@@ -8,17 +8,6 @@ const taskStore = useTaskStore()
 const userStore = useUserStore()
 const { getTaskById, incrementTaskExp } = taskStore
 const { user, logHabitEntry, hasLoggedToday } = userStore
-
-const props = defineProps({
-  taskId: {
-    type: String,
-    required: true,
-  },
-  activeDays: {
-    type: Array<string>,
-    required: true,
-  },
-})
 
 const levelUpMessages = [
   'Small steps every day lead to great journeys.',
