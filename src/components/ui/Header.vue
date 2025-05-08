@@ -7,7 +7,7 @@ import { RouterLink, RouterView } from 'vue-router'
   >
     <!--<img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
     <div class="flex flex-row items-center justify-between">
-      <RouterLink to="/" class="font-bold">NextQuest</RouterLink>
+      <RouterLink to="/" class="font-bold">Next Quest</RouterLink>
       <nav class="flex flex-row items-center justify-between gap-4">
         <RouterLink
           to="/add-new-habit"

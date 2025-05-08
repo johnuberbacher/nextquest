@@ -14,6 +14,7 @@ export const habitCategories = [
       'Review weekly goals on Friday',
       'Block time for deep work sessions',
     ],
+    relatedCategories: [12, 13, 37], // Productivity, Focus, Planning
   },
   {
     id: 1,
@@ -30,6 +31,7 @@ export const habitCategories = [
       'Do something that makes you smile',
       'Practice a hobby you enjoy',
     ],
+    relatedCategories: [9, 24, 26], // Mindfulness, Mental Health, Hobbies
   },
   {
     id: 2,
@@ -46,6 +48,7 @@ export const habitCategories = [
       'Stretch for 5 minutes before bed',
       'Complete a full-body strength session',
     ],
+    relatedCategories: [20, 21, 6], // Stretching, Steps, Hydration
   },
   {
     id: 3,
@@ -62,6 +65,7 @@ export const habitCategories = [
       'Take breaks during long tasks',
       'Practice good posture',
     ],
+    relatedCategories: [5, 24, 22], // Nutrition, Mental Health, Hygiene
   },
   {
     id: 4,
@@ -78,6 +82,7 @@ export const habitCategories = [
       'Keep a sleep journal',
       'Wake up at a consistent hour',
     ],
+    relatedCategories: [9, 3, 20], // Mindfulness, Health, Stretching
   },
   {
     id: 5,
@@ -94,6 +99,7 @@ export const habitCategories = [
       'Drink a smoothie',
       'Track food intake daily',
     ],
+    relatedCategories: [6, 18, 3], // Hydration, Cooking, Health
   },
   {
     id: 6,
@@ -110,6 +116,7 @@ export const habitCategories = [
       'Set hourly hydration reminders',
       'Track water intake',
     ],
+    relatedCategories: [5, 2, 20], // Nutrition, Fitness, Stretching
   },
   {
     id: 7,
@@ -126,6 +133,7 @@ export const habitCategories = [
       'Review notes from a past lesson',
       'Read an educational article',
     ],
+    relatedCategories: [8, 35, 27], // Reading, Language, Creativity
   },
   {
     id: 8,
@@ -142,6 +150,7 @@ export const habitCategories = [
       'Read before bed',
       'Join a reading challenge',
     ],
+    relatedCategories: [7, 27, 9], // Learning, Creativity, Mindfulness
   },
   {
     id: 9,
@@ -158,6 +167,7 @@ export const habitCategories = [
       'Practice gratitude',
       'Be present during routine tasks',
     ],
+    relatedCategories: [4, 24, 1], // Sleep, Mental Health, Personal
   },
   {
     id: 10,
@@ -174,6 +184,7 @@ export const habitCategories = [
       'List goals for tomorrow',
       'Explore your emotions',
     ],
+    relatedCategories: [11, 9, 38], // Gratitude, Mindfulness, Goals
   },
   {
     id: 11,
@@ -190,6 +201,7 @@ export const habitCategories = [
       'Write a gratitude letter',
       'Notice small daily blessings',
     ],
+    relatedCategories: [10, 9, 24], // Journaling, Mindfulness, Mental Health
   },
   {
     id: 12,
@@ -206,6 +218,7 @@ export const habitCategories = [
       'Batch similar tasks',
       'Declutter workspace',
     ],
+    relatedCategories: [0, 13, 37], // Work, Focus, Planning
   },
   {
     id: 13,
@@ -222,6 +235,7 @@ export const habitCategories = [
       'Take regular breaks',
       'Track distractions',
     ],
+    relatedCategories: [12, 37, 9], // Productivity, Planning, Mindfulness
   },
   {
     id: 14,
@@ -238,6 +252,7 @@ export const habitCategories = [
       'Check bank balances',
       'Use a budgeting app',
     ],
+    relatedCategories: [15, 16, 38], // Saving, Spending, Goals
   },
   {
     id: 15,
@@ -254,6 +269,7 @@ export const habitCategories = [
       'Meal prep instead of eating out',
       'Set a savings goal',
     ],
+    relatedCategories: [14, 16, 18], // Budgeting, Spending, Cooking
   },
   {
     id: 16,
@@ -270,6 +286,7 @@ export const habitCategories = [
       'Use cash over card',
       'Limit online shopping',
     ],
+    relatedCategories: [14, 15, 32], // Budgeting, Saving, Errands
   },
   {
     id: 17,
@@ -286,6 +303,7 @@ export const habitCategories = [
       'Do a quick 10-minute tidy',
       'Wash dishes immediately',
     ],
+    relatedCategories: [33, 32, 5], // Home Projects, Errands, Nutrition
   },
   {
     id: 18,
@@ -302,6 +320,7 @@ export const habitCategories = [
       'Use leftovers creatively',
       'Clean as you cook',
     ],
+    relatedCategories: [5, 15, 6], // Nutrition, Saving, Hydration
   },
   {
     id: 19,
@@ -318,6 +337,7 @@ export const habitCategories = [
       'Spend a day offline',
       'Do a screen-free activity',
     ],
+    relatedCategories: [9, 4, 13], // Mindfulness, Sleep, Focus
   },
   {
     id: 20,
@@ -334,6 +354,7 @@ export const habitCategories = [
       'Loosen tight muscles',
       'Stretch during work breaks',
     ],
+    relatedCategories: [2, 21, 6], // Fitness, Steps, Hydration
   },
   {
     id: 21,
@@ -350,6 +371,7 @@ export const habitCategories = [
       'Use stairs over elevator',
       'Track daily steps',
     ],
+    relatedCategories: [2, 20, 31], // Fitness, Stretching, Nature
   },
   {
     id: 22,
@@ -366,6 +388,7 @@ export const habitCategories = [
       'Clean personal items',
       'Change towels often',
     ],
+    relatedCategories: [3, 23, 24], // Health, Skin Care, Mental Health
   },
   {
     id: 23,
@@ -382,6 +405,7 @@ export const habitCategories = [
       'Remove makeup',
       'Try a face mask weekly',
     ],
+    relatedCategories: [22, 3, 24], // Hygiene, Health, Mental Health
   },
   {
     id: 24,
@@ -398,6 +422,7 @@ export const habitCategories = [
       'Take mental health days',
       'Limit negative self-talk',
     ],
+    relatedCategories: [9, 11, 22], // Mindfulness, Gratitude, Hygiene
   },
   {
     id: 25,
@@ -414,6 +439,7 @@ export const habitCategories = [
       'Have a meaningful conversation',
       'Attend a social event',
     ],
+    relatedCategories: [1, 34, 28], // Personal, Relationships, Volunteering
   },
   {
     id: 26,
@@ -430,6 +456,7 @@ export const habitCategories = [
       'Join a hobby group',
       'Organize hobby supplies',
     ],
+    relatedCategories: [1, 27, 7], // Personal, Creativity, Learning
   },
   {
     id: 27,
@@ -446,6 +473,7 @@ export const habitCategories = [
       'Create without judging',
       'Start a new creative challenge',
     ],
+    relatedCategories: [26, 7, 8], // Hobbies, Learning, Reading
   },
   {
     id: 28,
@@ -462,6 +490,7 @@ export const habitCategories = [
       'Support a local cause',
       'Offer skills for free',
     ],
+    relatedCategories: [25, 34, 29], // Social, Relationships, Spirituality
   },
   {
     id: 29,
@@ -478,6 +507,7 @@ export const habitCategories = [
       'Reflect on purpose',
       'Practice compassion',
     ],
+    relatedCategories: [9, 28, 24], // Mindfulness, Volunteering, Mental Health
   },
   {
     id: 30,
@@ -494,6 +524,7 @@ export const habitCategories = [
       'Clean their space',
       'Give a treat',
     ],
+    relatedCategories: [21, 17, 31], // Steps, Cleaning, Nature
   },
   {
     id: 31,
@@ -510,6 +541,7 @@ export const habitCategories = [
       'Observe wildlife',
       'Do outdoor meditation',
     ],
+    relatedCategories: [21, 30, 9], // Steps, Pets, Mindfulness
   },
   {
     id: 32,
@@ -526,6 +558,7 @@ export const habitCategories = [
       'Refill prescriptions',
       'Schedule appointments',
     ],
+    relatedCategories: [16, 17, 33], // Spending, Cleaning, Home Projects
   },
   {
     id: 33,
@@ -542,6 +575,7 @@ export const habitCategories = [
       'Install something new',
       'Declutter storage',
     ],
+    relatedCategories: [17, 32, 5], // Cleaning, Errands, Nutrition
   },
   {
     id: 34,
@@ -558,6 +592,7 @@ export const habitCategories = [
       'Resolve a conflict',
       'Support a loved one',
     ],
+    relatedCategories: [25, 24, 1], // Social, Mental Health, Personal
   },
   {
     id: 35,
@@ -574,6 +609,7 @@ export const habitCategories = [
       'Practice speaking aloud',
       'Label items around you',
     ],
+    relatedCategories: [7, 8, 27], // Learning, Reading, Creativity
   },
   {
     id: 36,
@@ -590,6 +626,7 @@ export const habitCategories = [
       'Analyze lyrics',
       'Practice a song',
     ],
+    relatedCategories: [27, 26, 9], // Creativity, Hobbies, Mindfulness
   },
   {
     id: 37,
@@ -606,6 +643,7 @@ export const habitCategories = [
       'Organize to-dos',
       'Reflect on priorities',
     ],
+    relatedCategories: [12, 38, 39], // Productivity, Goals, Reflection
   },
   {
     id: 38,
@@ -622,6 +660,7 @@ export const habitCategories = [
       'Visualize success',
       'Celebrate milestones',
     ],
+    relatedCategories: [37, 12, 39], // Planning, Productivity, Reflection
   },
   {
     id: 39,
@@ -638,5 +677,6 @@ export const habitCategories = [
       'Reflect on choices',
       'Plan for tomorrow',
     ],
+    relatedCategories: [9, 10, 38], // Mindfulness, Journaling, Goals
   },
 ]

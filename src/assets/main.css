@@ -1,5 +1,13 @@
+@font-face {
+  font-family: 'opensans';
+  src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
 @import './base.css';
 @import 'tailwindcss';
+@theme {
+  --font-roboto: 'opensans', 'Roboto', sans-serif;
+}
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -10,7 +18,6 @@
   }
 }
 @plugin "daisyui";
-
 @plugin "daisyui/theme" {
   name: 'Custom';
   default: true;
@@ -45,7 +52,6 @@
   --depth: 0;
   --noise: 0;
 }
-
 @plugin "daisyui/theme" {
   name: 'Custom';
   default: false;
@@ -84,6 +90,7 @@
 html,
 body,
 #app {
+  font-family: 'opensans';
   overflow: hidden;
   min-height: 100%;
   height: 100%;

@@ -32,6 +32,6 @@ defineProps({
 
 /* Only animate when class is applied */
 .with-animation::-webkit-progress-value {
-  transition: width 2s;
+  transition: width 2s ease-in;
 }
 </style>

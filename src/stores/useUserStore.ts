@@ -154,44 +154,34 @@ export const useUserStore = defineStore('User', () => {
     })
   }
 
-  const getThisWeekCompletion = (taskId: string, weekdays: number[]) => {
+  const getThisWeekCompletion = (taskId: string, totalDaysThisWeek: number) => {
     const entries = getHabitEntriesThisWeek(taskId)
-    const completedDays = new Set(entries.map((e) => new Date(e.date).getDay()))
-    const completedCount = weekdays.filter((day) => completedDays.has(day)).length
     return {
-      completed: completedCount,
-      total: weekdays.length,
-      percentage: weekdays.length > 0 ? Math.round((completedCount / weekdays.length) * 100) : 0,
+      completed: entries.length,
+      total: totalDaysThisWeek,
+      percentage: Math.round((entries.length / totalDaysThisWeek) * 100),
     }
   }
 
-  const getTwoMonthsCompletion = (taskId: string, weekdays: number[]) => {
+  const getTwoMonthsCompletion = (taskId: string, daysPerWeek: number) => {
     const now = new Date()
     const twoMonthsAgo = new Date()
     twoMonthsAgo.setMonth(now.getMonth() - 2)
 
-    const entries = getHabitEntriesPastYear(taskId).filter((e) => {
+    const entries = user.value.completedHabits.filter((e) => {
       const date = new Date(e.date)
-      return date >= twoMonthsAgo && date <= now
+      return e.habitId === taskId && date >= twoMonthsAgo && date <= now
     })
 
-    let totalScheduledDays = 0
-    let current = new Date(twoMonthsAgo)
-    while (current <= now) {
-      if (weekdays.includes(current.getDay())) {
-        totalScheduledDays++
-      }
-      current.setDate(current.getDate() + 1)
-    }
-
     const completedDates = new Set(entries.map((e) => new Date(e.date).toDateString()))
-    const completedCount = completedDates.size
+
+    const weeksInTwoMonths = 8
+    const expectedTotal = daysPerWeek * weeksInTwoMonths
 
     return {
-      completed: completedCount,
-      total: totalScheduledDays,
-      percentage:
-        totalScheduledDays > 0 ? Math.round((completedCount / totalScheduledDays) * 100) : 0,
+      completed: completedDates.size,
+      total: expectedTotal,
+      percentage: expectedTotal === 0 ? 0 : Math.round((completedDates.size / expectedTotal) * 100),
     }
   }
 
@@ -274,7 +264,7 @@ export const useUserStore = defineStore('User', () => {
 
     if (user.value.level >= 100) {
       user.value.exp = 0
-      console.log('Max level reached. EXP reset to 0.')
+      console.log('Congratulations max level reached. EXP reset to 0.')
     }
   }
 

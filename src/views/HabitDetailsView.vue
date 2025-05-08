@@ -18,6 +18,7 @@ import StreakNotification from '@/components/ui/StreakNotification.vue'
 import LevelUpNotification from '@/components/ui/LevelUpNotification.vue'
 import LevelProgressBar from '@/components/ui/user/LevelProgressBar.vue'
 
+const router = useRouter()
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
@@ -32,6 +33,7 @@ const {
   getHabitEntriesPastYear,
   getStreak,
   getThisWeekCompletion,
+  getTwoMonthsCompletion,
 } = userStore
 const { selectedCategoryId, categories, getCategoryById } = categoryStore
 const { getTaskById } = taskStore
@@ -39,7 +41,10 @@ const { getTaskById } = taskStore
 const task = computed(() => getTaskById(id.value))
 const category = computed(() => getCategoryById(task.value.categoryId))
 
-const router = useRouter()
+const yearEntries = computed(() => userStore.getHabitEntriesPastYear(task.value?.id))
+
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()
 
 const weekEntries = computed(() => userStore.getHabitEntriesThisWeek(task.value?.id))
 const streak = computed(() => {
@@ -82,10 +87,6 @@ const loggedDays = computed(() => {
     }),
   )
 })
-
-const yearEntries = computed(() => userStore.getHabitEntriesPastYear(task.value?.id))
-
-const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const labelMap = weekdays.map((day) => {
   return { label: day[0], index: weekdays.indexOf(day) }
@@ -182,7 +183,7 @@ watchEffect(() => {
       class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white px-4 py-8 dark:border-neutral-700 dark:bg-neutral-900 md:px-6 md:pb-6 md:pt-10"
     >
       <div class="w-full">
-        <ul class="steps w-full justify-between text-sm font-semibold">
+        <ul class="steps text- w-full justify-between font-semibold">
           <li
             v-for="day in labelMap"
             :key="day.index"
@@ -196,13 +197,20 @@ watchEffect(() => {
         </ul>
       </div>
       <StreakNotification :streak="streak" />
+      <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex w-full flex-row items-end justify-start gap-6">
         <div class="flex flex-col items-start justify-start">
           <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
             This week
           </div>
           <div class="text-xl font-semibold">
-            {{ Math.ceil((weekEntries.length / task.daysOfWeek.length) * 100) }}%
+            {{
+              Math.ceil(
+                (getThisWeekCompletion(task.id, task.daysOfWeek.length).completed /
+                  getThisWeekCompletion(task.id, task.daysOfWeek.length).total) *
+                  100,
+              )
+            }}%
           </div>
           <div class="text-xs font-semibold text-neutral-600">Complete</div>
         </div>
@@ -211,8 +219,8 @@ watchEffect(() => {
             {{ weekEntries.length }}/{{ task.daysOfWeek.length }}
           </div>
           <LevelProgressBar
-            :value="weekEntries.length"
-            :max="task.daysOfWeek.length"
+            :value="getThisWeekCompletion(task.id, task.daysOfWeek.length).completed"
+            :max="getThisWeekCompletion(task.id, task.daysOfWeek.length).total"
             :animate="true"
           />
         </div>
@@ -222,14 +230,26 @@ watchEffect(() => {
           <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
             Last 2 months
           </div>
-          <div class="text-xl font-semibold">{{ '100' }}%</div>
+          <div class="text-xl font-semibold">
+            {{
+              Math.ceil(
+                (getTwoMonthsCompletion(task.id, task.daysOfWeek.length).completed /
+                  getTwoMonthsCompletion(task.id, task.daysOfWeek.length).total) *
+                  100,
+              )
+            }}%
+          </div>
           <div class="text-xs font-semibold text-neutral-600">Complete</div>
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
-          <div class="text-xs font-semibold text-neutral-400">{{ '100' }}/{{ '100' }}</div>
+          <div class="text-xs font-semibold text-neutral-400">
+            {{ getTwoMonthsCompletion(task.id, task.daysOfWeek.length).completed }}/{{
+              getTwoMonthsCompletion(task.id, task.daysOfWeek.length).total
+            }}
+          </div>
           <LevelProgressBar
-            :value="weekEntries.length"
-            :max="task.daysOfWeek.length"
+            :value="getTwoMonthsCompletion(task.id, task.daysOfWeek.length).completed"
+            :max="getTwoMonthsCompletion(task.id, task.daysOfWeek.length).total"
             :animate="true"
           />
         </div>
@@ -239,68 +259,27 @@ watchEffect(() => {
         {{ task.description || 'error!' }}
       </div>-->
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex flex-col gap-3">
-        <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-          Related habits
-        </div>
-        <div class="flex flex-row flex-wrap gap-x-1 gap-y-1">
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-        </div>
+      <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
+        Past year
       </div>
+      <div class="max-w-3/3 flex w-full flex-row flex-wrap gap-0.5">
+        <div
+          v-for="day in 365"
+          class="aspect-square h-auto w-4 rounded-sm border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
+        ></div>
+      </div>
+
       <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex flex-col gap-3">
         <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
           Related categories
         </div>
-        <div class="flex flex-row flex-wrap gap-x-1 gap-y-1">
+        <div class="flex flex-row flex-wrap gap-x-2 gap-y-1">
           <div
+            v-for="category in category.relatedCategories"
             class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
           >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
-          </div>
-          <div
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-          >
-            {{ category.name + ' habit' }}
+            {{ getCategoryById(category).name }}
           </div>
         </div>
       </div>

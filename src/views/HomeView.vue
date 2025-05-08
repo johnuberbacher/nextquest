@@ -49,6 +49,26 @@ const getAchievements = computed(() => {
                 {{ getAchievements }}
               </div>
             </div>
+
+            <!--<div
+        class="relative w-full rounded-2xl border border-neutral-200 p-4 dark:border-neutral-700 dark:bg-neutral-900"
+      >
+        <div class="flex flex-row gap-4">
+          <div
+            class="flex aspect-square h-14 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-center text-white dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <div class="-mt-2 flex aspect-square items-center justify-center text-3xl">👑</div>
+          </div>
+          <div class="-mt-1 flex w-full flex-col items-start justify-center gap-1 text-start">
+            <div class="font-bold text-neutral-700 dark:text-white">New Title Earned!</div>
+            <div
+              class="flex w-auto rounded-sm bg-green-600 px-2 py-1 text-[10px] font-bold uppercase text-white"
+            >
+              Just Showed Up
+            </div>
+          </div>
+        </div>
+      </div>-->
             <div class="flex w-full flex-col items-start justify-start gap-1">
               <div class="flex w-full flex-row items-center justify-between gap-2">
                 <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
@@ -77,7 +97,7 @@ const getAchievements = computed(() => {
           </div>
         </div>
         <Notification
-          title="Welcome to NextQuest!"
+          title="Welcome to Next Quest!"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt."
           icon="🍕"
         />
