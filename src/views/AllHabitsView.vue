@@ -24,26 +24,24 @@ const dailies = computed(() => {
 })
 </script>
 <template>
-  <div class="flex w-full flex-grow flex-col items-start justify-between gap-6 overflow-hidden p-6">
-    <div class="flex h-auto w-full flex-col items-start justify-start gap-2">
-      <label class="text-2xl font-bold text-neutral-900 dark:text-white">All Habits</label>
-      <div class="text-sm text-neutral-500 dark:text-neutral-500">
-        Select any pre-created habbits from the list below, you can choose more than one. Don't
-        <DailiesWidget :tasks="tasks" class="overflow-y-auto p-6" :gridCols="3" />
-      </div>
+  <div
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
+  >
+    <div class="flex h-auto w-full flex-col items-start justify-start gap-2 px-4">
+      <div class="text-lg font-bold dark:text-white">All Habits</div>
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700"
+      class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden border-y border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900"
     >
-      <DailiesWidget :tasks="tasks" class="overflow-y-auto p-6" :gridCols="3" />
+      <DailiesWidget :tasks="tasks" class="overflow-y-auto p-4" :cols="2" :md-cols="3" />
     </div>
-    <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
+    <div class="flex h-auto w-full flex-row items-end justify-end gap-4 px-4">
       <RouterLink
         to="/add-new-habit"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
-        Add new
+        Add new habit
       </RouterLink>
     </div>
   </div>

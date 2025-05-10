@@ -51,8 +51,8 @@ const handleLogClick = async () => {
 
   logHabitEntry(task.value.id, true)
   incrementTaskExp(Number(task.value.id), 30)
-  incrementUserExp
-  handleDismiss
+  incrementUserExp()
+  handleDismiss()
 }
 
 const handleDismiss = () => {
@@ -84,7 +84,7 @@ const logButtonLabel = computed(() => {
 
 <template>
   <!-- Open the modal using ID.showModal() method -->
-  <div class="flex h-auto w-full flex-row items-end justify-end gap-6">
+  <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
     <button
       :disabled="alreadyLoggedToday"
       @click="openModal"
@@ -95,7 +95,7 @@ const logButtonLabel = computed(() => {
   </div>
   <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
     <div
-      class="modal-box select-none border border-neutral-300 px-6 py-10 text-center dark:border-neutral-700 md:px-10"
+      class="modal-box select-none border border-neutral-300 px-4 py-10 text-center dark:border-neutral-700 md:px-10"
     >
       <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
       <p class="py-4 text-sm">
@@ -113,7 +113,7 @@ const logButtonLabel = computed(() => {
         <button
           @click="handleLogClick"
           :disabled="alreadyLoggedToday"
-          class="btn btn-primary btn-lg w-full flex-grow rounded-full px-6 text-sm md:w-auto"
+          class="btn btn-primary btn-lg w-full flex-grow rounded-full px-4 text-sm md:w-auto"
         >
           Got it &mdash; Mark as done!
         </button>

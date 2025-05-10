@@ -4,13 +4,13 @@ import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import { useCategoryStore } from '@/stores/useCategoryStore'
-import FullScreenLoading from '@/components/ui/FullScreenLoading.vue'
-import Notification from '@/components/ui/Notification.vue'
+import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
+import Notification from '../components/ui/Notification.vue'
 import { useRoute } from 'vue-router'
-import ConfirmModal from '@/components/ui/ConfirmModal.vue'
-import StreakNotification from '@/components/ui/StreakNotification.vue'
-import LevelUpNotification from '@/components/ui/LevelUpNotification.vue'
-import LevelProgressBar from '@/components/ui/user/LevelProgressBar.vue'
+import ConfirmModal from '../components/ui/ConfirmModal.vue'
+import StreakNotification from '../components/ui/StreakNotification.vue'
+import LevelUpNotification from '../components/ui/LevelUpNotification.vue'
+import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -19,8 +19,8 @@ const id = computed(() => route.params.id as string)
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 const taskStore = useTaskStore()
-const { user, getThisWeekCompletion, getTwoMonthsCompletion } = userStore
-const { selectedCategoryId, categories, getCategoryById } = categoryStore
+const { getThisWeekCompletion, getTwoMonthsCompletion } = userStore
+const { getCategoryById } = categoryStore
 const { getTaskById } = taskStore
 
 const task = computed(() => getTaskById(id.value))
@@ -107,25 +107,25 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
   >
-    <div class="flex w-full flex-col items-start justify-start gap-5">
-      <div class="relative flex w-full flex-row items-start justify-start gap-4 md:items-center">
+    <div class="flex w-full flex-col items-start justify-start gap-4">
+      <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
-          <div class="flex w-full flex-col items-start justify-start gap-1">
-            <div class="text-xl font-semibold text-neutral-900 dark:text-white">
+          <div class="flex w-full flex-col items-start justify-start gap-2">
+            <div class="text-lg font-bold dark:text-white">
               {{ task.description || 'error!' }}
             </div>
-            <div class="text-xs font-bold text-neutral-600 dark:text-neutral-500">
+            <div
+              class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+            >
+              {{ category.name + ' habit' }}
+            </div>
+            <div class="text-sm text-neutral-500 dark:text-neutral-500">
               Repeats
               <span v-for="(day, index) in task.daysOfWeek" :key="index">
                 {{ day }}<span v-if="index < task.daysOfWeek.length - 1">, </span>
               </span>
-            </div>
-            <div
-              class="mt-1.5 inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
-            >
-              {{ category.name + ' habit' }}
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ watchEffect(() => {
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-8 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white px-4 py-8 dark:border-neutral-700 dark:bg-neutral-900 md:px-6 md:pb-6 md:pt-10"
+      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white px-4 py-8 dark:border-neutral-700 dark:bg-neutral-900 md:px-4 md:pb-4 md:pt-10"
     >
       <div class="w-full">
         <ul class="steps text- w-full justify-between font-semibold">
@@ -170,7 +170,7 @@ watchEffect(() => {
       </div>
       <StreakNotification :streak="streak" />
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex w-full flex-row items-end justify-start gap-6">
+      <div class="flex w-full flex-row items-end justify-start gap-4">
         <div class="flex flex-col items-start justify-start">
           <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
             This week
@@ -197,7 +197,7 @@ watchEffect(() => {
           />
         </div>
       </div>
-      <div class="flex w-full flex-row items-end justify-start gap-6">
+      <div class="flex w-full flex-row items-end justify-start gap-4">
         <div class="flex flex-col">
           <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
             Last 2 months
@@ -266,7 +266,6 @@ watchEffect(() => {
         </div>
       </div>
     </div>
-    ``
     <ConfirmModal :taskId="task.id" :active-days="activeLabels(task)" />
     <LevelUpNotification />
   </div>

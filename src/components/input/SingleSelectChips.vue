@@ -39,7 +39,7 @@ const selectItem = (index) => {
       v-for="(item, index) in items"
       :key="index"
       :class="[
-        'cursor-pointer rounded-lg px-6 py-3 text-center flex flex-col items-center justify-center',
+        'cursor-pointer rounded-lg px-4 py-3 text-center flex flex-col items-center justify-center',
         selectedIndex === index
           ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
           : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',

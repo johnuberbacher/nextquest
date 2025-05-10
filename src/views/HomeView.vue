@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { RiCheckFill } from '@remixicon/vue'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import Notification from '../components/ui/Notification.vue'
@@ -12,7 +11,7 @@ import CalendarWidget from '../components/ui/CalendarWidget.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-const { tasks, createTask, getTasksForToday } = taskStore
+const { tasks, getTasksForToday } = taskStore
 const { user, getUserTitle, getExpForNextLevel } = userStore
 
 const dailies = computed(() => {
@@ -25,15 +24,14 @@ const userTitle = computed(() => {
 </script>
 
 <template>
-  <FullScreenLoading v-if="!tasks" />
-
+  <FullScreenLoading v-if="!user || !tasks" />
   <main
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-between gap-6 overflow-hidden"
+    class="flex h-full w-full flex-grow flex-col items-start justify-between gap-4 overflow-hidden"
   >
-    <div class="flex h-full w-full flex-col items-start justify-start gap-6">
-      <div class="flex w-full flex-col items-start justify-start gap-6 px-4 pt-6 md:px-6">
-        <div class="flex w-full flex-row items-center justify-start gap-3">
+    <div class="flex h-full w-full flex-col items-start justify-start gap-4">
+      <div class="flex w-full flex-col items-start justify-start gap-4 px-4 pt-4 md:px-4">
+        <div class="flex w-full flex-row items-start justify-start gap-3">
           <div
             class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
           >
@@ -43,13 +41,7 @@ const userTitle = computed(() => {
           </div>
           <div class="flex w-full flex-col items-start justify-start gap-1">
             <div class="flex w-full flex-row items-center justify-between gap-2">
-              <div class="font-bold dark:text-white">{{ user.name }}</div>
-              <div
-                :class="userTitle?.color"
-                class="flex w-auto rounded-sm px-2 py-1 text-[10px] font-bold uppercase"
-              >
-                {{ userTitle?.title }}
-              </div>
+              <div class="text-lg font-bold dark:text-white">{{ user.name }}</div>
             </div>
 
             <!--<div
@@ -71,9 +63,9 @@ const userTitle = computed(() => {
           </div>
         </div>
       </div>-->
-            <div class="flex w-full flex-col items-start justify-start gap-1">
+            <div class="flex w-full flex-col items-start justify-start gap-0">
               <div class="flex w-full flex-row items-center justify-between gap-2">
-                <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
+                <div class="text-xs font-bold text-neutral-600 dark:text-neutral-400">
                   Level {{ user.level }}
                 </div>
                 <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
@@ -85,15 +77,23 @@ const userTitle = computed(() => {
                 :max="getExpForNextLevel(user.level)"
                 :animate="true"
               />
-              <div class="items flex w-full flex-row flex-wrap justify-end gap-1 text-end">
+              <div class="items mt-2 flex w-full flex-row items-center justify-between gap-1">
                 <div
-                  v-for="(item, index) in 8"
-                  :key="index"
-                  :class="[
-                    'aspect-square h-4 rounded-full border border-dashed',
-                    ' border-neutral-300 dark:border-neutral-600',
-                  ]"
-                ></div>
+                  :class="userTitle?.color"
+                  class="flex w-auto rounded-sm px-2 py-1 text-[10px] font-bold uppercase"
+                >
+                  {{ userTitle?.title }}
+                </div>
+                <div class="flex w-auto gap-1 rounded-sm text-[10px] font-bold uppercase">
+                  <div
+                    v-for="(item, index) in 8"
+                    :key="index"
+                    :class="[
+                      'aspect-square h-4 rounded-full border border-dashed',
+                      ' border-neutral-300 dark:border-neutral-600',
+                    ]"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -106,15 +106,15 @@ const userTitle = computed(() => {
       </div>
 
       <div
-        class="flex min-h-[80px] w-full flex-col items-start justify-start gap-6 overflow-x-auto overflow-y-hidden"
+        class="flex min-h-[80px] w-full flex-col items-start justify-start gap-4 overflow-x-auto overflow-y-hidden"
       >
         <CalendarWidget />
       </div>
 
-      <div class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto">
-        <div class="flex w-full flex-col items-start justify-start gap-4 px-6">
+      <div class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto">
+        <div class="flex w-full flex-col items-start justify-start gap-4 px-4">
           <div class="flex w-full flex-row items-center justify-between">
-            <label class="text-lg font-bold dark:text-white">Dailies</label>
+            <div class="text-lg font-bold dark:text-white">Dailies</div>
             <RouterLink
               :to="'/habits'"
               class="py-1 text-xs font-semibold text-neutral-500 hover:text-neutral-400"
@@ -122,7 +122,7 @@ const userTitle = computed(() => {
               View All</RouterLink
             >
           </div>
-          <DailiesWidget :tasks="dailies" />
+          <DailiesWidget :tasks="dailies" :cols="2" :md-cols="4" />
         </div>
         <!--<WeekliesWidget />-->
       </div>

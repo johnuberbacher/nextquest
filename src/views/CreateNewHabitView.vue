@@ -3,13 +3,13 @@ import { ref, computed, onMounted, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useCategoryStore } from '@/stores/useCategoryStore'
-import SingleSelectChips from '@/components/input/SingleSelectChips.vue'
-import MultiSelectWeekdays from '@/components/input/MultiSelectWeekdays.vue'
-import TimePicker from '@/components/input/TimePicker.vue'
-import ColorPicker from '@/components/input/ColorPicker.vue'
-import EmojiPicker from '@/components/input/EmojiPicker.vue'
-import FullScreenLoading from '@/components/ui/FullScreenLoading.vue'
-import Suggestion from '@/components/input/Suggestion.vue'
+import SingleSelectChips from '../components/input/SingleSelectChips.vue'
+import MultiSelectWeekdays from '../components/input/MultiSelectWeekdays.vue'
+import TimePicker from '../components/input/TimePicker.vue'
+import ColorPicker from '../components/input/ColorPicker.vue'
+import EmojiPicker from '../components/input/EmojiPicker.vue'
+import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
+import Suggestion from '../components/input/Suggestion.vue'
 
 const router = useRouter()
 
@@ -91,7 +91,7 @@ const fieldValidation = computed(() => {
 })
 
 const selectedCategory = computed(() => {
-  return getCategoryById(selectedCategoryId)
+  return selectedCategoryId !== undefined ? getCategoryById(selectedCategoryId) : null
 })
 
 function handleSelectDescriptionSuggestion(value: string) {
@@ -121,29 +121,38 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-6 overflow-hidden p-6"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
   >
     <!-- Form -->
-    <div class="flex w-full flex-row items-center justify-start gap-3">
-      <div
-        class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
-      >
-        <div class="-mt-1 ml-0.5 flex items-center justify-center text-4xl">
-          {{ selectedCategory.icon }}
+    <div class="flex w-full flex-col items-start justify-start gap-4 px-4">
+      <div class="relative flex w-full flex-row items-start justify-start gap-4">
+        <div class="flex w-full flex-col items-start justify-start gap-1">
+          <div class="flex w-full flex-col items-start justify-start gap-2">
+            <div class="text-lg font-bold dark:text-white">
+              {{ 'New ' + selectedCategory.name + ' habit' }}
+            </div>
+            <div class="text-sm text-neutral-500 dark:text-neutral-500">
+              Enter the details of your new habit below. You can choose the time, frequency, and
+              other options to customize your habit.
+            </div>
+            <div
+              class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+            >
+              {{ selectedCategory.name }}
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flex w-full flex-col items-start justify-start gap-2">
-        <div class="text-2xl font-bold text-neutral-900 dark:text-white">
-          {{ 'New ' + selectedCategory.name + ' habit' }}
-        </div>
-        <div class="text-sm text-neutral-500 dark:text-neutral-500">
-          Enter the details of your new habit below. You can choose the time, frequency, and other
-          options to customize your habit.
+        <div
+          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600 md:mt-0"
+        >
+          <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
+            {{ selectedCategory.icon }}
+          </div>
         </div>
       </div>
     </div>
     <!--<div class="flex w-full flex-col items-start justify-start gap-2">
-      <div class="text-2xl font-bold text-neutral-900 dark:text-white">
+      <div class="text-lg font-bold dark:text-white">
         {{ 'New ' + selectedCategory.name + ' habit' }}
       </div>
       <div class="text-sm text-neutral-500 dark:text-neutral-500">
@@ -153,7 +162,7 @@ watchEffect(() => {
     </div>-->
 
     <form
-      class="flex h-full w-full flex-col items-start justify-start gap-6 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-900"
+      class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden border-y border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900"
     >
       <fieldset class="flex w-full flex-col gap-1">
         <label class="text-sm font-semibold dark:text-white">Short description</label>
@@ -197,14 +206,14 @@ watchEffect(() => {
         <div v-for="(e, i) in errors" :key="i">• {{ e }}</div>
       </div>
     </form>
-    <div class="flex h-auto w-full flex-col items-end justify-between gap-6 md:flex-row">
-      <button
+    <div class="flex h-auto w-full flex-col items-end justify-end gap-4 px-4 md:flex-row">
+      <!--<button
         :disabled="submitting"
         @click="router.push('/add-new-habit')"
         class="btn btn-default btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Go back
-      </button>
+      </button>-->
       <button
         @click="handleSubmit"
         :disabled="fieldValidation"

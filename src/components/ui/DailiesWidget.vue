@@ -12,7 +12,8 @@ const props = defineProps<{
     color: string
     categoryId: string
   }>
-  gridCols?: number
+  cols?: number
+  mdCols?: number
 }>()
 
 const userStore = useUserStore()
@@ -20,18 +21,21 @@ const categoryStore = useCategoryStore()
 const { hasLoggedToday } = userStore
 const { getCategoryById } = categoryStore
 
-const gridClass = computed(() => `md:grid-cols-${props.gridCols || 4}`)
+const gridClass = computed(() => [
+  `grid-cols-${props.cols ?? 2}`,
+  `md:grid-cols-${props.mdCols ?? 4}`,
+])
 </script>
 
 <template>
-  <div class="grid w-full grid-cols-2 flex-wrap gap-6" :class="gridClass">
+  <div class="grid w-full flex-wrap gap-4 pb-4" :class="gridClass">
     <RouterLink
       :to="'/habit/' + task.id"
       v-for="task in tasks"
       :key="task.id"
       :class="[
         hasLoggedToday(task.id) ? 'grayscale' : '',
-        'w-full rounded-xl pt-10 pb-4 px-4 relative flex flex-col items-start justify-start' +
+        'w-full rounded-xl pt-4 pb-4 px-4 relative flex flex-col items-start justify-start' +
           ' ' +
           task.color,
       ]"

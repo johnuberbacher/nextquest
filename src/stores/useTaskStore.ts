@@ -8,7 +8,7 @@ export interface Task {
   id: string
   name: string
   description: string
-  categoryId: number | string
+  categoryId: number
   icon: string
   exp: number
   level: number
@@ -28,109 +28,19 @@ export const useTaskStore = defineStore('task', () => {
   // const tasks = ref<Task[]>([])
   const tasks = ref<Task[]>([
     {
-      id: '15',
-      name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '14',
-      name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '13',
-      name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '12',
-      name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '11',
-      name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
       id: '1',
       name: '',
-      description: 'Something on Weekdays',
-      categoryId: 1,
-      icon: '🧘‍♀️',
+      description: 'Start the day with a glass of water',
+      categoryId: 6,
+      icon: '💧',
       exp: 0,
       level: 1,
       progress: 0,
       state: 'pending',
       durationMinutes: 30,
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       timeOfDay: '07:00',
-      color: 'bg-yellow-50 dark:bg-yellow-200',
+      color: 'bg-green-50 dark:bg-green-200',
       createdAt: new Date(),
       startDate: null,
       endDate: null,
@@ -242,7 +152,7 @@ export const useTaskStore = defineStore('task', () => {
       durationMinutes: taskInput.durationMinutes ?? 3,
       daysOfWeek: taskInput.daysOfWeek ?? ['Mon'],
       timeOfDay: taskInput.timeOfDay ?? '05:00',
-      categoryId: taskInput.categoryId ?? 'NULL',
+      categoryId: taskInput.categoryId ?? 0,
       color: taskInput.color ?? 'bg-red-200',
       createdAt: new Date(),
       startDate: taskInput.startDate ?? null,
@@ -254,7 +164,7 @@ export const useTaskStore = defineStore('task', () => {
   }
 
   const updateTask = (id: number, updates: Partial<Task>) => {
-    const index = tasks.value.findIndex((t) => t.id === id)
+    const index = tasks.value.findIndex((t) => t.id === id.toString())
     if (index !== -1) {
       tasks.value[index] = { ...tasks.value[index], ...updates }
     }
@@ -265,7 +175,7 @@ export const useTaskStore = defineStore('task', () => {
   }
 
   const incrementTaskExp = async (id: number, amount: number) => {
-    const task = tasks.value.find((t) => t.id === id)
+    const task = tasks.value.find((t) => t.id === id.toString())
     if (task) {
       task.exp += amount
 

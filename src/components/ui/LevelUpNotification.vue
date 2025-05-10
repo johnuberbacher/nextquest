@@ -63,7 +63,7 @@ const handleDismiss = () => {
     class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]"
   >
     <div
-      class="modal-box flex select-none flex-col items-center justify-center gap-4 border border-neutral-300 px-6 py-6 text-center dark:border-neutral-700 md:px-10"
+      class="modal-box flex select-none flex-col items-center justify-center gap-4 border border-neutral-300 px-4 py-4 text-center dark:border-neutral-700 md:px-10"
     >
       <div
         class="flex w-20 flex-col items-center justify-center bg-orange-700 text-center text-3xl font-bold text-white sm:w-40 sm:text-5xl"
@@ -73,7 +73,7 @@ const handleDismiss = () => {
       </div>
 
       <h3 class="text-xl font-bold">Level Up</h3>
-      <div class="flex w-full flex-row items-center justify-between gap-4 px-6">
+      <div class="flex w-full flex-row items-center justify-between gap-4 px-4">
         <div
           class="flex aspect-square w-12 flex-col items-center justify-center rounded-full bg-neutral-200 text-center text-sm font-bold dark:bg-neutral-700"
         >
@@ -91,7 +91,7 @@ const handleDismiss = () => {
       </p>
       <button
         @click="handleDismiss"
-        class="btn btn-primary btn-lg w-full flex-grow rounded-full px-6 text-sm"
+        class="btn btn-primary btn-lg w-full flex-grow rounded-full px-4 text-sm"
       >
         Continue
       </button>

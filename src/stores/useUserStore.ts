@@ -46,7 +46,7 @@ export const useUserStore = defineStore('User', () => {
 
   const user = ref<User>({
     userId: '123456',
-    name: 'John Uber',
+    name: 'John Uberbacher',
     dateCreated: new Date(),
     exp: 0,
     level: 1,

@@ -11,7 +11,7 @@ import AppBar from './components/ui/AppBar.vue'
     <div
       class="relative m-auto flex h-full w-full flex-col justify-between bg-white shadow-sm dark:bg-neutral-800 md:max-h-[960px] md:max-w-2xl md:overflow-hidden md:rounded-3xl md:border md:border-neutral-200 md:dark:border-neutral-700"
     >
-      <Header />
+      <Header class="hidden md:flex" />
       <RouterView />
       <AppBar />
     </div>
