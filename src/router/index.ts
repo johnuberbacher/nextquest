@@ -4,20 +4,20 @@ import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
-    // always scroll to top
+    // always scroll to top on new route
     return { top: 0 }
   },
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'intro',
-      component: IntroView,
-    },
-    {
-      path: '/home',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/welcome',
+      name: 'welcome',
+      component: IntroView,
     },
     {
       path: '/about',

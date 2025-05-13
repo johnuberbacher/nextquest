@@ -45,8 +45,11 @@ const labelText = computed(() => {
 </script>
 
 <template>
-  <fieldset class="flex w-full flex-col gap-1">
-    <label class="text-sm font-semibold dark:text-white">{{ labelText }}</label>
+  <fieldset class="flex w-full flex-col gap-2">
+    <label
+      class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+      >{{ labelText }}</label
+    >
 
     <div
       class="flex w-full flex-row items-center justify-between gap-2 overflow-x-auto scroll-smooth sm:justify-start"
@@ -63,7 +66,7 @@ const labelText = computed(() => {
         @click="toggleDay(day)"
       >
         <div class="whitespace-nowrap text-xs font-semibold text-neutral-800 dark:text-white">
-          {{ day }}
+          {{ day.charAt(0) }}
         </div>
       </div>
     </div>

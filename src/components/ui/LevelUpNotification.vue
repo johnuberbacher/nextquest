@@ -45,7 +45,7 @@ watch(
       // Wait 1 second and then show updated level
       setTimeout(() => {
         showNewLevel.value = true
-      }, 1000)
+      }, 2000)
     } else {
       modal.close()
     }
@@ -63,10 +63,10 @@ const handleDismiss = () => {
     class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]"
   >
     <div
-      class="modal-box flex select-none flex-col items-center justify-center gap-4 border border-neutral-300 px-4 py-4 text-center dark:border-neutral-700 md:px-10"
+      class="modal-box flex select-none flex-col items-center justify-center gap-4 border border-neutral-300 p-6 text-center dark:border-neutral-700 sm:p-10"
     >
       <div
-        class="flex w-20 flex-col items-center justify-center bg-orange-700 text-center text-3xl font-bold text-white sm:w-40 sm:text-5xl"
+        class="sm:w-30 flex w-20 flex-col items-center justify-center bg-orange-700 text-center text-3xl font-bold text-white sm:text-5xl"
         style="aspect-ratio: 0.866; clip-path: polygon(-50% 50%, 50% 100%, 150% 50%, 50% 0)"
       >
         {{ showNewLevel ? user.level : user.level - 1 }}

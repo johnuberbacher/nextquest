@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch, defineEmits } from 'vue'
+
+const emit = defineEmits(['update:activeDate'])
 
 const today = new Date()
 today.setHours(0, 0, 0, 0)
@@ -11,11 +13,18 @@ const dateRange = Array.from({ length: 21 }, (_, i) => {
   return d
 })
 
-const isToday = (date) => {
-  return date.toDateString() === today.toDateString()
+const activeDate = ref(new Date(today))
+
+const isSameDay = (date1, date2) => {
+  return date1.toDateString() === date2.toDateString()
 }
 
-// Optional: auto-scroll to center Today
+const handleDateClick = (date) => {
+  activeDate.value = new Date(date)
+  emit('update:activeDate', activeDate.value)
+}
+
+// Optional: auto-scroll to center Today on mount
 const scrollContainer = ref(null)
 
 onMounted(async () => {
@@ -31,6 +40,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 <template>
   <div class="relative w-full">
     <div
@@ -41,27 +51,34 @@ onMounted(async () => {
       class="min-h-20 no-scrollbar flex h-full w-full overflow-x-auto overflow-y-visible"
     >
       <div class="flex w-max snap-x snap-mandatory flex-row gap-3">
-        <div
+        <button
           v-for="(date, index) in dateRange"
           :key="index"
-          class="flex h-20 w-16 shrink-0 snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
+          @click="handleDateClick(date)"
+          class="btn flex h-20 w-16 shrink-0 cursor-pointer snap-center flex-col items-center justify-center gap-0 rounded-xl px-4 py-3 text-center"
           :class="
-            isToday(date)
+            isSameDay(date, activeDate)
               ? 'bg-orange-700 border border-orange-700 shadow-sm'
               : 'bg-white border border-neutral-200'
           "
         >
           <div
-            :class="['text-xs font-semibold', isToday(date) ? 'text-white' : 'text-neutral-500']"
+            :class="[
+              'text-xs font-semibold',
+              isSameDay(date, activeDate) ? 'text-white' : 'text-neutral-500',
+            ]"
           >
             {{ date.toLocaleDateString('en-US', { weekday: 'short' }) }}
           </div>
           <div
-            :class="['font-semibold text-xl', isToday(date) ? 'text-white' : 'text-neutral-500']"
+            :class="[
+              'font-semibold text-xl',
+              isSameDay(date, activeDate) ? 'text-white' : 'text-neutral-500',
+            ]"
           >
             {{ String(date.getDate()).padStart(2, '0') }}
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </div>

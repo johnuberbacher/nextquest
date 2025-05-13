@@ -14,11 +14,11 @@ const { selectedCategoryId, categories } = categoryStore
 
 const selectedCategory = ref<number>(0)
 
-const visibleCount = ref(12)
+const visibleCount = ref(20)
 const incrementAmount = 8
 
 const visibleCategories = computed(() => {
-  return categories.slice(0, visibleCount.value)
+  return [...categories].sort(() => Math.random() - 0.5).slice(0, visibleCount.value)
 })
 
 const showMore = () => {
@@ -26,7 +26,7 @@ const showMore = () => {
 }
 
 const submit = () => {
-  if (selectedCategory.value !== null) {
+  if (typeof selectedCategory.value === 'number') {
     categoryStore.selectedCategoryId = selectedCategory.value
     router.push({ name: 'create-new-habit' })
   }
@@ -38,7 +38,7 @@ const submit = () => {
     class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
   >
     <div class="flex h-auto w-full flex-col items-start justify-start gap-2 px-4">
-      <div class="text-lg font-bold dark:text-white">Choose habit</div>
+      <div class="text-md font-bold dark:text-white">Choose habit</div>
       <div class="text-sm text-neutral-500 dark:text-neutral-500">
         Select any pre-created habbits from the list below, you can choose more than one. Don't
         worry, you'll be able to make custom habits later.
@@ -53,9 +53,9 @@ const submit = () => {
           <button
             :disabled="visibleCategories.length === categories.length"
             @click="showMore"
-            class="btn btn-ghost mx-auto rounded-full"
+            class="btn btn-neutral mx-auto rounded-full px-10"
           >
-            Show more
+            More
           </button>
         </div>
       </div>
@@ -63,7 +63,6 @@ const submit = () => {
     <div class="flex h-auto w-full flex-row items-end justify-end gap-4 px-4">
       <button
         @click="submit"
-        :disabled="!selectedCategory"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Continue

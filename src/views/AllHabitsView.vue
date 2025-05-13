@@ -25,18 +25,14 @@ const dailies = computed(() => {
 </script>
 <template>
   <div
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 dark:bg-neutral-800"
   >
-    <div class="flex h-auto w-full flex-col items-start justify-start gap-2 px-4">
-      <div class="text-lg font-bold dark:text-white">All Habits</div>
-    </div>
-
     <div
-      class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden border-y border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900"
+      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
     >
       <DailiesWidget :tasks="tasks" class="overflow-y-auto p-4" :cols="2" :md-cols="3" />
     </div>
-    <div class="flex h-auto w-full flex-row items-end justify-end gap-4 px-4">
+    <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
       <RouterLink
         to="/add-new-habit"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"

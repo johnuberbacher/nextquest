@@ -85,7 +85,11 @@ const onChange = () => {
 </script>
 
 <template>
-  <label v-if="label" class="text-sm font-semibold dark:text-white">{{ label }}</label>
+  <label
+    v-if="label"
+    class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+    >{{ label }}</label
+  >
   <select class="select w-full" v-model="selectedEmoji" @change="onChange">
     <option v-for="emoji in options" :key="emoji" :value="emoji">
       {{ emoji }}

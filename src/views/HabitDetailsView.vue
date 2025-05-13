@@ -11,6 +11,7 @@ import ConfirmModal from '../components/ui/ConfirmModal.vue'
 import StreakNotification from '../components/ui/StreakNotification.vue'
 import LevelUpNotification from '../components/ui/LevelUpNotification.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
+import InputLabel from '../components/input/InputLabel.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -107,17 +108,17 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 dark:bg-neutral-800"
   >
     <div class="flex w-full flex-col items-start justify-start gap-4">
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
-            <div class="text-lg font-bold dark:text-white">
+            <div class="text-md font-bold dark:text-white">
               {{ task.description || 'error!' }}
             </div>
             <div
-              class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+              class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
             >
               {{ category.name + ' habit' }}
             </div>
@@ -130,7 +131,7 @@ watchEffect(() => {
           </div>
         </div>
         <div
-          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full text-center text-white md:mt-0"
+          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full border border-neutral-200 text-center text-white dark:border-neutral-700 md:mt-0"
           :class="[task.color]"
         >
           <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
@@ -138,21 +139,21 @@ watchEffect(() => {
           </div>
         </div>
       </div>
-      <!--<div class="flex w-full flex-col items-start justify-start gap-1">
+      <div class="flex w-full flex-col items-start justify-start gap-1">
         <div class="flex w-full flex-row items-center justify-between gap-2">
-          <div class="text-xs font-bold text-neutral-600 dark:text-neutral-300">
-            Level: {{ task.level }}
+          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+            Habit Level: {{ task.level }}
           </div>
-          <div class="text-xs font-bold text-neutral-500 dark:text-neutral-500">
-            {{ task.exp }}/100
+          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+            EXP: {{ task.exp }}/100%
           </div>
         </div>
         <progress class="progress progress-success w-full" max="100" :value="task.exp"></progress>
-      </div>-->
+      </div>
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white px-4 py-8 dark:border-neutral-700 dark:bg-neutral-900 md:px-4 md:pb-4 md:pt-10"
+      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 bg-white px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900"
     >
       <div class="w-full">
         <ul class="steps text- w-full justify-between font-semibold">
@@ -171,10 +172,8 @@ watchEffect(() => {
       <StreakNotification :streak="streak" />
       <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex w-full flex-row items-end justify-start gap-4">
-        <div class="flex flex-col items-start justify-start">
-          <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-            This week
-          </div>
+        <div class="flex flex-col items-start justify-start gap-1">
+          <InputLabel text="This week" />
           <div class="text-xl font-semibold">
             {{
               Math.ceil(
@@ -184,10 +183,12 @@ watchEffect(() => {
               )
             }}%
           </div>
-          <div class="text-xs font-semibold text-neutral-600">Complete</div>
+          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+            Complete
+          </div>
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
-          <div class="text-xs font-semibold text-neutral-400">
+          <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
             {{ weekEntries.length }}/{{ task.daysOfWeek.length }}
           </div>
           <LevelProgressBar
@@ -197,11 +198,10 @@ watchEffect(() => {
           />
         </div>
       </div>
+      <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex w-full flex-row items-end justify-start gap-4">
-        <div class="flex flex-col">
-          <div class="mb-1 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-            Last 2 months
-          </div>
+        <div class="flex flex-col items-start justify-start gap-1">
+          <InputLabel text="Last 2 months" />
           <div class="text-xl font-semibold">
             {{
               Math.ceil(
@@ -211,10 +211,12 @@ watchEffect(() => {
               )
             }}%
           </div>
-          <div class="text-xs font-semibold text-neutral-600">Complete</div>
+          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+            Complete
+          </div>
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
-          <div class="text-xs font-semibold text-neutral-400">
+          <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
             {{ getTwoMonthsCompletion(task.id, task.daysOfWeek.length).completed }}/{{
               getTwoMonthsCompletion(task.id, task.daysOfWeek.length).total
             }}
@@ -227,10 +229,8 @@ watchEffect(() => {
         </div>
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex flex-col gap-2">
-        <div class="mb-0.5 w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-          Past year
-        </div>
+      <div class="flex flex-col items-start justify-start gap-1">
+        <InputLabel text="Past year" />
         <div class="md:gap-0.75 flex flex-row flex-wrap gap-0.5">
           <div
             v-for="n in 365"
@@ -245,21 +245,19 @@ watchEffect(() => {
             "
             :class="[
               yearLoggedDays.has(new Date(Date.now() - (364 - n) * 86400000).toDateString())
-                ? 'cursor-pointer tooltip bg-orange-800 border-orange-600'
+                ? 'cursor-pointer tooltip bg-orange-600 border-orange-700'
                 : ' bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-700',
             ]"
           ></div>
         </div>
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex flex-col gap-3">
-        <div class="w-full whitespace-nowrap text-xs font-semibold text-neutral-400">
-          Related categories
-        </div>
+      <div class="flex flex-col items-start justify-start gap-1">
+        <InputLabel text="Related Categories" />
         <div class="flex flex-row flex-wrap gap-x-2 gap-y-1">
           <div
             v-for="category in category?.relatedCategories"
-            class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+            class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
           >
             {{ category ? getCategoryById(category).name : '' }}
           </div>

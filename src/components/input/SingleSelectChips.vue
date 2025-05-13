@@ -33,8 +33,12 @@ const selectItem = (index) => {
 }
 </script>
 <template>
-  <label v-if="label" class="text-sm dark:text-white font-semibold">{{ label }}</label>
-  <div class="w-full flex flex-row gap-2 overflow-x-auto scroll-smooth">
+  <label
+    v-if="label"
+    class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+    >{{ label }}</label
+  >
+  <div class="flex w-full flex-row gap-2 overflow-x-auto scroll-smooth">
     <div
       v-for="(item, index) in items"
       :key="index"
@@ -46,7 +50,7 @@ const selectItem = (index) => {
       ]"
       @click="selectItem(index)"
     >
-      <div class="font-semibold text-xs text-neutral-800 dark:text-white whitespace-nowrap">
+      <div class="whitespace-nowrap text-xs font-semibold text-neutral-800 dark:text-white">
         {{ item }}
       </div>
     </div>

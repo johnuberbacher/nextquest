@@ -122,3 +122,10 @@ body,
     }
   }
 }
+
+.divider {
+  &:before,
+  &:after {
+    height: calc(0.25rem * 0.25);
+  }
+}

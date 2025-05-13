@@ -13,14 +13,16 @@ function handleClick(suggestion: string) {
 </script>
 
 <template>
-  <div class="mt-0.5 flex w-full flex-row flex-wrap gap-x-1 gap-y-1.5">
-    <div
-      v-for="(suggestion, index) in suggestions"
-      :key="index"
-      @click="handleClick(suggestion)"
-      class="cursor-pointer rounded-full border border-dashed border-neutral-400 px-2 py-0.5 text-[11px] dark:border-neutral-600 dark:text-neutral-300"
-    >
-      {{ suggestion }}
+  <div class="w-full max-w-full overflow-hidden">
+    <div class="flex w-full gap-x-1 gap-y-1.5 overflow-x-auto overflow-y-hidden">
+      <div
+        v-for="(suggestion, index) in suggestions"
+        :key="index"
+        @click="handleClick(suggestion)"
+        class="cursor-pointer whitespace-nowrap rounded-full border border-dashed border-neutral-400 px-2 py-0.5 text-[11px] dark:border-neutral-600 dark:text-neutral-300"
+      >
+        {{ suggestion }}
+      </div>
     </div>
   </div>
 </template>

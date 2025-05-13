@@ -9,7 +9,7 @@ import TimePicker from '../components/input/TimePicker.vue'
 import ColorPicker from '../components/input/ColorPicker.vue'
 import EmojiPicker from '../components/input/EmojiPicker.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
-import Suggestion from '../components/input/Suggestion.vue'
+import TextInput from '../components/input/TextInput.vue'
 
 const router = useRouter()
 
@@ -121,14 +121,14 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
+    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 py-4 dark:bg-neutral-800"
   >
     <!-- Form -->
     <div class="flex w-full flex-col items-start justify-start gap-4 px-4">
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
-            <div class="text-lg font-bold dark:text-white">
+            <div class="text-md font-bold dark:text-white">
               {{ 'New ' + selectedCategory.name + ' habit' }}
             </div>
             <div class="text-sm text-neutral-500 dark:text-neutral-500">
@@ -143,7 +143,7 @@ watchEffect(() => {
           </div>
         </div>
         <div
-          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600 md:mt-0"
+          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-center text-white dark:border-neutral-500 dark:bg-neutral-700 md:mt-0"
         >
           <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
             {{ selectedCategory.icon }}
@@ -152,7 +152,7 @@ watchEffect(() => {
       </div>
     </div>
     <!--<div class="flex w-full flex-col items-start justify-start gap-2">
-      <div class="text-lg font-bold dark:text-white">
+      <div class="text-md font-bold dark:text-white">
         {{ 'New ' + selectedCategory.name + ' habit' }}
       </div>
       <div class="text-sm text-neutral-500 dark:text-neutral-500">
@@ -161,51 +161,63 @@ watchEffect(() => {
       </div>
     </div>-->
 
-    <form
-      class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden border-y border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-900"
-    >
-      <fieldset class="flex w-full flex-col gap-1">
-        <label class="text-sm font-semibold dark:text-white">Short description</label>
-        <input
-          type="text"
-          placeholder="Read a book for 10 minutes every day"
-          class="input w-full"
-          v-model="taskDescription"
-        />
-        <Suggestion
-          :suggestions="selectedCategory.suggestions"
-          @select="handleSelectDescriptionSuggestion"
-        />
-      </fieldset>
-
-      <fieldset class="flex w-full flex-col gap-1">
-        <SingleSelectChips
-          v-model="selectedDuration"
-          :items="[1, 3, 5, 10, 15, 20, 30, 60]"
-          label="Duration (minutes)"
-        />
-      </fieldset>
-
-      <fieldset class="flex w-full flex-col gap-1">
-        <MultiSelectWeekdays v-model="selectedDays" label="Select days of the week" />
-      </fieldset>
-
-      <!--<fieldset class="flex w-full flex-col gap-1">
+    <div class="flex w-full flex-grow flex-col overflow-hidden px-4">
+      <form
+        class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 bg-white px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900"
+      >
+        <div class="flex w-full flex-col gap-2">
+          <label
+            class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+            >Short description</label
+          >
+          <TextInput
+            v-model="taskDescription"
+            placeholder="Read a book for 10 minutes every day"
+            :suggestions="selectedCategory.suggestions"
+            @select="handleSelectDescriptionSuggestion"
+            :maxLength="100"
+          />
+        </div>
+        <div class="divider -mx-4 my-0 h-0.5"></div>
+        <div class="flex w-full flex-col gap-2">
+          <SingleSelectChips
+            v-model="selectedDuration"
+            :items="[
+              '1 min',
+              '3 mins',
+              '5 mins',
+              '10 mins',
+              '20 mins',
+              '30 mins',
+              '40 mins',
+              '50 mins',
+              '60 mins',
+            ]"
+            label="Duration (minutes)"
+          />
+        </div>
+        <div class="divider -mx-4 my-0 h-0.5"></div>
+        <div class="flex w-full flex-col gap-2">
+          <MultiSelectWeekdays v-model="selectedDays" label="Select days of the week" />
+        </div>
+        <div class="divider -mx-4 my-0 h-0.5"></div>
+        <!--<div class="flex w-full flex-col gap-2">
         <TimePicker v-model="selectedTimeOfDay" label="Select time of the day" />
-      </fieldset>-->
+      </div>-->
 
-      <fieldset class="flex w-full flex-col gap-1">
-        <ColorPicker v-model="selectedColor" label="Select label color" />
-      </fieldset>
+        <div class="flex w-full flex-col gap-2">
+          <ColorPicker v-model="selectedColor" label="Select label color" />
+        </div>
+        <div class="divider -mx-4 my-0 h-0.5"></div>
+        <div class="flex w-full flex-col gap-2">
+          <EmojiPicker v-model="selectedEmoji" label="Select emoji icon" />
+        </div>
 
-      <fieldset class="flex w-full flex-col gap-1">
-        <EmojiPicker v-model="selectedEmoji" label="Select custom icon" />
-      </fieldset>
-
-      <div v-if="errors.length" class="space-y-1 text-sm text-red-500">
-        <div v-for="(e, i) in errors" :key="i">• {{ e }}</div>
-      </div>
-    </form>
+        <div v-if="errors.length" class="space-y-1 text-sm text-red-500">
+          <div v-for="(e, i) in errors" :key="i">• {{ e }}</div>
+        </div>
+      </form>
+    </div>
     <div class="flex h-auto w-full flex-col items-end justify-end gap-4 px-4 md:flex-row">
       <!--<button
         :disabled="submitting"
@@ -219,7 +231,7 @@ watchEffect(() => {
         :disabled="fieldValidation"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
-        {{ submitting ? 'Saving...' : 'Create habit' }}
+        {{ submitting ? 'Saving...' : 'Save habit' }}
       </button>
     </div>
   </div>

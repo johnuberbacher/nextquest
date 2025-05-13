@@ -14,7 +14,7 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <fieldset class="flex w-full flex-col gap-1">
+  <fieldset class="flex w-full flex-col gap-2">
     <label v-if="label" class="text-sm font-semibold dark:text-white">
       {{ label }}
     </label>

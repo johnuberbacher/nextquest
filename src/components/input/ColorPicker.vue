@@ -41,18 +41,21 @@ const selectColor = (index) => {
 </script>
 <template>
   <fieldset class="flex w-full flex-col gap-2">
-    <label v-if="label" class="text-sm font-semibold dark:text-white">
+    <label
+      v-if="label"
+      class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+    >
       {{ label }}
     </label>
 
     <div
-      class="flex w-full flex-row items-center justify-start gap-2.5 overflow-x-auto overflow-y-visible scroll-smooth py-1"
+      class="flex w-full flex-row items-center justify-start gap-2.5 overflow-x-auto overflow-y-visible scroll-smooth py-1 pl-1"
     >
       <div
         v-for="(color, index) in colorClasses"
         :key="index"
         :class="[
-          'cursor-pointer rounded-full border border-neutral-200 dark:border-neutral-700 aspect-square h-8 w-8 text-center flex items-center justify-center',
+          'cursor-pointer rounded-full border border-neutral-300 dark:border-neutral-700 aspect-square h-8 w-8 text-center flex items-center justify-center',
           color,
           selectedIndex === index ? 'outline outline-offset-3 outline-orange-700 shadow-sm' : '',
         ]"

@@ -97,9 +97,13 @@ export const useUserStore = defineStore('User', () => {
   })
 
   const hasLoggedToday = (habitId: string): boolean => {
-    const today = new Date().toDateString()
+    return hasLoggedOnDate(habitId, new Date())
+  }
+
+  const hasLoggedOnDate = (habitId: string, dateToCheck: Date): boolean => {
+    const checkDateStr = dateToCheck?.toDateString()
     return user.value.completedHabits.some(
-      (e) => e.habitId === habitId && new Date(e.date).toDateString() === today,
+      (e) => e.habitId === habitId && new Date(e.date).toDateString() === checkDateStr,
     )
   }
 
@@ -276,6 +280,7 @@ export const useUserStore = defineStore('User', () => {
     getUserTitle,
     getStreak,
     hasLoggedToday,
+    hasLoggedOnDate,
     logHabitEntry,
     incrementUserExp,
     getExpForNextLevel,

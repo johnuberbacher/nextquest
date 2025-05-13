@@ -14,11 +14,12 @@ const props = defineProps<{
   }>
   cols?: number
   mdCols?: number
+  selectedDate: Date
 }>()
 
 const userStore = useUserStore()
 const categoryStore = useCategoryStore()
-const { hasLoggedToday } = userStore
+const { hasLoggedToday, hasLoggedOnDate } = userStore
 const { getCategoryById } = categoryStore
 
 const gridClass = computed(() => [
@@ -34,19 +35,28 @@ const gridClass = computed(() => [
       v-for="task in tasks"
       :key="task.id"
       :class="[
-        hasLoggedToday(task.id) ? 'grayscale' : '',
-        'w-full rounded-xl pt-4 pb-4 px-4 relative flex flex-col items-start justify-start' +
+        hasLoggedOnDate(task.id, selectedDate) || hasLoggedToday(task.id) ? 'grayscale' : '',
+        'btn btn-ghost h-full text-start w-full rounded-xl pt-4 pb-4 px-4 relative flex flex-col items-start justify-start ' +
           ' ' +
           task.color,
       ]"
     >
+      {{}}
       <div
         class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white"
-        :class="[hasLoggedToday(task.id) ? 'opacity-50' : 'shadow-lg']"
+        :class="[
+          hasLoggedOnDate(task.id, selectedDate) || hasLoggedToday(task.id)
+            ? 'opacity-50'
+            : 'shadow-lg',
+        ]"
       >
         <RiCheckFill
           size="20px"
-          :class="[hasLoggedToday(task.id) ? 'text-neutral-400' : 'text-orange-700']"
+          :class="[
+            hasLoggedOnDate(task.id, selectedDate) || hasLoggedToday(task.id)
+              ? 'text-neutral-400'
+              : 'text-orange-700',
+          ]"
         />
       </div>
       <div class="mb-8 text-5xl text-black">{{ task.icon }}</div>

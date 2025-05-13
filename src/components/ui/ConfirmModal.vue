@@ -60,7 +60,7 @@ const handleDismiss = () => {
 }
 
 const alreadyLoggedToday = computed(() => {
-  if (!task.value) return false
+  if (!task.value || alreadyLoggedToday.value) return
   return !isActiveToday.value || hasLoggedToday(task.value.id)
 })
 
@@ -95,7 +95,7 @@ const logButtonLabel = computed(() => {
   </div>
   <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
     <div
-      class="modal-box select-none border border-neutral-300 px-4 py-10 text-center dark:border-neutral-700 md:px-10"
+      class="modal-box select-none border border-neutral-300 p-6 text-center dark:border-neutral-700 sm:p-10"
     >
       <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
       <p class="py-4 text-sm">
