@@ -60,8 +60,11 @@ const gridClass = computed(() => [
       </div>
       <div class="mb-8 text-5xl text-black">{{ task.icon }}</div>
 
-      <div class="text-xs font-semibold text-black">
+      <div class="text-sm font-semibold text-black">
         {{ task.name }}
+      </div>
+      <div class="text-neutral-500 text-xs font-medium tracking-tight">
+        {{ task.description }}
       </div>
       <div
         class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"

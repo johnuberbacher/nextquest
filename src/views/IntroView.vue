@@ -32,20 +32,16 @@ const handleNext = () => {
       class="flex h-full flex-col flex-wrap items-center justify-center gap-6 text-center md:gap-12"
     >
       <div
-        class="h-50 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
+        class="h-50 bg-neutral-200 dark:bg-neutral-600 flex aspect-square items-center justify-center rounded-full text-center text-white"
       >
         <div class="-mt-1.5 ml-0.5 flex items-center justify-center text-8xl">🦊</div>
       </div>
-      <div class="text-center text-lg font-semibold dark:text-white" v-if="step === 0">
+      <div class="text-center text-lg font-semibold" v-if="step === 0">
         Schedule and log your habits everyday with ease, build better habits, one day at a time.<br /><br />
         Earn points and gain levels.
       </div>
-      <div class="text-md font-bold dark:text-white" v-if="step === 1">
-        Build better habits, one day at a time.
-      </div>
-      <div class="text-md font-bold dark:text-white" v-if="step === 2">
-        Earn points and gain levels.
-      </div>
+      <div class="text-md font-bold" v-if="step === 1">Build better habits, one day at a time.</div>
+      <div class="text-md font-bold" v-if="step === 2">Earn points and gain levels.</div>
     </div>
     <button
       class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"

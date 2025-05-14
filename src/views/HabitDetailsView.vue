@@ -110,19 +110,16 @@ watchEffect(() => {
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
-            <div class="text-md font-bold dark:text-white">
+            <div class="text-md font-bold">
               {{ task.name || 'error!' }}
+            </div>
+            <div class="text-neutral-500 dark:text-neutral-400 text-sm font-medium tracking-tight">
+              {{ task.description }}
             </div>
             <div
               class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
             >
-              {{ category.name + ' habit' }}
-            </div>
-            <div class="text-neutral-500 dark:text-neutral-500 text-sm">
-              Repeats
-              <span v-for="(day, index) in task.daysOfWeek" :key="index">
-                {{ day }}<span v-if="index < task.daysOfWeek.length - 1">, </span>
-              </span>
+              {{ category.name }}
             </div>
           </div>
         </div>
@@ -135,7 +132,9 @@ watchEffect(() => {
           </div>
         </div>
       </div>
-      <div class="flex w-full flex-col items-start justify-start gap-1">
+      <div
+        class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-col items-start justify-start gap-1 rounded-xl border bg-white p-4"
+      >
         <div class="flex w-full flex-row items-center justify-between gap-2">
           <div class="text-neutral-500 whitespace-nowrap text-xs font-semibold tracking-tight">
             Habit Level: {{ task.level }}
@@ -149,9 +148,10 @@ watchEffect(() => {
     </div>
 
     <div
-      class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white px-4 py-4"
+      class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white px-4 py-4"
     >
-      <div class="w-full">
+      <div class="flex w-full flex-col items-start justify-start gap-3">
+        <InputLabel :text="`Repeats: ${task.daysOfWeek.join(', ')}`" />
         <ul class="text- steps w-full justify-between font-semibold">
           <li
             v-for="day in labelMap"
@@ -252,11 +252,33 @@ watchEffect(() => {
         <InputLabel text="Related categories" />
         <div class="flex flex-row flex-wrap gap-x-2 gap-y-1">
           <div
-            v-for="category in category?.relatedCategories"
+            v-for="category in category.relatedCategories"
             class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
           >
             {{ category ? getCategoryById(category).name : '' }}
           </div>
+        </div>
+      </div>
+      <div class="divider -mx-6 my-0 h-0.5"></div>
+      <div v-if="task?.createdAt" class="flex w-full flex-col items-start justify-start gap-1">
+        <InputLabel text="Created" />
+        <div class="whitespace-nowrap text-xs font-semibold tracking-tight">
+          {{
+            new Date(task?.createdAt)
+              .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+              .replace(/(\d+)(?=,)/, (match) => {
+                const day = parseInt(match)
+                const suffix =
+                  day % 10 === 1 && day % 100 !== 11
+                    ? 'st'
+                    : day % 10 === 2 && day % 100 !== 12
+                      ? 'nd'
+                      : day % 10 === 3 && day % 100 !== 13
+                        ? 'rd'
+                        : 'th'
+                return day + suffix
+              })
+          }}
         </div>
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>

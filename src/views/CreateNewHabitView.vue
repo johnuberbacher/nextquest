@@ -130,10 +130,10 @@ watchEffect(() => {
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
-            <div class="text-md font-bold dark:text-white">
+            <div class="text-md font-bold">
               {{ 'New ' + selectedCategory.name + ' habit' }}
             </div>
-            <div class="text-neutral-500 dark:text-neutral-500 text-sm">
+            <div class="text-neutral-500 dark:text-neutral-400 text-sm font-medium tracking-tight">
               Enter the details of your new habit below. You can choose the time, frequency, and
               other options to customize your habit.
             </div>
@@ -154,16 +154,6 @@ watchEffect(() => {
         </div>
       </div>
     </div>
-    <!--<div class="flex w-full flex-col items-start justify-start gap-2">
-      <div class="text-md font-bold dark:text-white">
-        {{ 'New ' + selectedCategory.name + ' habit' }}
-      </div>
-      <div class="text-neutral-500 dark:text-neutral-500 text-sm">
-        Enter the details of your new habit below. You can choose the time, frequency, and other
-        options to customize your habit.
-      </div>
-    </div>-->
-
     <div class="flex w-full flex-grow flex-col overflow-hidden">
       <form
         class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white py-4"

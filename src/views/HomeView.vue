@@ -10,6 +10,7 @@ import WeekliesWidget from '../components/ui/WeekliesWidget.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 import CalendarWidget from '../components/ui/CalendarWidget.vue'
+import BadgesWidget from '../components/ui/user/BadgesWidget.vue'
 
 const router = useRouter()
 const taskStore = useTaskStore()
@@ -93,9 +94,9 @@ onMounted(() => {
             </div>
             <div class="flex w-full flex-col items-start justify-start gap-1">
               <div class="flex w-full flex-row items-center justify-between gap-2">
-                <div class="text-md font-bold dark:text-white">{{ user.name }}</div>
+                <div class="text-md font-bold">{{ user.name }}</div>
               </div>
-              <div class="flex w-full flex-col items-start justify-start gap-0">
+              <div class="flex w-full flex-col items-start justify-start gap-1">
                 <div class="flex w-full flex-row items-center justify-between gap-2">
                   <div
                     class="text-neutral-500 whitespace-nowrap text-xs font-medium tracking-tight"
@@ -117,38 +118,7 @@ onMounted(() => {
             </div>
           </div>
           <div class="items mt-2 flex w-full flex-row items-center justify-between gap-1">
-            <div
-              class="gap-0.75 border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-auto rounded-3xl border bg-white px-2.5 py-1.5 text-xs"
-            >
-              <div
-                v-for="(item, index) in 8"
-                :data-tip="
-                  'Unlocked on ' +
-                  new Date(Date.now() - (364 - index) * 86400000).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })
-                "
-                :key="index"
-                :class="[
-                  'aspect-square h-5 rounded-full flex items-center justify-center text-xs',
-                  index === 99
-                    ? 'bg-amber-400 shadow-sm tooltip text-xs'
-                    : 'border border-dashed border-neutral-300 dark:border-neutral-600',
-                ]"
-              >
-                <div
-                  v-if="index === 99"
-                  :class="[
-                    'aspect-square h-3.5 rounded-full   bg-amber-500 inset-shadow-sm  text-xs',
-                  ]"
-                >
-                  💧
-                </div>
-              </div>
-            </div>
-
+            <BadgesWidget />
             <div
               :class="userTitle?.color"
               class="flex w-auto rounded-sm border px-2 py-1 text-[10px] font-bold uppercase"
@@ -167,9 +137,28 @@ onMounted(() => {
       </div>
       <CalendarWidget @update:activeDate="handleDateChange" />
 
-      <div class="flex w-full flex-col items-start justify-start gap-4 overflow-hidden px-4">
+      <div v-if="!tasks.length" class="flex h-full w-full flex-grow px-4 pb-4">
+        <div
+          class="border-neutral-300 dark:bg-neutral-900 dark:border-neutral-700 flex w-full select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
+        >
+          <div class="text-md font-bold">You don’t have any habits yet!</div>
+          <div class="text-neutral-500 dark:text-neutral-400 mb-1 text-sm">
+            Your journey starts here—let’s build something great. Click below to add a new habit.
+          </div>
+          <button
+            @click="router.push('/add-new-habit')"
+            class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
+          >
+            Add New Habit
+          </button>
+        </div>
+      </div>
+      <div
+        v-if="tasks.length"
+        class="flex w-full flex-col items-start justify-start gap-4 overflow-hidden px-4"
+      >
         <div class="flex w-full flex-row items-center justify-between">
-          <div class="text-md font-bold dark:text-white">
+          <div class="text-md font-bold">
             {{ formatCalendarWidgetDate(selectedDate) }}
           </div>
           <RouterLink
@@ -181,28 +170,8 @@ onMounted(() => {
         </div>
 
         <!-- Scrollable DailiesWidget -->
-        <div class="w-full overflow-y-auto" style="max-height: 100%">
-          <div
-            v-if="dailies.length === 0"
-            class="border-neutral-300 dark:bg-neutral-900 dark:border-neutral-700 flex select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
-          >
-            <div class="text-md font-bold">You don’t have any habits yet!</div>
-            <div class="text-neutral-500 text-sm">Nothing here yet... but greatness awaits!</div>
-            <div class="text-neutral-500 text-sm">Hit the button to start your first habit.</div>
-            <button
-              @click="router.push('/add-new-habit')"
-              class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
-            >
-              Add New Habit
-            </button>
-          </div>
-          <DailiesWidget
-            v-if="dailies"
-            :tasks="dailies"
-            :selectedDate="selectedDate"
-            :cols="2"
-            :md-cols="2"
-          />
+        <div v-if="dailies" class="w-full overflow-y-auto" style="max-height: 100%">
+          <DailiesWidget :tasks="dailies" :selectedDate="selectedDate" :cols="2" :md-cols="2" />
         </div>
       </div>
     </div>

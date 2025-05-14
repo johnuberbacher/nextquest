@@ -18,7 +18,7 @@ export interface Task {
   durationMinutes: number
   daysOfWeek: string[] // ['Mon', 'Tue', ...]
   timeOfDay: string // 'HH:mm'
-  color: string // Tailwind class like 'bg-red-500'
+  color: string // Tailwind classes
   startDate?: Date | null
   endDate?: Date | null
   createdAt?: Date
@@ -26,11 +26,11 @@ export interface Task {
 
 export const useTaskStore = defineStore('task', () => {
   const dayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  // const tasks = ref<Task[]>([])
-  const tasks = ref<Task[]>([
+  const tasks = ref<Task[]>([])
+  const taskss = ref<Task[]>([
     {
       id: '1',
-      name: '',
+      name: 'Stay Hydrated!',
       description: 'Start the day with a glass of water',
       categoryId: 6,
       icon: '💧',
@@ -42,7 +42,7 @@ export const useTaskStore = defineStore('task', () => {
       daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       timeOfDay: '07:00',
       color: 'border-green-200 dark:border-green-300 bg-green-50 dark:bg-green-200',
-      createdAt: new Date(),
+      createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
       startDate: null,
       endDate: null,
     },
@@ -52,10 +52,10 @@ export const useTaskStore = defineStore('task', () => {
       description: 'Unleash your imagination with daily writing exercises.',
       categoryId: 2,
       icon: '✍️',
-      exp: 78,
-      level: 4,
-      progress: 40,
-      state: 'in_progress',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
       durationMinutes: 45,
       daysOfWeek: ['Tue', 'Wed', 'Thu'],
       timeOfDay: '10:00',
@@ -70,10 +70,10 @@ export const useTaskStore = defineStore('task', () => {
       description: 'Build the next great game with some coding and debugging.',
       categoryId: 3,
       icon: '🎮',
-      exp: 92,
-      level: 16,
-      progress: 80,
-      state: 'in_progress',
+      exp: 0,
+      level: 1,
+      progress: 0,
+      state: 'pending',
       durationMinutes: 90,
       daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       timeOfDay: '13:00',
@@ -90,8 +90,8 @@ export const useTaskStore = defineStore('task', () => {
       icon: '🎸',
       exp: 0,
       level: 1,
-      progress: 50,
-      state: 'in_progress',
+      progress: 0,
+      state: 'pending',
       durationMinutes: 60,
       daysOfWeek: ['Mon', 'Tue', 'Wed'],
       timeOfDay: '16:00',
@@ -108,7 +108,7 @@ export const useTaskStore = defineStore('task', () => {
       icon: '📚',
       exp: 0,
       level: 1,
-      progress: 20,
+      progress: 0,
       state: 'pending',
       durationMinutes: 40,
       daysOfWeek: ['Tue', 'Wed', 'Fri'],

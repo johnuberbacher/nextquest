@@ -43,11 +43,11 @@ onMounted(async () => {
 
 <template>
   <div
-    class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full border-y bg-white"
+    class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 bg-neutral-50 flex w-full border-y"
   >
     <div class="relative w-full overflow-hidden">
       <div
-        class="dark:from-neutral-900 dark:to-neutral-900 pointer-events-none absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-r from-white via-transparent to-white dark:via-transparent"
+        class="dark:from-neutral-900 dark:to-neutral-900 from-neutral-50 to-neutral-50 pointer-events-none absolute bottom-0 left-0 right-0 top-0 bg-gradient-to-r via-transparent dark:via-transparent"
       ></div>
       <div
         ref="scrollContainer"

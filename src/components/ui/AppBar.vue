@@ -5,7 +5,7 @@ const route = useRoute()
 </script>
 <template>
   <div
-    class="dock dock-md relative min-h-[64px] border-t border-neutral-200 bg-white dark:dark:border-neutral-700 dark:bg-neutral-900"
+    class="border-neutral-200 dark:dark:border-neutral-700 dark:bg-neutral-900 dock dock-md relative min-h-[64px] border-t bg-white"
   >
     <RouterLink
       to="/"
@@ -85,34 +85,19 @@ const route = useRoute()
     </RouterLink>
 
     <RouterLink
-      to="/profile"
+      to="/stats"
       :class="{
-        'dock-active': route.path === '/profile',
+        'dock-active': route.path === '/stats',
       }"
     >
-      <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt">
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="square"
-            stroke-miterlimit="10"
-            stroke-width="2"
-          ></circle>
-          <path
-            d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="square"
-            stroke-miterlimit="10"
-            stroke-width="2"
-          ></path>
-        </g>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-[1.2em]">
+        <path
+          fill="currentColor"
+          d="M12 6.99999C16.4183 6.99999 20 10.5817 20 15C20 19.4183 16.4183 23 12 23C7.58172 23 4 19.4183 4 15C4 10.5817 7.58172 6.99999 12 6.99999ZM12 8.99999C8.68629 8.99999 6 11.6863 6 15C6 18.3137 8.68629 21 12 21C15.3137 21 18 18.3137 18 15C18 11.6863 15.3137 8.99999 12 8.99999ZM12 10.5L13.3225 13.1797L16.2798 13.6094L14.1399 15.6953L14.645 18.6406L12 17.25L9.35497 18.6406L9.86012 15.6953L7.72025 13.6094L10.6775 13.1797L12 10.5ZM18 1.99999V4.99999L16.6366 6.13755C15.5305 5.5577 14.3025 5.17884 13.0011 5.04948L13 1.99899L18 1.99999ZM11 1.99899L10.9997 5.04939C9.6984 5.17863 8.47046 5.55735 7.36441 6.13703L6 4.99999V1.99999L11 1.99899Z"
+        ></path>
       </svg>
-      <span class="dock-label">Profile</span>
+
+      <span class="dock-label">Stats</span>
     </RouterLink>
   </div>
 </template>

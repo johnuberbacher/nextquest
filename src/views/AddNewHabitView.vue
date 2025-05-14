@@ -12,7 +12,7 @@ const categoryStore = useCategoryStore()
 const { tasks } = taskStore
 const { selectedCategoryId, categories } = categoryStore
 
-const selectedCategory = ref<number>(0)
+const selectedCategory = ref<number>()
 
 const visibleCount = ref(20)
 const incrementAmount = 8
@@ -39,7 +39,7 @@ const submit = () => {
   >
     <div class="flex h-auto w-full flex-col items-start justify-start gap-2">
       <div class="text-md font-bold dark:text-white">Choose habit</div>
-      <div class="text-neutral-500 dark:text-neutral-500 text-sm">
+      <div class="text-neutral-500 dark:text-neutral-400 text-sm font-medium tracking-tight">
         Select any pre-created habbits from the list below, you can choose more than one. Don't
         worry, you'll be able to make custom habits later.
       </div>
@@ -53,7 +53,7 @@ const submit = () => {
           <button
             :disabled="visibleCategories.length === categories.length"
             @click="showMore"
-            class="btn btn-neutral mx-auto rounded-full px-10"
+            class="btn btn-neutral mx-auto rounded-full px-14"
           >
             More
           </button>
@@ -63,6 +63,7 @@ const submit = () => {
     <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
       <button
         @click="submit"
+        :disabled="!selectedCategory"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Continue

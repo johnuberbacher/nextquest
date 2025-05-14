@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <!--<img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
     <div class="flex flex-row items-center justify-between">
       <RouterLink to="/" class="font-bold"
-        ><span class="text-orange-600">Next</span>&nbsp;Quest</RouterLink
+        ><span class="text-orange-600">Next</span>Quest</RouterLink
       >
     </div>
   </header>
