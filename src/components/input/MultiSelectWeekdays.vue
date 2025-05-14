@@ -45,30 +45,23 @@ const labelText = computed(() => {
 </script>
 
 <template>
-  <fieldset class="flex w-full flex-col gap-2">
-    <label
-      class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
-      >{{ labelText }}</label
-    >
-
+  <div
+    class="flex w-full max-w-full snap-x snap-mandatory flex-row items-center gap-2 overflow-x-auto scroll-smooth sm:justify-start"
+  >
     <div
-      class="flex w-full flex-row items-center justify-between gap-2 overflow-x-auto scroll-smooth sm:justify-start"
+      v-for="(day, index) in weekdays"
+      :key="index"
+      :class="[
+        'cursor-pointer rounded-lg px-5.5 py-2.5 text-center flex flex-col items-center justify-center',
+        selectedDays.includes(day)
+          ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
+          : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
+      ]"
+      @click="toggleDay(day)"
     >
-      <div
-        v-for="(day, index) in weekdays"
-        :key="index"
-        :class="[
-          'cursor-pointer rounded-full aspect-square h-10 w-10 text-center flex flex-col items-center justify-center',
-          selectedDays.includes(day)
-            ? 'bg-orange-50 dark:bg-neutral-800 border border-orange-700 shadow-sm'
-            : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
-        ]"
-        @click="toggleDay(day)"
-      >
-        <div class="whitespace-nowrap text-xs font-semibold text-neutral-800 dark:text-white">
-          {{ day.charAt(0) }}
-        </div>
+      <div class="text-neutral-800 whitespace-nowrap text-xs font-bold dark:text-white">
+        {{ day.charAt(0) }}
       </div>
     </div>
-  </fieldset>
+  </div>
 </template>

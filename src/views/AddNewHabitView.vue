@@ -35,19 +35,19 @@ const submit = () => {
 
 <template>
   <div
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden py-4"
+    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
   >
-    <div class="flex h-auto w-full flex-col items-start justify-start gap-2 px-4">
+    <div class="flex h-auto w-full flex-col items-start justify-start gap-2">
       <div class="text-md font-bold dark:text-white">Choose habit</div>
-      <div class="text-sm text-neutral-500 dark:text-neutral-500">
+      <div class="text-neutral-500 dark:text-neutral-500 text-sm">
         Select any pre-created habbits from the list below, you can choose more than one. Don't
         worry, you'll be able to make custom habits later.
       </div>
     </div>
     <div
-      class="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden border-y border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900"
+      class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white"
     >
-      <div class="grid w-full grid-cols-2 flex-wrap gap-4 overflow-y-auto p-4 md:grid-cols-4">
+      <div class="grid w-full grid-cols-2 flex-wrap gap-4 overflow-y-auto p-4 sm:grid-cols-4">
         <CategorySelectChips :categories="visibleCategories" v-model="selectedCategory" />
         <div class="col-span-2 flex w-full items-center justify-center md:col-span-4">
           <button
@@ -60,7 +60,7 @@ const submit = () => {
         </div>
       </div>
     </div>
-    <div class="flex h-auto w-full flex-row items-end justify-end gap-4 px-4">
+    <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
       <button
         @click="submit"
         class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"

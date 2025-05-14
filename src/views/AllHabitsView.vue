@@ -25,12 +25,12 @@ const dailies = computed(() => {
 </script>
 <template>
   <div
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 dark:bg-neutral-800"
+    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
   >
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900"
+      class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white"
     >
-      <DailiesWidget :tasks="tasks" class="overflow-y-auto p-4" :cols="2" :md-cols="3" />
+      <DailiesWidget :tasks="tasks" class="overflow-y-auto p-4" :cols="1" :md-cols="2" />
     </div>
     <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
       <RouterLink

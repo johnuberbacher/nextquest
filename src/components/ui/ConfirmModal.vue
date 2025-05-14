@@ -84,7 +84,17 @@ const logButtonLabel = computed(() => {
 
 <template>
   <!-- Open the modal using ID.showModal() method -->
-  <div class="flex h-auto w-full flex-row items-end justify-end gap-4">
+  <div
+    :data-tip="
+      !isActiveToday
+        ? 'This habbit is unavailable today'
+        : task && hasLoggedToday(task.id)
+          ? 'This task is already finished for the day!'
+          : ''
+    "
+    class="flex h-auto w-full flex-row items-end justify-end gap-4 md:ml-auto md:mr-0 md:w-auto"
+    :class="[!isActiveToday || (task && hasLoggedToday(task.id)) ? 'tooltip' : '']"
+  >
     <button
       :disabled="alreadyLoggedToday"
       @click="openModal"
@@ -95,27 +105,30 @@ const logButtonLabel = computed(() => {
   </div>
   <dialog id="my_modal_1" class="modal !bg-[oklch(100%_0_0/_0.9)] dark:!bg-[oklch(0%_0_0/_0.9)]">
     <div
-      class="modal-box select-none border border-neutral-300 p-6 text-center dark:border-neutral-700 sm:p-10"
+      class="border-neutral-300 dark:border-neutral-700 modal-box flex max-w-md select-none flex-col gap-4 border p-8 text-center sm:p-10"
     >
-      <h3 class="text-xl font-bold">{{ modalPhrase + '!' }}</h3>
-      <p class="py-4 text-sm">
+      <h3 class="text-md font-bold">{{ modalPhrase + '!' }}</h3>
+      <div class="text-neutral-500 text-sm">
         This app works on the honor system. There’s no leaderboard, no competition — just you
         building the life you want, one small action at a time. Mark habits as complete only if you
-        truly did them. Your EXP is a fun bonus, but the real reward is the progress you make.
-      </p>
-      <div class="flex flex-col gap-4 md:flex-row">
+        truly did them.
+      </div>
+      <div class="text-neutral-500 text-sm">
+        Your EXP is a fun bonus, but the real reward is the progress you make.
+      </div>
+      <div class="flex flex-col gap-4 md:flex-row md:gap-3">
         <button
           @click="handleDismiss"
-          class="btn btn-default btn-lg w-full rounded-full px-10 text-sm md:w-auto"
+          class="btn-default btn btn-lg w-full rounded-full px-8 text-sm md:w-auto"
         >
           Go back
         </button>
         <button
           @click="handleLogClick"
           :disabled="alreadyLoggedToday"
-          class="btn btn-primary btn-lg w-full flex-grow rounded-full px-4 text-sm md:w-auto"
+          class="btn btn-primary btn-lg w-full flex-grow rounded-full text-sm md:w-auto"
         >
-          Got it &mdash; Mark as done!
+          Got it &mdash; log as Complete!
         </button>
       </div>
     </div>

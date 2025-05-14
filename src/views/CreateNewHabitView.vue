@@ -8,8 +8,10 @@ import MultiSelectWeekdays from '../components/input/MultiSelectWeekdays.vue'
 import TimePicker from '../components/input/TimePicker.vue'
 import ColorPicker from '../components/input/ColorPicker.vue'
 import EmojiPicker from '../components/input/EmojiPicker.vue'
+import InputLabel from '../components/input/InputLabel.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import TextInput from '../components/input/TextInput.vue'
+import Suggestion from '../components/input/Suggestion.vue'
 
 const router = useRouter()
 
@@ -19,12 +21,12 @@ const { createTask } = taskStore
 const { selectedCategoryId, categories, getCategoryById } = categoryStore
 
 // Form fields
-const selectedDuration = ref(3) // in minutes
+const selectedDuration = ref(1) // in minutes
 const selectedDays = ref(['Mon']) // at least one day
 const selectedTimeOfDay = ref('05:00') // time in HH:mm
-const selectedColor = ref('bg-red-200')
-const selectedEmoji = ref('')
-const taskName = ref('') // Optional: can be static or editable later
+const selectedColor = ref('border-red-200 dark:border-red-300 bg-red-100 dark:bg-red-200')
+const selectedEmoji = ref('🐼')
+const taskName = ref('')
 const taskDescription = ref('') // Optional: can be static or editable later
 
 const submitting = ref(false)
@@ -81,12 +83,12 @@ const fieldValidation = computed(() => {
   }
 
   return (
+    !taskName.value ||
     !selectedDuration.value ||
     !selectedDays.value.length ||
     !selectedTimeOfDay.value ||
     !selectedColor.value ||
-    !selectedEmoji.value ||
-    !taskDescription.value
+    !selectedEmoji.value
   )
 })
 
@@ -95,7 +97,7 @@ const selectedCategory = computed(() => {
 })
 
 function handleSelectDescriptionSuggestion(value: string) {
-  taskDescription.value = value
+  taskName.value = value
 }
 
 onMounted(() => {
@@ -121,31 +123,32 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 py-4 dark:bg-neutral-800"
+    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4 py-4"
   >
     <!-- Form -->
-    <div class="flex w-full flex-col items-start justify-start gap-4 px-4">
+    <div class="flex w-full flex-col items-start justify-start gap-4">
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
             <div class="text-md font-bold dark:text-white">
               {{ 'New ' + selectedCategory.name + ' habit' }}
             </div>
-            <div class="text-sm text-neutral-500 dark:text-neutral-500">
+            <div class="text-neutral-500 dark:text-neutral-500 text-sm">
               Enter the details of your new habit below. You can choose the time, frequency, and
               other options to customize your habit.
             </div>
             <div
-              class="inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black dark:border-white dark:text-white"
+              class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
             >
               {{ selectedCategory.name }}
             </div>
           </div>
         </div>
+
         <div
-          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-center text-white dark:border-neutral-500 dark:bg-neutral-700 md:mt-0"
+          class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border bg-white text-center text-white"
         >
-          <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
+          <div class="flex aspect-square items-center justify-center text-3xl leading-none">
             {{ selectedCategory.icon }}
           </div>
         </div>
@@ -155,31 +158,48 @@ watchEffect(() => {
       <div class="text-md font-bold dark:text-white">
         {{ 'New ' + selectedCategory.name + ' habit' }}
       </div>
-      <div class="text-sm text-neutral-500 dark:text-neutral-500">
+      <div class="text-neutral-500 dark:text-neutral-500 text-sm">
         Enter the details of your new habit below. You can choose the time, frequency, and other
         options to customize your habit.
       </div>
     </div>-->
 
-    <div class="flex w-full flex-grow flex-col overflow-hidden px-4">
+    <div class="flex w-full flex-grow flex-col overflow-hidden">
       <form
-        class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 bg-white px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900"
+        class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white py-4"
       >
-        <div class="flex w-full flex-col gap-2">
-          <label
-            class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
-            >Short description</label
-          >
+        <div class="fieldset flex w-full flex-col px-4">
+          <div class="fieldset-legend pt-0">Habit</div>
           <TextInput
-            v-model="taskDescription"
-            placeholder="Read a book for 10 minutes every day"
-            :suggestions="selectedCategory.suggestions"
+            v-model="taskName"
             @select="handleSelectDescriptionSuggestion"
             :maxLength="100"
+            placeholder="..."
+          />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            What’s the habit you want to track? Be specific and actionable.
+          </p>
+          <Suggestion
+            :suggestions="selectedCategory.suggestions"
+            @select="handleSelectDescriptionSuggestion"
           />
         </div>
-        <div class="divider -mx-4 my-0 h-0.5"></div>
-        <div class="flex w-full flex-col gap-2">
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
+        <div class="fieldset flex w-full flex-col px-4">
+          <div class="fieldset-legend pt-0">Short Description</div>
+          <TextInput
+            v-model="taskDescription"
+            @select="handleSelectDescriptionSuggestion"
+            :maxLength="200"
+            placeholder="..."
+          />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            Any more detail or context for this habit (optional).
+          </p>
+        </div>
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
+        <div class="fieldset flex w-full flex-col px-4">
+          <div class="fieldset-legend pt-0">Duration</div>
           <SingleSelectChips
             v-model="selectedDuration"
             :items="[
@@ -195,22 +215,35 @@ watchEffect(() => {
             ]"
             label="Duration (minutes)"
           />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            How long do you usually spend on this habit?
+          </p>
         </div>
-        <div class="divider -mx-4 my-0 h-0.5"></div>
-        <div class="flex w-full flex-col gap-2">
-          <MultiSelectWeekdays v-model="selectedDays" label="Select days of the week" />
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
+        <div class="fieldset flex w-full flex-col px-4">
+          <div class="fieldset-legend pt-0">Repeat Days</div>
+          <MultiSelectWeekdays v-model="selectedDays" />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            On which days does this habbit occur?
+          </p>
         </div>
-        <div class="divider -mx-4 my-0 h-0.5"></div>
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
         <!--<div class="flex w-full flex-col gap-2">
         <TimePicker v-model="selectedTimeOfDay" label="Select time of the day" />
       </div>-->
 
-        <div class="flex w-full flex-col gap-2">
-          <ColorPicker v-model="selectedColor" label="Select label color" />
+        <div class="fieldset flex w-full flex-col px-4">
+          <ColorPicker v-model="selectedColor" label="Label color" />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            This color will appear on the dashboard to help visually group your habits.
+          </p>
         </div>
-        <div class="divider -mx-4 my-0 h-0.5"></div>
-        <div class="flex w-full flex-col gap-2">
-          <EmojiPicker v-model="selectedEmoji" label="Select emoji icon" />
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
+        <div class="fieldset flex w-full flex-col px-4">
+          <EmojiPicker v-model="selectedEmoji" label="Emoji icon" />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            Pick an emoji to quickly recognize this habit at a glance.
+          </p>
         </div>
 
         <div v-if="errors.length" class="space-y-1 text-sm text-red-500">
@@ -218,11 +251,11 @@ watchEffect(() => {
         </div>
       </form>
     </div>
-    <div class="flex h-auto w-full flex-col items-end justify-end gap-4 px-4 md:flex-row">
+    <div class="flex h-auto w-full flex-col items-end justify-end gap-4 md:flex-row">
       <!--<button
         :disabled="submitting"
         @click="router.push('/add-new-habit')"
-        class="btn btn-default btn-lg w-full rounded-full px-10 text-sm md:w-auto"
+        class="btn-default btn btn-lg w-full rounded-full px-10 text-sm md:w-auto"
       >
         Go back
       </button>-->

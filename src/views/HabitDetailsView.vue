@@ -12,6 +12,7 @@ import StreakNotification from '../components/ui/StreakNotification.vue'
 import LevelUpNotification from '../components/ui/LevelUpNotification.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 import InputLabel from '../components/input/InputLabel.vue'
+import DeleteHabitModal from '../components/ui/modal/DeleteHabitModal.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -91,15 +92,10 @@ const activeLabels = (taskData: object) => {
   })
 }
 
-onMounted(() => {
-  if (!route.params.id || route.params.id === '') {
-    router.push('/')
-  }
-})
-
 watchEffect(() => {
-  if (!route.params.id || route.params.id === '') {
-    router.push('/')
+  const task = getTaskById(id.value)
+  if (!id.value || !task) {
+    router.replace('/')
   }
 })
 </script>
@@ -108,21 +104,21 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden bg-neutral-50 p-4 dark:bg-neutral-800"
+    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
   >
     <div class="flex w-full flex-col items-start justify-start gap-4">
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
         <div class="flex w-full flex-col items-start justify-start gap-1">
           <div class="flex w-full flex-col items-start justify-start gap-2">
             <div class="text-md font-bold dark:text-white">
-              {{ task.description || 'error!' }}
+              {{ task.name || 'error!' }}
             </div>
             <div
               class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
             >
               {{ category.name + ' habit' }}
             </div>
-            <div class="text-sm text-neutral-500 dark:text-neutral-500">
+            <div class="text-neutral-500 dark:text-neutral-500 text-sm">
               Repeats
               <span v-for="(day, index) in task.daysOfWeek" :key="index">
                 {{ day }}<span v-if="index < task.daysOfWeek.length - 1">, </span>
@@ -131,20 +127,20 @@ watchEffect(() => {
           </div>
         </div>
         <div
-          class="md:h-21 mt-1 flex aspect-square h-12 items-center justify-center rounded-full border border-neutral-200 text-center text-white dark:border-neutral-700 md:mt-0"
+          class="flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
           :class="[task.color]"
         >
-          <div class="-mt-1 ml-0.5 flex items-center justify-center text-3xl md:text-4xl">
+          <div class="flex aspect-square items-center justify-center text-3xl leading-none">
             {{ task.icon }}
           </div>
         </div>
       </div>
       <div class="flex w-full flex-col items-start justify-start gap-1">
         <div class="flex w-full flex-row items-center justify-between gap-2">
-          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-semibold tracking-tight">
             Habit Level: {{ task.level }}
           </div>
-          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-semibold tracking-tight">
             EXP: {{ task.exp }}/100%
           </div>
         </div>
@@ -153,10 +149,10 @@ watchEffect(() => {
     </div>
 
     <div
-      class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-200 bg-neutral-50 bg-white px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900"
+      class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white px-4 py-4"
     >
       <div class="w-full">
-        <ul class="steps text- w-full justify-between font-semibold">
+        <ul class="text- steps w-full justify-between font-semibold">
           <li
             v-for="day in labelMap"
             :key="day.index"
@@ -172,7 +168,7 @@ watchEffect(() => {
       <StreakNotification :streak="streak" />
       <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex w-full flex-row items-end justify-start gap-4">
-        <div class="flex flex-col items-start justify-start gap-1">
+        <div class="flex w-full flex-col items-start justify-start gap-1">
           <InputLabel text="This week" />
           <div class="text-xl font-semibold">
             {{
@@ -183,12 +179,12 @@ watchEffect(() => {
               )
             }}%
           </div>
-          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-semibold tracking-tight">
             Complete
           </div>
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
-          <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-medium tracking-tight">
             {{ weekEntries.length }}/{{ task.daysOfWeek.length }}
           </div>
           <LevelProgressBar
@@ -200,7 +196,7 @@ watchEffect(() => {
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>
       <div class="flex w-full flex-row items-end justify-start gap-4">
-        <div class="flex flex-col items-start justify-start gap-1">
+        <div class="flex w-full flex-col items-start justify-start gap-1">
           <InputLabel text="Last 2 months" />
           <div class="text-xl font-semibold">
             {{
@@ -211,12 +207,12 @@ watchEffect(() => {
               )
             }}%
           </div>
-          <div class="whitespace-nowrap text-xs font-semibold tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-semibold tracking-tight">
             Complete
           </div>
         </div>
         <div class="mb-1 flex w-full flex-col items-end justify-end gap-2">
-          <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
+          <div class="text-neutral-500 whitespace-nowrap text-xs font-medium tracking-tight">
             {{ getTwoMonthsCompletion(task.id, task.daysOfWeek.length).completed }}/{{
               getTwoMonthsCompletion(task.id, task.daysOfWeek.length).total
             }}
@@ -229,7 +225,7 @@ watchEffect(() => {
         </div>
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex flex-col items-start justify-start gap-1">
+      <div class="flex w-full flex-col items-start justify-start gap-1">
         <InputLabel text="Past year" />
         <div class="md:gap-0.75 flex flex-row flex-wrap gap-0.5">
           <div
@@ -252,8 +248,8 @@ watchEffect(() => {
         </div>
       </div>
       <div class="divider -mx-6 my-0 h-0.5"></div>
-      <div class="flex flex-col items-start justify-start gap-1">
-        <InputLabel text="Related Categories" />
+      <div class="flex w-full flex-col items-start justify-start gap-1">
+        <InputLabel text="Related categories" />
         <div class="flex flex-row flex-wrap gap-x-2 gap-y-1">
           <div
             v-for="category in category?.relatedCategories"
@@ -262,6 +258,11 @@ watchEffect(() => {
             {{ category ? getCategoryById(category).name : '' }}
           </div>
         </div>
+      </div>
+      <div class="divider -mx-6 my-0 h-0.5"></div>
+      <div class="flex w-full flex-col items-start justify-start gap-1">
+        <InputLabel text="Delete habit" />
+        <DeleteHabitModal :taskId="task.id" />
       </div>
     </div>
     <ConfirmModal :taskId="task.id" :active-days="activeLabels(task)" />

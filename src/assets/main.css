@@ -87,6 +87,11 @@
   --noise: 0;
 }
 
+::-webkit-scrollbar,
+::-webkit-scrollbar-track {
+  scrollbar-gutter: stable both-edges !important;
+}
+
 html,
 body,
 #app {

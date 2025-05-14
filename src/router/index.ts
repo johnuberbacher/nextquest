@@ -49,6 +49,11 @@ const router = createRouter({
       name: 'stats',
       component: () => import('../views/StatsView.vue'),
     },
+    // Catch-all route, must come last
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
 })
 

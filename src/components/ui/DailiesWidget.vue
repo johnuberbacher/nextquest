@@ -24,7 +24,7 @@ const { getCategoryById } = categoryStore
 
 const gridClass = computed(() => [
   `grid-cols-${props.cols ?? 2}`,
-  `md:grid-cols-${props.mdCols ?? 4}`,
+  `sm:grid-cols-${props.mdCols ?? 4}`,
 ])
 </script>
 
@@ -36,18 +36,17 @@ const gridClass = computed(() => [
       :key="task.id"
       :class="[
         hasLoggedOnDate(task.id, selectedDate) || hasLoggedToday(task.id) ? 'grayscale' : '',
-        'btn btn-ghost h-full text-start w-full rounded-xl pt-4 pb-4 px-4 relative flex flex-col items-start justify-start ' +
+        'btn btn-ghost h-full text-start w-full rounded-xl pt-4 pb-4 px-4 gap-2 relative flex flex-col items-start justify-between ' +
           ' ' +
           task.color,
       ]"
     >
-      {{}}
       <div
         class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white"
         :class="[
           hasLoggedOnDate(task.id, selectedDate) || hasLoggedToday(task.id)
             ? 'opacity-50'
-            : 'shadow-lg',
+            : 'shadow',
         ]"
       >
         <RiCheckFill
@@ -60,13 +59,14 @@ const gridClass = computed(() => [
         />
       </div>
       <div class="mb-8 text-5xl text-black">{{ task.icon }}</div>
+
+      <div class="text-xs font-semibold text-black">
+        {{ task.name }}
+      </div>
       <div
-        class="mb-2 inline-flex w-auto rounded-sm border px-1.5 py-0.5 text-[10px] font-bold text-black"
+        class="inline-flex w-auto rounded-sm border border-orange-800 bg-orange-700 px-1.5 py-0.5 text-[10px] font-bold text-white"
       >
         {{ getCategoryById(Number(task.categoryId))?.name || 'Unknown Category' }}
-      </div>
-      <div class="text-xs font-semibold text-black">
-        {{ task.description }}
       </div>
     </RouterLink>
   </div>

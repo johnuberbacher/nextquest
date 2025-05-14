@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
 import { useNotificationStore } from '@/stores/useNotificationStore'
@@ -10,11 +11,12 @@ import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 import CalendarWidget from '../components/ui/CalendarWidget.vue'
 
+const router = useRouter()
 const taskStore = useTaskStore()
 const userStore = useUserStore()
 const notificationStore = useNotificationStore()
 const { tasks, getTasksForToday } = taskStore
-const { user, getUserTitle, getExpForNextLevel } = userStore
+const { user, getUserTitle, getExpForNextLevel, loadUserFromLocalStorage } = userStore
 
 const selectedDate = ref(new Date())
 
@@ -66,6 +68,10 @@ const firstLoginToast = notificationStore.toastMessages.find(
 const dismissFirstLoginToast = () => {
   notificationStore.dismissToast('firstLoginToast')
 }
+
+onMounted(() => {
+  userStore.loadUserFromLocalStorage()
+})
 </script>
 
 <template>
@@ -75,51 +81,79 @@ const dismissFirstLoginToast = () => {
     class="flex h-full w-full flex-grow flex-col items-start justify-between overflow-hidden"
   >
     <div class="flex h-full w-full flex-col items-start justify-start gap-4">
-      <div class="flex w-full flex-col items-start justify-start gap-4 px-4 pt-4 md:px-4">
-        <div class="flex w-full flex-row items-start justify-start gap-3">
-          <div
-            class="h-21 flex aspect-square items-center justify-center rounded-full bg-neutral-200 text-center text-white dark:bg-neutral-600"
-          >
-            <div class="-mt-1.5 ml-0.5 flex items-center justify-center text-5xl">
-              {{ user.avatar }}
+      <div class="flex w-full flex-col items-start justify-start gap-4 px-4 pt-4">
+        <div class="flex w-full flex-col items-start justify-start gap-0">
+          <div class="flex w-full flex-row items-center justify-start gap-3">
+            <div
+              class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
+            >
+              <div class="flex aspect-square items-center justify-center text-3xl leading-none">
+                {{ user.avatar }}
+              </div>
+            </div>
+            <div class="flex w-full flex-col items-start justify-start gap-1">
+              <div class="flex w-full flex-row items-center justify-between gap-2">
+                <div class="text-md font-bold dark:text-white">{{ user.name }}</div>
+              </div>
+              <div class="flex w-full flex-col items-start justify-start gap-0">
+                <div class="flex w-full flex-row items-center justify-between gap-2">
+                  <div
+                    class="text-neutral-500 whitespace-nowrap text-xs font-medium tracking-tight"
+                  >
+                    Level: {{ user.level }}
+                  </div>
+                  <div
+                    class="text-neutral-500 whitespace-nowrap text-xs font-medium tracking-tight"
+                  >
+                    EXP: {{ Math.round((user.exp / getExpForNextLevel(user.level)) * 100) }}/100%
+                  </div>
+                </div>
+                <LevelProgressBar
+                  :value="user.exp"
+                  :max="getExpForNextLevel(user.level)"
+                  :animate="true"
+                />
+              </div>
             </div>
           </div>
-          <div class="flex w-full flex-col items-start justify-start gap-1">
-            <div class="flex w-full flex-row items-center justify-between gap-2">
-              <div class="text-md font-bold dark:text-white">{{ user.name }}</div>
-            </div>
-            <div class="flex w-full flex-col items-start justify-start gap-0">
-              <div class="flex w-full flex-row items-center justify-between gap-2">
-                <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
-                  Level: {{ user.level }}
-                </div>
-                <div class="whitespace-nowrap text-xs font-medium tracking-tight text-neutral-500">
-                  EXP: {{ Math.round((user.exp / getExpForNextLevel(user.level)) * 100) }}/100%
-                </div>
-              </div>
-              <LevelProgressBar
-                :value="user.exp"
-                :max="getExpForNextLevel(user.level)"
-                :animate="true"
-              />
-              <div class="items mt-2 flex w-full flex-row items-center justify-between gap-1">
+          <div class="items mt-2 flex w-full flex-row items-center justify-between gap-1">
+            <div
+              class="gap-0.75 border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-auto rounded-3xl border bg-white px-2.5 py-1.5 text-xs"
+            >
+              <div
+                v-for="(item, index) in 8"
+                :data-tip="
+                  'Unlocked on ' +
+                  new Date(Date.now() - (364 - index) * 86400000).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                "
+                :key="index"
+                :class="[
+                  'aspect-square h-5 rounded-full flex items-center justify-center text-xs',
+                  index === 99
+                    ? 'bg-amber-400 shadow-sm tooltip text-xs'
+                    : 'border border-dashed border-neutral-300 dark:border-neutral-600',
+                ]"
+              >
                 <div
-                  :class="userTitle?.color"
-                  class="flex w-auto rounded-sm px-2 py-1 text-[10px] font-bold uppercase"
+                  v-if="index === 99"
+                  :class="[
+                    'aspect-square h-3.5 rounded-full   bg-amber-500 inset-shadow-sm  text-xs',
+                  ]"
                 >
-                  {{ userTitle?.title }}
-                </div>
-                <div class="flex w-auto gap-1 rounded-sm">
-                  <div
-                    v-for="(item, index) in 8"
-                    :key="index"
-                    :class="[
-                      'aspect-square h-4 rounded-full border border-dashed ',
-                      ' border-neutral-300 dark:border-neutral-600',
-                    ]"
-                  ></div>
+                  💧
                 </div>
               </div>
+            </div>
+
+            <div
+              :class="userTitle?.color"
+              class="flex w-auto rounded-sm border px-2 py-1 text-[10px] font-bold uppercase"
+            >
+              {{ userTitle?.title }}
             </div>
           </div>
         </div>
@@ -131,12 +165,7 @@ const dismissFirstLoginToast = () => {
           icon="🍕"
         />
       </div>
-
-      <div
-        class="flex min-h-[80px] w-full flex-col items-start justify-start gap-4 overflow-x-auto overflow-y-hidden"
-      >
-        <CalendarWidget @update:activeDate="handleDateChange" />
-      </div>
+      <CalendarWidget @update:activeDate="handleDateChange" />
 
       <div class="flex w-full flex-col items-start justify-start gap-4 overflow-hidden px-4">
         <div class="flex w-full flex-row items-center justify-between">
@@ -145,7 +174,7 @@ const dismissFirstLoginToast = () => {
           </div>
           <RouterLink
             :to="'/habits'"
-            class="whitespace-nowrap py-1 text-xs font-medium tracking-tight text-neutral-500"
+            class="text-neutral-500 whitespace-nowrap py-1 text-xs font-medium tracking-tight"
           >
             View All
           </RouterLink>
@@ -153,30 +182,29 @@ const dismissFirstLoginToast = () => {
 
         <!-- Scrollable DailiesWidget -->
         <div class="w-full overflow-y-auto" style="max-height: 100%">
-          <DailiesWidget :tasks="dailies" :selectedDate="selectedDate" :cols="2" :md-cols="2" />
+          <div
+            v-if="dailies.length === 0"
+            class="border-neutral-300 dark:bg-neutral-900 dark:border-neutral-700 flex select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
+          >
+            <div class="text-md font-bold">You don’t have any habits yet!</div>
+            <div class="text-neutral-500 text-sm">Nothing here yet... but greatness awaits!</div>
+            <div class="text-neutral-500 text-sm">Hit the button to start your first habit.</div>
+            <button
+              @click="router.push('/add-new-habit')"
+              class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
+            >
+              Add New Habit
+            </button>
+          </div>
+          <DailiesWidget
+            v-if="dailies"
+            :tasks="dailies"
+            :selectedDate="selectedDate"
+            :cols="2"
+            :md-cols="2"
+          />
         </div>
       </div>
     </div>
   </main>
 </template>
-
-<!--<WeekliesWidget />-->
-<!--<div
-        class="relative w-full rounded-2xl border border-neutral-200 p-4 dark:border-neutral-700 dark:bg-neutral-900"
-      >
-        <div class="flex flex-row gap-4">
-          <div
-            class="flex aspect-square h-14 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-center text-white dark:border-neutral-700 dark:bg-neutral-800"
-          >
-            <div class="-mt-2 flex aspect-square items-center justify-center text-3xl">👑</div>
-          </div>
-          <div class="-mt-1 flex w-full flex-col items-start justify-center gap-1 text-start">
-            <div class="font-bold text-neutral-700 dark:text-white">New Title Earned!</div>
-            <div
-              class="flex w-auto rounded-sm bg-green-600 px-2 py-1 text-[10px] font-bold uppercase text-white"
-            >
-              Just Showed Up
-            </div>
-          </div>
-        </div>
-      </div>-->

@@ -46,7 +46,7 @@ export const useUserStore = defineStore('User', () => {
 
   const user = ref<User>({
     userId: '123456',
-    name: 'John Uberbacher',
+    name: 'The user!!',
     dateCreated: new Date(),
     exp: 0,
     level: 1,
@@ -119,18 +119,20 @@ export const useUserStore = defineStore('User', () => {
         user.value.completedHabits = []
       }
 
-      // Check if the entry already exists for the same date
-      const existingEntryIndex = user.value.completedHabits.findIndex(
-        (e) => e.habitId === habitId && e.date.toDateString() === entry.date.toDateString(),
-      )
+      const entryDateStr = entry.date.toDateString()
+
+      const existingEntryIndex = user.value.completedHabits.findIndex((e) => {
+        const eDate = new Date(e.date)
+        return e.habitId === habitId && eDate.toDateString() === entryDateStr
+      })
 
       if (existingEntryIndex !== -1) {
-        // Update existing entry
         user.value.completedHabits[existingEntryIndex].state = state
       } else {
-        // Add new entry
         user.value.completedHabits.push(entry)
       }
+
+      saveUserToLocalStorage()
 
       console.log('All Done')
       console.log(user.value)
@@ -242,25 +244,16 @@ export const useUserStore = defineStore('User', () => {
     const level = user.value.level
     const requiredExp = getExpForNextLevel(level)
 
-    // Log base EXP gain for debugging
     const baseGain = Math.max(1, Math.floor(requiredExp * 0.1))
     user.value.exp += baseGain
     console.log(`User gained ${baseGain} EXP, total EXP: ${user.value.exp}`)
 
-    // Level up logic
     while (user.value.level < 100 && user.value.exp >= getExpForNextLevel(user.value.level)) {
       const required = getExpForNextLevel(user.value.level)
-
-      // Wait before applying level-up
-      // await new Promise((r) => setTimeout(r, 2000))
-
-      // Level up the user
       user.value.level++
-      user.value.exp = 0 // Reset EXP after level-up
+      user.value.exp = 0 // Or subtract `required` if you want to preserve overflow EXP
       console.log(`Level up! New level: ${user.value.level}, EXP reset to 0`)
-
       levelUpNotification.value = true
-      console.log('Level-up notification triggered')
 
       if (user.value.exp < getExpForNextLevel(user.value.level)) {
         console.log('Not enough EXP to level up further.')
@@ -272,6 +265,29 @@ export const useUserStore = defineStore('User', () => {
       user.value.exp = 0
       console.log('Congratulations max level reached. EXP reset to 0.')
     }
+
+    saveUserToLocalStorage()
+  }
+
+  const saveUserToLocalStorage = () => {
+    console.log('Saved user data!')
+    localStorage.setItem('user', JSON.stringify(user.value))
+  }
+
+  const loadUserFromLocalStorage = () => {
+    const saved = localStorage.getItem('user')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      parsed.dateCreated = new Date(parsed.dateCreated)
+      parsed.completedHabits = parsed.completedHabits.map((e: any) => ({
+        ...e,
+        date: new Date(e.date),
+      }))
+      user.value = parsed
+      console.log(user.value)
+    } else {
+      // If no saved data then we need to send them to the Intro Screen
+    }
   }
 
   return {
@@ -281,6 +297,7 @@ export const useUserStore = defineStore('User', () => {
     getStreak,
     hasLoggedToday,
     hasLoggedOnDate,
+    loadUserFromLocalStorage,
     logHabitEntry,
     incrementUserExp,
     getExpForNextLevel,

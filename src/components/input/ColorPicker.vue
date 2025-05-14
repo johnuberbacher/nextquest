@@ -15,13 +15,13 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const colorClasses = [
-  'bg-red-100 dark:bg-red-200', // R
-  'bg-orange-100 dark:bg-orange-200', // O
-  'bg-yellow-100 dark:bg-yellow-200', // Y
-  'bg-green-100 dark:bg-green-200', // G
-  'bg-blue-100 dark:bg-blue-200', // B
-  'bg-indigo-100 dark:bg-indigo-200', // I
-  'bg-violet-100 dark:bg-violet-200', // V
+  'border-red-200 dark:border-red-300 bg-red-100 dark:bg-red-200', // R
+  'border-orange-200 dark:border-orange-300 bg-orange-100 dark:bg-orange-200', // O
+  'border-yellow-200 dark:border-yellow-300 bg-yellow-100 dark:bg-yellow-200', // Y
+  'border-green-200 dark:border-green-300 bg-green-100 dark:bg-green-200', // G
+  'border-blue-200 dark:border-blue-300 bg-blue-100 dark:bg-blue-200', // B
+  'border-indigo-200 dark:border-indigo-300 bg-indigo-100 dark:bg-indigo-200', // I
+  'border-violet-200 dark:border-violet-300 bg-violet-100 dark:bg-violet-200', // V
 ]
 
 const selectedIndex = ref(colorClasses.indexOf(props.modelValue) || 0)
