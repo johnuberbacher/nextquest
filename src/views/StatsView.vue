@@ -30,19 +30,15 @@ const dailies = computed(() => {
 </script>
 <template>
   <div
-    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
+    class="dark:bg-neutral-900 bg-neutral-50 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden"
   >
-    <div
-      class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white"
-    >
-      <div class="flex w-full flex-grow flex-col gap-4 p-4">
-        <Achievement
-          v-for="achivement in userAchievements"
-          :title="achivement.title"
-          :description="achivement.description"
-          :emoji="achivement.emoji"
-        />
-      </div>
+    <div class="flex w-full flex-grow flex-col gap-4 p-4">
+      <Achievement
+        v-for="achivement in userAchievements"
+        :title="achivement.title"
+        :description="achivement.description"
+        :emoji="achivement.emoji"
+      />
     </div>
   </div>
 </template>

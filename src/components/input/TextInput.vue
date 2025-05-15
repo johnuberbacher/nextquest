@@ -47,7 +47,7 @@ const inputLength = computed(() => props.modelValue.length)
     <input
       type="text"
       :placeholder="placeholder"
-      :class="`input input-sm w-full ${props.class} ${' pr-17' ?? maxLength}`"
+      :class="`input w-full ${props.class} ${' pr-17' ?? maxLength}`"
       :value="modelValue"
       @input="updateValue"
     />

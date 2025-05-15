@@ -164,7 +164,8 @@ watchEffect(() => {
             v-model="taskName"
             @select="handleSelectDescriptionSuggestion"
             :maxLength="100"
-            placeholder="..."
+            placeholder=""
+            class="input-sm"
           />
           <p class="text-neutral-500 dark:text-neutral-500 text-xs">
             What’s the habit you want to track? Be specific and actionable.
@@ -181,7 +182,8 @@ watchEffect(() => {
             v-model="taskDescription"
             @select="handleSelectDescriptionSuggestion"
             :maxLength="200"
-            placeholder="..."
+            placeholder=""
+            class="input-sm"
           />
           <p class="text-neutral-500 dark:text-neutral-500 text-xs">
             Any more detail or context for this habit (optional).

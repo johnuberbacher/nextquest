@@ -15,7 +15,6 @@ export interface Achievement {
 }
 
 export interface User {
-  userId: string
   name: string
   dateCreated: Date
   exp: number
@@ -26,6 +25,8 @@ export interface User {
 
 export const useUserStore = defineStore('User', () => {
   const levelUpNotification = ref(false)
+
+  const user = ref<User | null>(null)
 
   const achievements = [
     {
@@ -221,58 +222,6 @@ export const useUserStore = defineStore('User', () => {
     { level: 100, title: 'Fully Synced', color: 'bg-teal-400 text-teal-900' },
   ])
 
-  const user = ref<User>({
-    userId: '123456',
-    name: 'The user!!',
-    dateCreated: new Date(),
-    exp: 0,
-    level: 1,
-    avatar: '🦊',
-    completedHabits: [
-      {
-        habitId: '4',
-        date: new Date('2025-05-05T05:24:09.444Z'),
-        state: true,
-      },
-      {
-        habitId: '4',
-        date: new Date('2025-05-06T05:24:09.444Z'),
-        state: true,
-      },
-
-      {
-        habitId: '2',
-        date: new Date('2025-05-05T05:24:29.444Z'),
-        state: true,
-      },
-      {
-        habitId: '2',
-        date: new Date('2025-05-06T05:24:09.444Z'),
-        state: true,
-      },
-      {
-        habitId: '3',
-        date: new Date('2025-05-05T05:24:09.444Z'),
-        state: true,
-      },
-      {
-        habitId: '3',
-        date: new Date('2025-05-07T05:24:09.444Z'),
-        state: true,
-      },
-      {
-        habitId: '3',
-        date: new Date('2025-05-08T05:24:09.444Z'),
-        state: true,
-      },
-      {
-        habitId: '3',
-        date: new Date('2025-05-09T05:24:09.444Z'),
-        state: true,
-      },
-    ],
-  })
-
   const hasLoggedToday = (habitId: string): boolean => {
     return hasLoggedOnDate(habitId, new Date())
   }
@@ -391,6 +340,19 @@ export const useUserStore = defineStore('User', () => {
     return max >= 3 ? max : 0
   }
 
+  const createUser = (name: string, avatar: string) => {
+    if (!user.value) {
+      user.value = {
+        name,
+        avatar,
+        dateCreated: new Date(),
+        exp: 0,
+        level: 1,
+        completedHabits: [],
+      }
+    }
+  }
+
   const getUserTitle = () => {
     const reversed = [...userTitle.value].sort((a, b) => b.level - a.level)
     const achievement = reversed.find((a) => user.value.level >= a.level)
@@ -413,7 +375,7 @@ export const useUserStore = defineStore('User', () => {
   }
 
   const incrementUserExp = async () => {
-    if (!user.value) {
+    if (!user.value.name) {
       console.log('No user found, returning...')
       return
     }
@@ -448,11 +410,11 @@ export const useUserStore = defineStore('User', () => {
 
   const saveUserToLocalStorage = () => {
     console.log('Saved user data!')
-    localStorage.setItem('user', JSON.stringify(user.value))
+    localStorage.setItem('users', JSON.stringify(user.value))
   }
 
   const loadUserFromLocalStorage = () => {
-    const saved = localStorage.getItem('user')
+    const saved = localStorage.getItem('users')
     if (saved) {
       const parsed = JSON.parse(saved)
       parsed.dateCreated = new Date(parsed.dateCreated)
@@ -471,6 +433,7 @@ export const useUserStore = defineStore('User', () => {
     achievements,
     user,
     userTitle,
+    createUser,
     getUserTitle,
     getStreak,
     hasLoggedToday,

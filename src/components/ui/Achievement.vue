@@ -8,7 +8,7 @@ defineProps({
 
 <template>
   <div
-    class="dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border bg-white px-4 py-3 text-center"
+    class="dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 relative flex w-full flex-col items-center justify-center gap-3 rounded-xl border bg-white px-4 py-3 text-center"
   >
     <div class="flex w-full flex-row items-center justify-start gap-3">
       <div

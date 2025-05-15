@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useUserStore } from '@/stores/useUserStore'
-import { useNotificationStore } from '@/stores/useNotificationStore'
-import Notification from '../components/ui/Notification.vue'
 import DailiesWidget from '../components/ui/DailiesWidget.vue'
-import WeekliesWidget from '../components/ui/WeekliesWidget.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import LevelProgressBar from '../components/ui/user/LevelProgressBar.vue'
 import CalendarWidget from '../components/ui/CalendarWidget.vue'
@@ -15,7 +12,6 @@ import BadgesWidget from '../components/ui/user/BadgesWidget.vue'
 const router = useRouter()
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-const notificationStore = useNotificationStore()
 const { tasks, getTasksForToday } = taskStore
 const { user, getUserTitle, getExpForNextLevel, loadUserFromLocalStorage } = userStore
 
@@ -59,20 +55,6 @@ const dailies = computed(() => {
 const userTitle = computed(() => {
   return getUserTitle()
 })
-
-// Get the first login toast
-const firstLoginToast = notificationStore.toastMessages.find(
-  (toast) => toast.id === 'firstLoginToast',
-)
-
-// Dismiss the first login toast
-const dismissFirstLoginToast = () => {
-  notificationStore.dismissToast('firstLoginToast')
-}
-
-onMounted(() => {
-  userStore.loadUserFromLocalStorage()
-})
 </script>
 
 <template>
@@ -83,7 +65,7 @@ onMounted(() => {
   >
     <div class="flex h-full w-full flex-col items-start justify-start gap-4">
       <div class="flex w-full flex-col items-start justify-start gap-4 px-4 pt-4">
-        <div class="flex w-full flex-col items-start justify-start gap-0">
+        <div class="flex w-full flex-col items-start justify-start gap-3">
           <div class="flex w-full flex-row items-center justify-start gap-3">
             <div
               class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
@@ -117,8 +99,8 @@ onMounted(() => {
               </div>
             </div>
           </div>
-          <div class="items mt-2 flex w-full flex-row items-center justify-between gap-1">
-            <BadgesWidget />
+          <div class="items flex w-full flex-row items-center justify-between gap-1">
+            <BadgesWidget :level="user.level" />
             <div
               :class="userTitle?.color"
               class="flex w-auto rounded-sm border px-2 py-1 text-[10px] font-bold uppercase"
@@ -127,43 +109,32 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <Notification
-          v-if="firstLoginToast.show"
-          @dismiss="dismissFirstLoginToast"
-          title="Welcome to NextQuest!"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt."
-          icon="🍕"
-        />
       </div>
       <CalendarWidget @update:activeDate="handleDateChange" />
-
       <div v-if="!tasks.length" class="flex h-full w-full flex-grow px-4 pb-4">
         <div
-          class="border-neutral-300 dark:bg-neutral-900 dark:border-neutral-700 flex w-full select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
+          class="border-neutral-200 dark:bg-neutral-900 dark:border-neutral-700 flex w-full select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
         >
           <div class="text-md font-bold">You don’t have any habits yet!</div>
           <div class="text-neutral-500 dark:text-neutral-400 mb-1 text-sm">
             Your journey starts here—let’s build something great. Click below to add a new habit.
           </div>
-          <button
-            @click="router.push('/add-new-habit')"
+          <RouterLink
+            :to="'/add-new-habit'"
             class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
           >
             Add New Habit
-          </button>
+          </RouterLink>
         </div>
       </div>
-      <div
-        v-if="tasks.length"
-        class="flex w-full flex-col items-start justify-start gap-4 overflow-hidden px-4"
-      >
+      <div v-if="tasks.length" class="flex w-full flex-col items-start justify-start gap-4 px-4">
         <div class="flex w-full flex-row items-center justify-between">
           <div class="text-md font-bold">
             {{ formatCalendarWidgetDate(selectedDate) }}
           </div>
           <RouterLink
             :to="'/habits'"
-            class="text-neutral-500 whitespace-nowrap py-1 text-xs font-medium tracking-tight"
+            class="btn btn-ghost btn-sm whitespace-nowrap py-1 text-xs font-medium tracking-tight"
           >
             View All
           </RouterLink>

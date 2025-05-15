@@ -1,11 +1,10 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
 
-// Props to accept the selected value and options
 const props = defineProps({
   modelValue: {
     type: String,
-    default: '😀', // Default selected emoji
+    default: '😀',
   },
   options: {
     type: Array,
@@ -87,10 +86,10 @@ const onChange = () => {
 <template>
   <label
     v-if="label"
-    class="w-full whitespace-nowrap text-xs font-semibold text-neutral-900 dark:text-neutral-200"
+    class="text-neutral-900 dark:text-neutral-200 w-full whitespace-nowrap text-xs font-semibold"
     >{{ label }}</label
   >
-  <select class="select w-full" v-model="selectedEmoji" @change="onChange">
+  <select class="input input-sm w-full" v-model="selectedEmoji" @change="onChange">
     <option v-for="emoji in options" :key="emoji" :value="emoji">
       {{ emoji }}
     </option>

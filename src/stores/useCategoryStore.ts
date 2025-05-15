@@ -15,7 +15,6 @@ export interface Category {
 
 export const useCategoryStore = defineStore('category', () => {
   const selectedCategoryId = ref<number>()
-
   const categories = ref<Category[]>([
     {
       id: 0,
@@ -699,12 +698,10 @@ export const useCategoryStore = defineStore('category', () => {
     },
   ])
 
-  // Optional: Helper to get category by ID
   const getCategoryById = (id: number) => {
     return categories.value.find((c) => c.id === id) || null
   }
 
-  // Optional: Set selected category
   const selectCategory = (id: number) => {
     selectedCategoryId.value = id
   }

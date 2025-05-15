@@ -14,7 +14,7 @@ const { selectedCategoryId, categories } = categoryStore
 
 const selectedCategory = ref<number>()
 
-const visibleCount = ref(20)
+const visibleCount = ref(24)
 const incrementAmount = 8
 
 const visibleCategories = computed(() => {
