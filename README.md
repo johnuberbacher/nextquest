@@ -1,28 +1,20 @@
 # NextQuest
 
-**NextQuest** is a fun and gamified habit tracking web app designed to keep you motivated. Whether you're tracking daily chores, weekly goals, or long-term routines, NextQuest helps you stay consistent — and rewards you for it!
+**NextQuest** is a fun, gamified habit tracking web app designed to keep you motivated. Whether you're building daily routines, chasing weekly goals, or tackling long-term habits, NextQuest helps you stay consistent — and rewards your progress.
+## Features
 
-## 🌟 Features
+- Track Habits
+  Create and manage the habits you want to develop. Log them daily or weekly based on your needs.
+- Flexible Logging
+  Choose between daily or weekly tracking for greater control over your schedule.
+- Gamification
+  Earn experience points (XP) every time you complete a habit. As you level up, you'll unlock achievements and badges to celebrate your progress.
+- Bonus XP
+  Get extra XP for completing all your tasks for the day or week.
+- Modern UI
+  Built with TailwindCSS and DaisyUI for a clean, responsive interface.
 
-- 📋 **Track Habits**  
-  Create and manage habits you want to develop. Log them daily or weekly based on your preference.
-
-- 📆 **Flexible Logging**  
-  Choose between daily or weekly logging formats for maximum control over your schedule.
-
-- 🧙 **Gamification**  
-  Earn experience points (XP) each time you complete a habit. Level up over time as you stay consistent.
-
-- 🎯 **Bonus XP**  
-  Get rewarded with bonus XP when you complete all your daily or weekly tasks.
-
-- 🎨 **Clean UI with TailwindCSS**  
-  Built with TailwindCSS and DaisyUI for a beautiful, modern interface.
-
-- 🌈 **Emoji Support**  
-  Spice up your habit names or rewards with emoji, thanks to `vue3-emoji-picker`.
-
-## 🚀 Tech Stack
+## Stack
 
 - **Vue 3** with `<script setup>` Composition API
 - **Pinia** for state management
@@ -32,7 +24,7 @@
 - **TypeScript** for type safety
 - **Prettier** and **ESLint** for formatting and linting
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -49,5 +41,4 @@ npm run dev
 ## 📦 Coming Soon
 - Leaderboards  
 - Habit streaks  
-- Achievements  
 - Custom avatars and themes  
