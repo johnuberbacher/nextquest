@@ -3,7 +3,6 @@
   src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
 }
 
-@import './base.css';
 @import 'tailwindcss';
 @theme {
   --font-roboto: 'opensans', 'Roboto', sans-serif;
