@@ -68,7 +68,7 @@ const userTitle = computed(() => {
         <div class="flex w-full flex-col items-start justify-start gap-3">
           <div class="flex w-full flex-row items-center justify-start gap-3">
             <div
-              class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
+              class="border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
             >
               <div class="flex aspect-square items-center justify-center text-3xl leading-none">
                 {{ user.avatar }}
@@ -110,39 +110,67 @@ const userTitle = computed(() => {
           </div>
         </div>
       </div>
-      <CalendarWidget @update:activeDate="handleDateChange" />
-      <div v-if="!tasks.length" class="flex h-full w-full flex-grow px-4 pb-4">
-        <div
-          class="border-neutral-200 dark:bg-neutral-900 dark:border-neutral-700 flex w-full select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
-        >
-          <div class="text-md font-bold">You don’t have any habits yet!</div>
-          <div class="text-neutral-500 dark:text-neutral-400 mb-1 text-sm">
-            Your journey starts here—let’s build something great. Click below to add a new habit.
-          </div>
-          <RouterLink
-            :to="'/add-new-habit'"
-            class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
-          >
-            Add New Habit
-          </RouterLink>
-        </div>
-      </div>
-      <div v-if="tasks.length" class="flex w-full flex-col items-start justify-start gap-4 px-4">
-        <div class="flex w-full flex-row items-center justify-between">
-          <div class="text-md font-bold">
-            {{ formatCalendarWidgetDate(selectedDate) }}
-          </div>
-          <RouterLink
-            :to="'/habits'"
-            class="btn btn-ghost btn-sm whitespace-nowrap py-1 text-xs font-medium tracking-tight"
-          >
-            View All
-          </RouterLink>
-        </div>
+      <div class="flex w-full flex-grow flex-col items-start justify-start gap-0 overflow-hidden">
+        <CalendarWidget @update:activeDate="handleDateChange" />
 
-        <!-- Scrollable DailiesWidget -->
-        <div v-if="dailies" class="w-full overflow-y-auto" style="max-height: 100%">
-          <DailiesWidget :tasks="dailies" :selectedDate="selectedDate" :cols="2" :md-cols="2" />
+        <div
+          class="bg-neutral-100 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-1 overflow-hidden px-4 pb-4"
+        >
+          <div v-if="tasks.length" class="flex w-full flex-row items-center justify-between">
+            <div class="text-sm font-bold">
+              {{ formatCalendarWidgetDate(selectedDate) }}
+            </div>
+            <RouterLink
+              :to="'/habits'"
+              class="btn btn-ghost btn-sm whitespace-nowrap py-1 text-xs font-medium tracking-tight"
+            >
+              View All
+            </RouterLink>
+          </div>
+
+          <div
+            v-if="(tasks.length && !dailies.length) || !tasks.length"
+            class="border-neutral-200 dark:bg-neutral-900 dark:border-neutral-700 flex h-full w-full flex-grow select-none flex-col items-center justify-center gap-4 rounded-xl border bg-white p-8 text-center sm:p-10"
+          >
+            <div class="text-md font-bold">
+              {{
+                tasks.length && !dailies.length
+                  ? 'You don’t have anything scheduled for today.'
+                  : 'You don’t have any habits yet!'
+              }}
+            </div>
+            <div class="text-neutral-500 dark:text-neutral-400 mb-1 text-sm">
+              {{
+                tasks.length && !dailies.length
+                  ? 'It’s a great chance to take a well-earned break—but if you’re feeling motivated, click below to start a new habit.'
+                  : 'Your journey starts here—let’s build something great. Click below to add a new habit.'
+              }}
+            </div>
+            <RouterLink
+              :to="'/add-new-habit'"
+              class="btn btn-primary btn-lg w-full rounded-full px-10 text-sm md:w-auto"
+            >
+              Add New Habit
+            </RouterLink>
+          </div>
+          <div
+            v-else
+            class="bg-neutral-100 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden"
+          >
+            <div
+              class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-y-auto overflow-x-hidden rounded-xl border bg-white"
+            >
+              <div class="w-full overflow-y-auto" style="max-height: 100%">
+                <DailiesWidget
+                  :tasks="dailies"
+                  :selectedDate="selectedDate"
+                  :cols="2"
+                  :md-cols="2"
+                  class="p-4"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

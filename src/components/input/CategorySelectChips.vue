@@ -8,7 +8,7 @@ const props = defineProps({
   },
   modelValue: {
     type: Number,
-    default: 0,
+    default: null,
   },
   label: {
     type: String,

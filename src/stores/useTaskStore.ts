@@ -27,116 +27,6 @@ export interface Task {
 export const useTaskStore = defineStore('task', () => {
   const dayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const tasks = ref<Task[]>([])
-  const taskss = ref<Task[]>([
-    {
-      id: '1',
-      name: 'Stay Hydrated!',
-      description: 'Start the day with a glass of water',
-      categoryId: 6,
-      icon: '💧',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 30,
-      daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      timeOfDay: '07:00',
-      color: 'border-green-200 dark:border-green-300 bg-green-50 dark:bg-green-200',
-      createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '2',
-      name: 'Creative Writing',
-      description: 'Unleash your imagination with daily writing exercises.',
-      categoryId: 2,
-      icon: '✍️',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 45,
-      daysOfWeek: ['Tue', 'Wed', 'Thu'],
-      timeOfDay: '10:00',
-      color: 'border-purple-200 dark:border-purple-300 bg-purple-50 dark:bg-purple-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '3',
-      name: 'Game Development',
-      description: 'Build the next great game with some coding and debugging.',
-      categoryId: 3,
-      icon: '🎮',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 90,
-      daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      timeOfDay: '13:00',
-      color: 'border-indigo-200 dark:border-indigo-300 bg-indigo-50 dark:bg-indigo-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '4',
-      name: 'Guitar Practice',
-      description: 'Practice your guitar skills with new tunes and techniques.',
-      categoryId: 4,
-      icon: '🎸',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 60,
-      daysOfWeek: ['Mon', 'Tue', 'Wed'],
-      timeOfDay: '16:00',
-      color: 'border-orange-200 dark:border-orange-300 bg-orange-50 dark:bg-orange-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '5',
-      name: 'Reading',
-      description: 'Escape into a new book and enjoy some quiet time.',
-      categoryId: 5,
-      icon: '📚',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 40,
-      daysOfWeek: ['Tue', 'Wed', 'Fri'],
-      timeOfDay: '20:00',
-      color: 'border-pink-200 dark:border-pink-300 bg-pink-50 dark:bg-pink-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-    {
-      id: '6',
-      name: 'Cooking Class',
-      description: 'Learn how to make new dishes in this weekly cooking session.',
-      categoryId: 6,
-      icon: '🍳',
-      exp: 0,
-      level: 1,
-      progress: 0,
-      state: 'pending',
-      durationMinutes: 90,
-      daysOfWeek: ['Wed', 'Sat'],
-      timeOfDay: '11:00',
-      color: 'border-teal-200 dark:border-teal-300 bg-teal-50 dark:bg-teal-200',
-      createdAt: new Date(),
-      startDate: null,
-      endDate: null,
-    },
-  ])
 
   const createTask = (
     taskInput: Partial<Omit<Task, 'id' | 'createdAt'>> & { name?: string },
@@ -161,6 +51,7 @@ export const useTaskStore = defineStore('task', () => {
     }
 
     tasks.value.push(newTask)
+    saveHabitsToLocalStorage()
     return newTask
   }
 
@@ -168,11 +59,13 @@ export const useTaskStore = defineStore('task', () => {
     const index = tasks.value.findIndex((t) => t.id === id.toString())
     if (index !== -1) {
       tasks.value[index] = { ...tasks.value[index], ...updates }
+      saveHabitsToLocalStorage()
     }
   }
 
   const deleteTask = (id: string) => {
     tasks.value = tasks.value.filter((t) => t.id !== id)
+    saveHabitsToLocalStorage()
     const router = useRouter()
     router.push('/')
   }
@@ -189,13 +82,13 @@ export const useTaskStore = defineStore('task', () => {
         task.level++
         task.exp -= levelThreshold
       }
+      saveHabitsToLocalStorage()
     }
   }
 
   const getTasksForToday = () => {
     const today = new Date()
     const todayStr = dayMap[today.getDay()]
-    console.log(todayStr)
     return tasks.value.filter((task) => task.daysOfWeek.includes(todayStr))
   }
 
@@ -217,6 +110,20 @@ export const useTaskStore = defineStore('task', () => {
   const getTaskById = (id: string | number): Task | undefined =>
     tasks.value.find((t) => t.id === id)
 
+  const saveHabitsToLocalStorage = () => {
+    localStorage.setItem('habits', JSON.stringify(tasks.value))
+  }
+
+  const loadHabitsFromLocalStorage = () => {
+    const saved = localStorage.getItem('habits')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      tasks.value = parsed
+    } else {
+      // If no saved data then we need to send them to the Intro Screen
+    }
+  }
+
   return {
     tasks,
     createTask,
@@ -226,5 +133,7 @@ export const useTaskStore = defineStore('task', () => {
     getTasksForToday,
     getTasksForWeek,
     incrementTaskExp,
+    loadHabitsFromLocalStorage,
+    saveHabitsToLocalStorage,
   }
 })

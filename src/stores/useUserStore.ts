@@ -259,9 +259,6 @@ export const useUserStore = defineStore('User', () => {
       }
 
       saveUserToLocalStorage()
-
-      console.log('All Done')
-      console.log(user.value)
     }
   }
 
@@ -375,8 +372,8 @@ export const useUserStore = defineStore('User', () => {
   }
 
   const incrementUserExp = async () => {
-    if (!user.value.name) {
-      console.log('No user found, returning...')
+    if (!user.value) {
+      console.log('error: no user found')
       return
     }
 
@@ -409,7 +406,6 @@ export const useUserStore = defineStore('User', () => {
   }
 
   const saveUserToLocalStorage = () => {
-    console.log('Saved user data!')
     localStorage.setItem('users', JSON.stringify(user.value))
   }
 
@@ -423,7 +419,6 @@ export const useUserStore = defineStore('User', () => {
         date: new Date(e.date),
       }))
       user.value = parsed
-      console.log(user.value)
     } else {
       // If no saved data then we need to send them to the Intro Screen
     }

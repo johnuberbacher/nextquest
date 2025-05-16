@@ -70,8 +70,6 @@ const normalizeDay = (day: string) => day.charAt(0).toUpperCase() + day.slice(1,
 
 const isActiveToday = computed(() => {
   const todayName = normalizeDay(dayNames[new Date().getDay()])
-  console.log(normalizeDay(dayNames[new Date().getDay()]))
-  console.log(props.activeDays)
   return props.activeDays.map(normalizeDay).includes(todayName)
 })
 

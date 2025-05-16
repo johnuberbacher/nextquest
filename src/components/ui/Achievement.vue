@@ -12,7 +12,7 @@ defineProps({
   >
     <div class="flex w-full flex-row items-center justify-start gap-3">
       <div
-        class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
+        class="border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-16 items-center justify-center rounded-full border text-center text-white"
       >
         <div class="flex aspect-square items-center justify-center text-3xl leading-none">
           {{ emoji }}

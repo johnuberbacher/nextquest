@@ -43,7 +43,7 @@ onMounted(async () => {
 
 <template>
   <div
-    class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 bg-neutral-50 flex w-full border-y"
+    class="border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900 bg-neutral-100 flex w-full border-t"
   >
     <div class="relative w-full overflow-hidden">
       <div

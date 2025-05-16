@@ -25,7 +25,7 @@ const selectedDuration = ref(1) // in minutes
 const selectedDays = ref(['Mon']) // at least one day
 const selectedTimeOfDay = ref('05:00') // time in HH:mm
 const selectedColor = ref('border-red-200 dark:border-red-300 bg-red-100 dark:bg-red-200')
-const selectedEmoji = ref('🐼')
+const selectedEmoji = ref('')
 const taskName = ref('')
 const taskDescription = ref('') // Optional: can be static or editable later
 
@@ -33,7 +33,6 @@ const submitting = ref(false)
 const errors = ref<string[]>([])
 
 const handleSubmit = async () => {
-  console.log('clicked')
   submitting.value = true
   errors.value = []
 
@@ -64,8 +63,6 @@ const handleSubmit = async () => {
     await new Promise((r) => setTimeout(r, 1000))
     if (newTask) {
       submitting.value = false
-      console.log('newTask')
-      console.log(newTask)
       router.push('/habit/' + newTask.id)
     } else {
       errors.value.push('Failed to create task. Please try again.')
@@ -123,7 +120,7 @@ watchEffect(() => {
   <FullScreenLoading v-if="!selectedCategory?.name" />
   <div
     v-else
-    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4 py-4"
+    class="bg-neutral-100 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4 py-4"
   >
     <!-- Form -->
     <div class="flex w-full flex-col items-start justify-start gap-4">
@@ -232,7 +229,11 @@ watchEffect(() => {
         </div>
         <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
         <div class="fieldset flex w-full flex-col px-4">
-          <EmojiPicker v-model="selectedEmoji" label="Emoji icon" />
+          <EmojiPicker
+            v-model="selectedEmoji"
+            :options="selectedCategory.emoji"
+            label="Emoji icon"
+          />
           <p class="text-neutral-500 dark:text-neutral-500 text-xs">
             Pick an emoji to quickly recognize this habit at a glance.
           </p>

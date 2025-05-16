@@ -47,12 +47,9 @@ export const useNotificationStore = defineStore('notification', () => {
 
   const dismissEvent = (id: string) => {
     const event = events.value.find((event) => event.id === id)
-    console.log(event)
-    console.log('-')
     if (event) {
       event.show = false
     }
-    console.log(event)
   }
 
   const addEvent = () => {

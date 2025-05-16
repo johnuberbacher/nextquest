@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import Header from './components/ui/Header.vue'
 import AppBar from './components/ui/AppBar.vue'
 import IntroWelcome from './components/ui/IntroWelcome.vue'
 import { useUserStore } from '@/stores/useUserStore'
+import { useTaskStore } from '@/stores/useTaskStore'
 import { useNotificationStore } from '@/stores/useNotificationStore'
 
 const userStore = useUserStore()
+const taskStore = useTaskStore()
 const { loadUserFromLocalStorage } = userStore
 
 const showIntroWelcomeScreen = ref(false)
 
 function updateIntroWelcomeScreen() {
-  console.log('yo!!')
   showIntroWelcomeScreen.value = false
 }
 
@@ -23,10 +24,20 @@ const user = computed(() => {
 
 onMounted(() => {
   userStore.loadUserFromLocalStorage()
-  if (!user) {
-    showIntroWelcomeScreen.value = true
-  }
+  taskStore.loadHabitsFromLocalStorage()
 })
+
+watch(
+  user,
+  (newVal) => {
+    if (!newVal) {
+      showIntroWelcomeScreen.value = true
+    } else {
+      showIntroWelcomeScreen.value = false
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -37,7 +48,7 @@ onMounted(() => {
       class="dark:bg-neutral-800 md:border-neutral-200 md:dark:border-neutral-700 relative m-auto flex h-full w-full flex-col justify-between bg-white shadow-sm md:max-h-[960px] md:max-w-xl md:overflow-hidden md:rounded-3xl md:border"
     >
       <IntroWelcome
-        v-if="showIntroWelcomeScreen && !user"
+        v-if="showIntroWelcomeScreen || !user"
         @updateIntroWelcomeScreen="updateIntroWelcomeScreen"
       />
       <Header v-if="!showIntroWelcomeScreen && user" />

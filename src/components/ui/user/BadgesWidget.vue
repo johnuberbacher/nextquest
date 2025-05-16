@@ -29,7 +29,7 @@ const displayBadges = computed(() =>
 
 <template>
   <div
-    class="border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 flex w-auto gap-1 rounded-3xl border px-2 py-1.5 text-xs"
+    class="border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 flex w-auto gap-1 rounded-3xl border px-2 py-1.5 text-xs"
   >
     <div
       v-for="badge in displayBadges"

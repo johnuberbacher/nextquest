@@ -104,7 +104,7 @@ watchEffect(() => {
   <FullScreenLoading v-if="!task" />
   <div
     v-else
-    class="bg-neutral-50 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
+    class="bg-neutral-100 dark:bg-neutral-800 flex h-full w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden p-4"
   >
     <div class="flex w-full flex-col items-start justify-start gap-4">
       <div class="relative flex w-full flex-row items-start justify-start gap-4">
