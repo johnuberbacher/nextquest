@@ -27,8 +27,7 @@ const { logHabitEntry, hasLoggedToday } = userStore
 const { selectedCategoryId, categories, getCategoryById } = categoryStore
 
 const userAchievements = computed(() => {
-  const { achievements } = userStore
-  return achievements
+  return user.achievements
 })
 
 const dailies = computed(() => {
@@ -48,12 +47,12 @@ const dailies = computed(() => {
         <div class="flex w-full flex-col items-center justify-start gap-4">
           <div class="flex w-full flex-row items-center gap-4 px-4">
             <div
-              class="flex aspect-square h-10 items-center justify-center rounded-full border border-red-200 bg-red-100 text-center text-white dark:border-red-300 dark:bg-red-200"
+              class="border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 flex aspect-square h-10 items-center justify-center rounded-full border text-center text-white"
             >
               <div
                 class="ml-0.5 flex aspect-square items-center justify-center text-xl leading-none"
               >
-                🐼
+                {{ user.avatar }}
               </div>
             </div>
             <div class="flex w-full flex-col items-start justify-start gap-0 text-start">

@@ -13,7 +13,7 @@ const router = useRouter()
 const taskStore = useTaskStore()
 const userStore = useUserStore()
 const { tasks, getTasksForToday } = taskStore
-const { user, getUserTitle, getExpForNextLevel, loadUserFromLocalStorage } = userStore
+const { user, getUserTitle, getExpForNextLevel } = userStore
 
 const selectedDate = ref(new Date())
 

@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 import Header from './components/ui/Header.vue'
 import AppBar from './components/ui/AppBar.vue'
 import IntroWelcome from './components/ui/IntroWelcome.vue'
+import AchievementNotification from './components/ui/modal/AchievementNotification.vue'
 import { useUserStore } from '@/stores/useUserStore'
 import { useTaskStore } from '@/stores/useTaskStore'
 import { useNotificationStore } from '@/stores/useNotificationStore'
@@ -45,13 +46,15 @@ watch(
     class="bg-neutral-100 dark:bg-neutral-900 flex h-full max-h-screen w-full select-none flex-col items-center justify-center"
   >
     <div
-      class="dark:bg-neutral-800 md:border-neutral-200 md:dark:border-neutral-700 relative m-auto flex h-full w-full flex-col justify-between bg-white shadow-sm md:max-h-[960px] md:max-w-xl md:overflow-hidden md:rounded-3xl md:border"
+      class="dark:bg-neutral-800 md:border-neutral-200 md:dark:border-neutral-700 relative m-auto flex h-full w-full flex-col justify-between bg-white shadow md:max-h-[960px] md:max-w-xl md:overflow-hidden md:rounded-3xl md:border"
     >
       <IntroWelcome
         v-if="showIntroWelcomeScreen || !user"
         @updateIntroWelcomeScreen="updateIntroWelcomeScreen"
       />
+
       <Header v-if="!showIntroWelcomeScreen && user" />
+      <AchievementNotification v-if="!showIntroWelcomeScreen && user" />
       <RouterView v-if="!showIntroWelcomeScreen && user" />
       <AppBar v-if="!showIntroWelcomeScreen && user" />
     </div>

@@ -188,6 +188,13 @@ watchEffect(() => {
         </div>
         <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
         <div class="fieldset flex w-full flex-col px-4">
+          <EmojiPicker v-model="selectedEmoji" :options="selectedCategory.emoji" label="Icon" />
+          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
+            Pick an emoji to associate and quickly recognize this habit at a glance.
+          </p>
+        </div>
+        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
+        <div class="fieldset flex w-full flex-col px-4">
           <div class="fieldset-legend pt-0">Duration</div>
           <SingleSelectChips
             v-model="selectedDuration"
@@ -225,17 +232,6 @@ watchEffect(() => {
           <ColorPicker v-model="selectedColor" label="Label color" />
           <p class="text-neutral-500 dark:text-neutral-500 text-xs">
             This color will appear on the dashboard to help visually group your habits.
-          </p>
-        </div>
-        <div class="bg-neutral-200 dark:bg-neutral-700 min-h-[1px] w-full"></div>
-        <div class="fieldset flex w-full flex-col px-4">
-          <EmojiPicker
-            v-model="selectedEmoji"
-            :options="selectedCategory.emoji"
-            label="Emoji icon"
-          />
-          <p class="text-neutral-500 dark:text-neutral-500 text-xs">
-            Pick an emoji to quickly recognize this habit at a glance.
           </p>
         </div>
 

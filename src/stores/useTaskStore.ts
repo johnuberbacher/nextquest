@@ -33,7 +33,7 @@ export const useTaskStore = defineStore('task', () => {
   ): Task => {
     const newTask: Task = {
       id: nanoid(),
-      name: taskInput.name || '',
+      name: taskInput.name || 'something went wrong :(',
       icon: taskInput.icon || '🦓',
       exp: taskInput.exp || 0,
       level: taskInput.level || 1,
@@ -44,9 +44,9 @@ export const useTaskStore = defineStore('task', () => {
       daysOfWeek: taskInput.daysOfWeek ?? ['Mon'],
       timeOfDay: taskInput.timeOfDay ?? '05:00',
       categoryId: taskInput.categoryId ?? 0,
-      color: taskInput.color ?? 'bg-red-200',
+      color: taskInput.color ?? '',
       createdAt: new Date(),
-      startDate: taskInput.startDate ?? null,
+      startDate: new Date(),
       endDate: taskInput.endDate ?? null,
     }
 

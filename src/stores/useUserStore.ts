@@ -8,7 +8,12 @@ export interface HabitEntry {
   state: boolean
 }
 
-export interface Achievement {
+export interface AchievementEntry {
+  achievementId: number
+  date: Date
+}
+
+export interface UserTitle {
   level: number
   title: string
   color: string
@@ -21,191 +26,16 @@ export interface User {
   level: number
   avatar: string
   completedHabits: HabitEntry[]
+  achievements: AchievementEntry[]
 }
 
 export const useUserStore = defineStore('User', () => {
   const levelUpNotification = ref(false)
+  const achievementNotification = ref(false)
 
   const user = ref<User | null>(null)
 
-  const achievements = [
-    {
-      id: 0,
-      title: 'First Step',
-      description: 'Leveled up for the first time.',
-      emoji: '👣',
-    },
-    {
-      id: 1,
-      title: 'Tough Guy?',
-      description: 'Reached level 10. Getting cocky?',
-      emoji: '😎',
-    },
-    {
-      id: 2,
-      title: 'Committed Cadet',
-      description: "Reached level 20. You're getting serious.",
-      emoji: '🎯',
-    },
-    {
-      id: 3,
-      title: 'Habit Veteran',
-      description: 'Hit level 30. That’s some dedication.',
-      emoji: '🏅',
-    },
-    {
-      id: 4,
-      title: 'Habit Master',
-      description: 'Level 40 achieved. Flex a little.',
-      emoji: '💪',
-    },
-    {
-      id: 5,
-      title: 'Obsessed? Maybe.',
-      description: 'Level 50. Are you okay?',
-      emoji: '🤯',
-    },
-    {
-      id: 6,
-      title: 'The Grind Chooses You',
-      description: 'Level 60. You’re in too deep now.',
-      emoji: '⚙️',
-    },
-    {
-      id: 7,
-      title: 'Elite Streaker',
-      description: 'Reached level 70. That’s elite company.',
-      emoji: '🚀',
-    },
-    {
-      id: 8,
-      title: 'Almost Maxed',
-      description: "Level 80. You're not stopping, huh?",
-      emoji: '🔥',
-    },
-    {
-      id: 9,
-      title: 'Unstoppable',
-      description: 'Level 90. Basically a machine.',
-      emoji: '🤖',
-    },
-    {
-      id: 10,
-      title: 'The One Hundred Club',
-      description: 'Hit level 100. Bow down.',
-      emoji: '👑',
-    },
-    {
-      id: 11,
-      title: 'Starting Strong',
-      description: '3-day streak on the same habit.',
-      emoji: '📅',
-    },
-    {
-      id: 12,
-      title: 'Keeping It Rolling',
-      description: '4-day streak. Not bad!',
-      emoji: '🌀',
-    },
-    {
-      id: 13,
-      title: 'Daily Driver',
-      description: '5-day streak. Now it’s a routine.',
-      emoji: '🛣️',
-    },
-    {
-      id: 14,
-      title: 'Who Even Are You?',
-      description: '6-day streak. Who is this disciplined person?',
-      emoji: '🕵️',
-    },
-    {
-      id: 15,
-      title: 'Streak Lord',
-      description: '7-day streak. This is getting suspicious...',
-      emoji: '🔥',
-    },
-    {
-      id: 16,
-      title: 'Category Collector',
-      description: 'Created 3 habits in the same category.',
-      emoji: '🧩',
-    },
-    {
-      id: 17,
-      title: 'Bit of a Pattern Here',
-      description: '5 habits in the same category. You really like this, huh?',
-      emoji: '🔁',
-    },
-    {
-      id: 18,
-      title: 'Category Cultist',
-      description: '10 habits in one category. This is getting sus...',
-      emoji: '🛐',
-    },
-    {
-      id: 19,
-      title: 'Quick Starter',
-      description: 'Created your first habit.',
-      emoji: '🚀',
-    },
-    {
-      id: 20,
-      title: 'Built Differently',
-      description: 'Completed every habit for 3 days in a row.',
-      emoji: '🧠',
-    },
-    {
-      id: 21,
-      title: 'Weekend Warrior',
-      description: 'Logged a habit on both Saturday and Sunday.',
-      emoji: '🛡️',
-    },
-    {
-      id: 22,
-      title: 'Habit Architect',
-      description: 'Created 10 total habits.',
-      emoji: '🏗️',
-    },
-    {
-      id: 23,
-      title: 'Night Owl',
-      description: 'Completed a habit after midnight.',
-      emoji: '🌙',
-    },
-    {
-      id: 24,
-      title: 'Early Bird',
-      description: 'Completed a habit before 7 AM.',
-      emoji: '🌅',
-    },
-    {
-      id: 25,
-      title: 'Ghost Mode',
-      description: 'Logged a habit every day for a full week... silently.',
-      emoji: '👻',
-    },
-    {
-      id: 26,
-      title: 'Completionist',
-      description: 'Marked every habit done for a full week.',
-      emoji: '✅',
-    },
-    {
-      id: 27,
-      title: 'Overachiever',
-      description: 'Checked off more than 10 habits in one day.',
-      emoji: '📈',
-    },
-    {
-      id: 28,
-      title: 'Return of the King',
-      description: 'Came back after a 7+ day break and logged a habit.',
-      emoji: '🧙',
-    },
-  ]
-
-  const userTitle = ref<Achievement[]>([
+  const userTitle = ref<UserTitle[]>([
     { level: 1, title: 'Newbie', color: 'bg-gray-200 text-gray-800' },
     { level: 2, title: 'Clicked Once', color: 'bg-green-200 text-green-800' },
     { level: 3, title: 'Got Up', color: 'bg-blue-200 text-blue-800' },
@@ -346,8 +176,10 @@ export const useUserStore = defineStore('User', () => {
         exp: 0,
         level: 1,
         completedHabits: [],
+        achievements: [],
       }
     }
+    saveUserToLocalStorage()
   }
 
   const getUserTitle = () => {
@@ -371,6 +203,37 @@ export const useUserStore = defineStore('User', () => {
     return Math.floor(10 + Math.pow(progress, 3) * scale)
   }
 
+  const setUserAchievement = (achievementId: number) => {
+    if (!user.value) {
+      console.log('error: no user found')
+      return
+    }
+
+    console.log(user.value)
+
+    const alreadyHasAchievement = user.value.achievements.some(
+      (entry) => entry.achievementId === achievementId,
+    )
+
+    if (alreadyHasAchievement) {
+      console.log('User already has this achievement.')
+      return
+    }
+
+    user.value.achievements.push({
+      achievementId,
+      date: new Date(),
+    })
+    saveUserToLocalStorage()
+
+    console.log('Achievement saved to user data.')
+
+    achievementNotification.value = true
+    setTimeout(() => {
+      // achievementNotification.value = false
+    }, 4000)
+  }
+
   const incrementUserExp = async () => {
     if (!user.value) {
       console.log('error: no user found')
@@ -387,8 +250,18 @@ export const useUserStore = defineStore('User', () => {
     while (user.value.level < 100 && user.value.exp >= getExpForNextLevel(user.value.level)) {
       const required = getExpForNextLevel(user.value.level)
       user.value.level++
-      user.value.exp = 0 // Or subtract `required` if you want to preserve overflow EXP
+      user.value.exp = 0 // subtract `required` to preserve overflow EXP
       console.log(`Level up! New level: ${user.value.level}, EXP reset to 0`)
+
+      // Check for some achievos here
+      const level = user.value.level
+
+      if (level === 2 || (level % 10 === 0 && level <= 100)) {
+        const achievementId = level === 2 ? 0 : level / 10
+        console.log(achievementId)
+        setUserAchievement(achievementId)
+      }
+
       levelUpNotification.value = true
 
       if (user.value.exp < getExpForNextLevel(user.value.level)) {
@@ -405,27 +278,30 @@ export const useUserStore = defineStore('User', () => {
     saveUserToLocalStorage()
   }
 
-  const saveUserToLocalStorage = () => {
-    localStorage.setItem('users', JSON.stringify(user.value))
+  const saveUserToLocalStorage = async () => {
+    return Promise.resolve().then(() => {
+      localStorage.setItem('users', JSON.stringify(user.value))
+    })
   }
 
-  const loadUserFromLocalStorage = () => {
-    const saved = localStorage.getItem('users')
-    if (saved) {
-      const parsed = JSON.parse(saved)
-      parsed.dateCreated = new Date(parsed.dateCreated)
-      parsed.completedHabits = parsed.completedHabits.map((e: any) => ({
-        ...e,
-        date: new Date(e.date),
-      }))
-      user.value = parsed
-    } else {
-      // If no saved data then we need to send them to the Intro Screen
-    }
+  const loadUserFromLocalStorage = async () => {
+    return Promise.resolve().then(() => {
+      const saved = localStorage.getItem('users')
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        parsed.dateCreated = new Date(parsed.dateCreated)
+        parsed.completedHabits = parsed.completedHabits.map((e: any) => ({
+          ...e,
+          date: new Date(e.date),
+        }))
+        user.value = parsed
+      } else {
+        // If no saved data then we need to send them to the Intro Screen
+      }
+    })
   }
 
   return {
-    achievements,
     user,
     userTitle,
     createUser,
@@ -442,5 +318,6 @@ export const useUserStore = defineStore('User', () => {
     getHabitEntriesThisWeek,
     getTwoMonthsCompletion,
     levelUpNotification,
+    achievementNotification,
   }
 })

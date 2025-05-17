@@ -43,7 +43,7 @@ const onChange = () => {
     class="text-neutral-900 dark:text-neutral-200 w-full whitespace-nowrap text-xs font-semibold"
     >{{ label }}</label
   >
-  <select class="input input-sm w-full" v-model="selectedEmoji" @change="onChange">
+  <select class="input input-sm w-full cursor-pointer" v-model="selectedEmoji" @change="onChange">
     <option v-for="emoji in options" :key="emoji" :value="emoji">
       {{ emoji }}
     </option>
