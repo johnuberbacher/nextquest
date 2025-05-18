@@ -67,32 +67,127 @@ export const useUserStore = defineStore('User', () => {
   }
 
   const logHabitEntry = (habitId: string, state: boolean) => {
-    if (user.value) {
-      const entry: HabitEntry = {
-        habitId,
-        date: new Date(),
-        state,
-      }
+    if (!user.value) return
 
-      if (!user.value.completedHabits) {
-        user.value.completedHabits = []
-      }
-
-      const entryDateStr = entry.date.toDateString()
-
-      const existingEntryIndex = user.value.completedHabits.findIndex((e) => {
-        const eDate = new Date(e.date)
-        return e.habitId === habitId && eDate.toDateString() === entryDateStr
-      })
-
-      if (existingEntryIndex !== -1) {
-        user.value.completedHabits[existingEntryIndex].state = state
-      } else {
-        user.value.completedHabits.push(entry)
-      }
-
-      saveUserToLocalStorage()
+    const now = new Date()
+    const entry: HabitEntry = {
+      habitId,
+      date: now,
+      state,
     }
+
+    const entryDateStr = now.toDateString()
+    const existingEntryIndex = user.value.completedHabits.findIndex(
+      (e) => e.habitId === habitId && new Date(e.date).toDateString() === entryDateStr,
+    )
+
+    if (existingEntryIndex !== -1) {
+      user.value.completedHabits[existingEntryIndex].state = state
+    } else {
+      user.value.completedHabits.push(entry)
+    }
+
+    // --- achievo checks ---
+    const set = setUserAchievement
+    const taskStore = useTaskStore()
+    const { tasks } = taskStore
+    const allHabits = tasks
+    const completedToday = user.value.completedHabits.filter(
+      (e) => new Date(e.date).toDateString() === now.toDateString(),
+    )
+
+    // 20: Built Differently – 3-day streak where every habit is completed
+    const checkBuiltDifferently = () => {
+      const all = allHabits.map((task) => task.id)
+      let success = true
+      for (let i = 0; i < 3; i++) {
+        const date = new Date(now)
+        date.setDate(date.getDate() - i)
+        const completedToday = user.value.completedHabits
+          .filter((e) => new Date(e.date).toDateString() === date.toDateString() && e.state)
+          .map((e) => e.habitId)
+        for (const id of all) {
+          if (!completedToday.includes(id)) {
+            success = false
+            break
+          }
+        }
+        if (!success) break
+      }
+      if (success && all.length > 0) set(20)
+    }
+
+    // 21: Weekend Warrior – logged on Sat & Sun
+    const checkWeekendWarrior = () => {
+      const logs = user.value.completedHabits.filter((e) => {
+        const d = new Date(e.date)
+        return d.getDay() === 6 || d.getDay() === 0 // Sat or Sun
+      })
+      const daysLogged = new Set(logs.map((e) => new Date(e.date).getDay()))
+      if (daysLogged.has(6) && daysLogged.has(0)) set(21)
+    }
+
+    // 23: Night Owl – after midnight (00:00 to 04:59)
+    if (now.getHours() < 5) set(23)
+
+    // 24: Early Bird – before 7 AM
+    if (now.getHours() < 7) set(24)
+
+    // 25: Ghost Mode – 7-day logging streak (any habit logged each day)
+    const dates = new Set(user.value.completedHabits.map((e) => new Date(e.date).toDateString()))
+    const streakCheck = () => {
+      let count = 0
+      for (let i = 0; i < 7; i++) {
+        const date = new Date()
+        date.setDate(date.getDate() - i)
+        if (dates.has(date.toDateString())) {
+          count++
+        } else break
+      }
+      if (count === 7) set(25)
+    }
+
+    // 26: Completionist – all habits done for 7 straight days
+    const checkCompletionist = () => {
+      const allIds = allHabits.map((h) => h.id)
+      if (!allIds.length) return
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date()
+        date.setDate(date.getDate() - i)
+        const dayCompleted = user.value.completedHabits
+          .filter((e) => new Date(e.date).toDateString() === date.toDateString() && e.state)
+          .map((e) => e.habitId)
+
+        for (const id of allIds) {
+          if (!dayCompleted.includes(id)) return
+        }
+      }
+      set(26)
+    }
+
+    // 27: Overachiever – more than 10 habits logged in a day
+    if (completedToday.length > 10) set(27)
+
+    // 28: Return of the King – first log after 7+ days away
+    const recent = user.value.completedHabits
+      .filter((e) => e.habitId === habitId)
+      .map((e) => new Date(e.date))
+      .sort((a, b) => b.getTime() - a.getTime())
+
+    if (recent.length > 1) {
+      const last = recent[1]
+      const diff = (now.getTime() - last.getTime()) / (1000 * 3600 * 24)
+      if (diff >= 7) set(28)
+    }
+
+    // run complex checks
+    checkBuiltDifferently()
+    checkWeekendWarrior()
+    streakCheck()
+    checkCompletionist()
+
+    saveUserToLocalStorage()
   }
 
   const getHabitEntriesPastYear = (habitId: string): HabitEntry[] => {

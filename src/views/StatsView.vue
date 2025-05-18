@@ -80,10 +80,10 @@ const user = computed(() => {
           </div>
         </div>
       </div>
+      <Achievement v-for="achivement in user?.achievements" :userData="achivement" />
       <div>
         <DeleteAccountModal />
       </div>
-      <Achievement v-for="achivement in user?.achievements" :userData="achivement" />
     </div>
   </div>
 </template>

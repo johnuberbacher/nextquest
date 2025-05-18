@@ -15,7 +15,7 @@ const achievementEmoji = ref('')
 
 const user = computed(() => userStore.user)
 
-// Keep track of previous achievements to detect new ones
+// track of previous achievements to detect new ones
 let previousAchievements: number[] = []
 
 watch(
@@ -35,12 +35,10 @@ watch(
         showNotification.value = true
         timeout.value = true
 
-        // Animate in
         setTimeout(() => {
           timeout.value = false
         }, 100)
 
-        // Auto-hide after 4 seconds
         setTimeout(() => {
           showNotification.value = false
         }, 4000)
@@ -63,8 +61,8 @@ const clickAchievementNotification = () => {
     v-if="showNotification"
     @click="clickAchievementNotification"
     :class="[
-      'toast toast-center absolute bottom-10 z-20 w-full max-w-lg cursor-pointer px-4 transition-all duration-700',
-      timeout ? 'bottom-[-20vh]' : 'bottom-0',
+      'toast toast-center absolute z-50 w-full max-w-lg cursor-pointer px-4 transition-all duration-700',
+      timeout ? 'top-[-20vh]' : 'top-10',
     ]"
   >
     <div

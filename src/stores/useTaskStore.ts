@@ -1,3 +1,4 @@
+// useTaskStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { nanoid } from 'nanoid'
@@ -32,6 +33,7 @@ export const useTaskStore = defineStore('task', () => {
   const createTask = (
     taskInput: Partial<Omit<Task, 'id' | 'createdAt'>> & { name?: string },
   ): Task => {
+    const userStore = useUserStore()
     const newTask: Task = {
       id: nanoid(),
       name: taskInput.name || 'something went wrong :(',
@@ -51,14 +53,32 @@ export const useTaskStore = defineStore('task', () => {
       endDate: taskInput.endDate ?? null,
     }
 
-    if (tasks.value.length === 0) {
-      const userStore = useUserStore()
+    tasks.value.push(newTask)
+    saveHabitsToLocalStorage()
+
+    // First task = Quick Starter
+    if (tasks.value.length === 1) {
       userStore.setUserAchievement(19)
     }
 
-    tasks.value.push(newTask)
+    // Habit Architect: 10 total habits
+    if (tasks.value.length === 10) {
+      userStore.setUserAchievement(22)
+    }
 
-    saveHabitsToLocalStorage()
+    // category achievements (same category count)
+    const categoryId = newTask.categoryId
+    const countInCategory = tasks.value.filter((task) => task.categoryId === categoryId).length
+
+    if (countInCategory >= 3) {
+      userStore.setUserAchievement(16) // Category Collector
+    }
+    if (countInCategory >= 5) {
+      userStore.setUserAchievement(17) // Bit of a Pattern Here
+    }
+    if (countInCategory >= 10) {
+      userStore.setUserAchievement(18) // Category Cultist
+    }
 
     return newTask
   }
