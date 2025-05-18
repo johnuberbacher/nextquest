@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { achievements } from '@/data/achievements.js'
+import { useTaskStore } from '@/stores/useTaskStore'
 
 export interface HabitEntry {
   habitId: string
@@ -33,6 +34,7 @@ export interface User {
 export const useUserStore = defineStore('User', () => {
   const levelUpNotification = ref(false)
   const achievementNotification = ref(false)
+  const showIntroWelcomeScreen = ref(false)
 
   const user = ref<User | null>(null)
 
@@ -183,6 +185,16 @@ export const useUserStore = defineStore('User', () => {
     saveUserToLocalStorage()
   }
 
+  const deleteUser = () => {
+    if (user.value) {
+      const taskStore = useTaskStore()
+      const { deleteAllTasks } = taskStore
+      deleteAllTasks()
+      user.value = null
+      localStorage.removeItem('user')
+    }
+  }
+
   const getUserTitle = () => {
     const reversed = [...userTitle.value].sort((a, b) => b.level - a.level)
     const achievement = reversed.find((a) => user.value.level >= a.level)
@@ -286,13 +298,13 @@ export const useUserStore = defineStore('User', () => {
 
   const saveUserToLocalStorage = async () => {
     return Promise.resolve().then(() => {
-      localStorage.setItem('users', JSON.stringify(user.value))
+      localStorage.setItem('user', JSON.stringify(user.value))
     })
   }
 
   const loadUserFromLocalStorage = async () => {
     return Promise.resolve().then(() => {
-      const saved = localStorage.getItem('users')
+      const saved = localStorage.getItem('user')
       if (saved) {
         const parsed = JSON.parse(saved)
         parsed.dateCreated = new Date(parsed.dateCreated)
@@ -311,6 +323,7 @@ export const useUserStore = defineStore('User', () => {
     user,
     userTitle,
     createUser,
+    deleteUser,
     getUserTitle,
     getUserAchievement,
     getStreak,
@@ -327,5 +340,6 @@ export const useUserStore = defineStore('User', () => {
     setUserAchievement,
     levelUpNotification,
     achievementNotification,
+    showIntroWelcomeScreen,
   }
 })

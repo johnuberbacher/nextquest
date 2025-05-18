@@ -7,6 +7,7 @@ import Achievement from '../components/ui/Achievement.vue'
 import InputLabel from '../components/input/InputLabel.vue'
 import FullScreenLoading from '../components/ui/FullScreenLoading.vue'
 import BadgesWidget from '../components/ui/user/BadgesWidget.vue'
+import DeleteAccountModal from '../components/ui/modal/DeleteAccountModal.vue'
 
 const store = useTaskStore()
 const userStore = useUserStore()
@@ -79,7 +80,9 @@ const user = computed(() => {
           </div>
         </div>
       </div>
-
+      <div>
+        <DeleteAccountModal />
+      </div>
       <Achievement v-for="achivement in user?.achievements" :userData="achivement" />
     </div>
   </div>

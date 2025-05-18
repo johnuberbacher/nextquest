@@ -48,15 +48,12 @@ watch(
     <div
       class="dark:bg-neutral-800 md:border-neutral-200 md:dark:border-neutral-700 relative m-auto flex h-full w-full flex-col justify-between bg-white shadow md:max-h-[960px] md:max-w-xl md:overflow-hidden md:rounded-3xl md:border"
     >
-      <IntroWelcome
-        v-if="showIntroWelcomeScreen || !user"
-        @updateIntroWelcomeScreen="updateIntroWelcomeScreen"
-      />
+      <IntroWelcome v-if="!user" @updateIntroWelcomeScreen="updateIntroWelcomeScreen" />
 
-      <Header v-if="!showIntroWelcomeScreen && user" />
-      <AchievementNotification v-if="!showIntroWelcomeScreen && user" />
-      <RouterView v-if="!showIntroWelcomeScreen && user" />
-      <AppBar v-if="!showIntroWelcomeScreen && user" />
+      <Header v-if="user" />
+      <AchievementNotification v-if="user" />
+      <RouterView v-if="user" />
+      <AppBar v-if="user" />
     </div>
   </div>
 </template>

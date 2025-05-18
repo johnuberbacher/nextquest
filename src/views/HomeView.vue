@@ -110,7 +110,7 @@ const userTitle = computed(() => {
           </div>
         </div>
       </div>
-      <div class="flex w-full flex-grow flex-col items-start justify-start gap-0 overflow-hidden">
+      <div class="flex w-full flex-grow flex-col items-start justify-start gap-4 overflow-hidden">
         <CalendarWidget @update:activeDate="handleDateChange" />
 
         <div

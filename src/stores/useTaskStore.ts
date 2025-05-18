@@ -75,7 +75,12 @@ export const useTaskStore = defineStore('task', () => {
     tasks.value = tasks.value.filter((t) => t.id !== id)
     saveHabitsToLocalStorage()
     const router = useRouter()
-    router.push('/')
+    router.push({ name: 'home' })
+  }
+
+  const deleteAllTasks = () => {
+    tasks.value = []
+    localStorage.removeItem('habits')
   }
 
   const incrementTaskExp = async (id: number, amount: number) => {
@@ -137,6 +142,7 @@ export const useTaskStore = defineStore('task', () => {
     createTask,
     updateTask,
     deleteTask,
+    deleteAllTasks,
     getTaskById,
     getTasksForToday,
     getTasksForWeek,
