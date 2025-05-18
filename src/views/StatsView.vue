@@ -16,23 +16,6 @@ const { tasks: rawTasks, createTask, getTasksForToday } = store
 const user = computed(() => {
   return userStore.user
 })
-
-const tasks = computed(() =>
-  rawTasks.map((task) => ({
-    ...task,
-    categoryId: String(task.categoryId),
-  })),
-)
-const { logHabitEntry, hasLoggedToday } = userStore
-const { selectedCategoryId, categories, getCategoryById } = categoryStore
-
-const userAchievements = computed(() => {
-  return user.achievements
-})
-
-const dailies = computed(() => {
-  return getTasksForToday()
-})
 </script>
 <template>
   <FullScreenLoading v-if="!user" />
@@ -96,12 +79,8 @@ const dailies = computed(() => {
           </div>
         </div>
       </div>
-      <Achievement
-        v-for="achivement in userAchievements"
-        :title="achivement.title"
-        :description="achivement.description"
-        :emoji="achivement.emoji"
-      />
+
+      <Achievement v-for="achivement in user?.achievements" :userData="achivement" />
     </div>
   </div>
 </template>

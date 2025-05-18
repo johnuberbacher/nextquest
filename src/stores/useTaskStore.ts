@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/useUserStore'
 
 export type TaskState = 'pending' | 'in_progress' | 'complete'
 
@@ -50,8 +51,15 @@ export const useTaskStore = defineStore('task', () => {
       endDate: taskInput.endDate ?? null,
     }
 
+    if (tasks.value.length === 0) {
+      const userStore = useUserStore()
+      userStore.setUserAchievement(19)
+    }
+
     tasks.value.push(newTask)
+
     saveHabitsToLocalStorage()
+
     return newTask
   }
 

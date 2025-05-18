@@ -1,6 +1,7 @@
 // useUserStore.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { achievements } from '@/data/achievements.js'
 
 export interface HabitEntry {
   habitId: string
@@ -203,13 +204,19 @@ export const useUserStore = defineStore('User', () => {
     return Math.floor(10 + Math.pow(progress, 3) * scale)
   }
 
+  const getUserAchievement = (achievementId: number) => {
+    const achievement = achievements.find((a) => a.id === achievementId)
+    if (!achievement) {
+      console.warn(`Achievement with ID ${achievementId} not found.`)
+    }
+    return achievement
+  }
+
   const setUserAchievement = (achievementId: number) => {
     if (!user.value) {
       console.log('error: no user found')
       return
     }
-
-    console.log(user.value)
 
     const alreadyHasAchievement = user.value.achievements.some(
       (entry) => entry.achievementId === achievementId,
@@ -224,14 +231,13 @@ export const useUserStore = defineStore('User', () => {
       achievementId,
       date: new Date(),
     })
+
     saveUserToLocalStorage()
 
-    console.log('Achievement saved to user data.')
-
-    achievementNotification.value = true
-    setTimeout(() => {
-      // achievementNotification.value = false
-    }, 4000)
+    // achievementNotification.value = true
+    // setTimeout(() => {
+    //   achievementNotification.value = false
+    // }, 5000)
   }
 
   const incrementUserExp = async () => {
@@ -262,7 +268,7 @@ export const useUserStore = defineStore('User', () => {
         setUserAchievement(achievementId)
       }
 
-      levelUpNotification.value = true
+      // levelUpNotification.value = true
 
       if (user.value.exp < getExpForNextLevel(user.value.level)) {
         console.log('Not enough EXP to level up further.')
@@ -306,6 +312,7 @@ export const useUserStore = defineStore('User', () => {
     userTitle,
     createUser,
     getUserTitle,
+    getUserAchievement,
     getStreak,
     hasLoggedToday,
     hasLoggedOnDate,
@@ -317,6 +324,7 @@ export const useUserStore = defineStore('User', () => {
     getHabitEntriesPastYear,
     getHabitEntriesThisWeek,
     getTwoMonthsCompletion,
+    setUserAchievement,
     levelUpNotification,
     achievementNotification,
   }
